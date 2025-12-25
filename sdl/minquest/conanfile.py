@@ -5,4 +5,5 @@ class MinquestRecipe(ConanFile):
     generators = "CMakeToolchain", "CMakeDeps"
 
     def requirements(self):
-         self.requires("sdl/3.2.20") 
+         self.requires("sdl/3.2.20")
+         self.requires("imgui/1.92.5")
