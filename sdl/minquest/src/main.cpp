@@ -6,7 +6,7 @@ int main(int argc, char*argv[])
 {
     auto game = std::make_unique<Game>();
 
-    if (game->Initialize() != 0)
+    if (game->Init() != 0)
     {
         return 1;
     }
