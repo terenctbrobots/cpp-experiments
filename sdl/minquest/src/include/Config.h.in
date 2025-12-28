@@ -1,0 +1,4 @@
+#pragma once
+#cmakedefine PLATFORM_WINDOWS 
+#cmakedefine PLATFORM_APPLE
+#cmakedefine PLATFORM_UNIX

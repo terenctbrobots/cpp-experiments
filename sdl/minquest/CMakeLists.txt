@@ -1,6 +1,19 @@
 cmake_minimum_required(VERSION 3.15)
 project(minquest LANGUAGES CXX)
 
+if(WIN32)
+        set(PLATFORM_WINDOWS TRUE)
+elseif(APPLE)
+        set(PLATFORM_APPLE TRUE)
+else()
+        set(PLATFORM_UNIX TRUE)
+endif()
+
+configure_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/include/Config.h.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/Config.h"
+)
+
 find_package(SDL3 REQUIRED)
 find_package(spdlog REQUIRED)
 find_package(imgui REQUIRED)
@@ -19,7 +32,7 @@ add_executable(${PROJECT_NAME}
         src/Game.cpp
 )
 
-target_include_directories(${PROJECT_NAME} PRIVATE src/include src/backend)
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR} src/include src/backend ) 
 
 target_link_libraries(${PROJECT_NAME} PRIVATE 
         SDL3::SDL3
