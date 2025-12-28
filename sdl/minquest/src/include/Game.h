@@ -6,6 +6,9 @@ class Game
 {
     public:
         int Init();
+        int Main();
+
+
         ~Game();
     private:
         SDL_Window* m_Window = NULL;
