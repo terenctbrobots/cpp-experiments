@@ -1,14 +1,15 @@
 #include "Game.h"
 
-#include "Config.h"
-
 #include "imgui.h"
 #include "imgui_impl_sdl3.h"
+
+#ifdef PLATFORM_UNIX
 #include "imgui_impl_opengl3.h"
 #if defined(IMGUI_IMPL_OPENGL_ES2)
 #include <SDL3/SDL_opengles2.h>
 #else
 #include <SDL3/SDL_opengl.h>
+#endif
 #endif
 
 #include "spdlog/spdlog.h"
@@ -17,11 +18,15 @@ Game::~Game()
 {
     // Cleanup
     // [If using SDL_MAIN_USE_CALLBACKS: all code below would likely be your SDL_AppQuit() function]
+#ifdef PLATFORM_UNIX
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL3_Shutdown();
+#endif
     ImGui::DestroyContext();
 
+#ifdef PLATFORM_UNIX
     SDL_GL_DestroyContext(m_GlContext);
+#endif
     SDL_DestroyWindow(m_Window);
     SDL_Quit();
 
@@ -79,8 +84,10 @@ int Game::Main()
         }
 
         // Start the Dear ImGui frame
+#ifdef PLATFORM_UNIX
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplSDL3_NewFrame();
+#endif
         ImGui::NewFrame();
 
         // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
@@ -122,11 +129,15 @@ int Game::Main()
 
         // Rendering
         ImGui::Render();
+
+#ifdef PLATFORM_UNIX
         glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
         glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
         glClear(GL_COLOR_BUFFER_BIT);
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         SDL_GL_SwapWindow(m_Window);
+#endif
+
     }
 #ifdef __EMSCRIPTEN__
     EMSCRIPTEN_MAINLOOP_END;
@@ -142,10 +153,11 @@ int Game::InitSDL()
     // [If using SDL_MAIN_USE_CALLBACKS: all code below until the main loop starts would likely be your SDL_AppInit() function]
     if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMEPAD))
     {
-        printf("Error: SDL_Init(): %s\n", SDL_GetError());
+        spdlog::error("Error: SDL_Init(): %s\n", SDL_GetError());
         return 1;
     }
 
+#ifdef PLATFORM_UNIX
     // Decide GL+GLSL versions
 #if defined(IMGUI_IMPL_OPENGL_ES2)
     // GL ES 2.0 + GLSL 100 (WebGL 1.0)
@@ -186,18 +198,20 @@ int Game::InitSDL()
     m_Window = SDL_CreateWindow("Dear ImGui SDL3+OpenGL3 example", (int)(1280 * m_MainScale), (int)(800 * m_MainScale), window_flags);
     if (m_Window == nullptr)
     {
-        printf("Error: SDL_CreateWindow(): %s\n", SDL_GetError());
+        spdlog::error("Error: SDL_CreateWindow(): %s\n", SDL_GetError());
         return 1;
     }
     m_GlContext = SDL_GL_CreateContext(m_Window);
     if (m_GlContext == nullptr)
     {
-        printf("Error: SDL_GL_CreateContext(): %s\n", SDL_GetError());
+        spdlog::error("Error: SDL_GL_CreateContext(): %s\n", SDL_GetError());
         return 1;
     }
 
     SDL_GL_MakeCurrent(m_Window, m_GlContext);
     SDL_GL_SetSwapInterval(1); // Enable vsync
+#endif
+
     SDL_SetWindowPosition(m_Window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
     SDL_ShowWindow(m_Window);
 
@@ -222,9 +236,11 @@ int Game::InitIMGUI()
     style.ScaleAllSizes(m_MainScale);        // Bake a fixed style scale. (until we have a solution for dynamic style scaling, changing this requires resetting Style + calling this again)
     style.FontScaleDpi = m_MainScale;        // Set initial font scale. (using io.ConfigDpiScaleFonts=true makes this unnecessary. We leave both here for documentation purpose)
 
+#ifdef PLATFORM_UNIX
     // Setup Platform/Renderer backends
     ImGui_ImplSDL3_InitForOpenGL(m_Window, m_GlContext);
     ImGui_ImplOpenGL3_Init(m_GlslVersion);
+#endif
 
     // Load Fonts
     // - If no fonts are loaded, dear imgui will use the default font. You can also load multiple fonts and use ImGui::PushFont()/PopFont() to select them.
