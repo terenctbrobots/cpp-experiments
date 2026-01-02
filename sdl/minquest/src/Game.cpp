@@ -16,8 +16,6 @@
 
 Game::~Game()
 {
-    // Cleanup
-    // [If using SDL_MAIN_USE_CALLBACKS: all code below would likely be your SDL_AppQuit() function]
 #ifdef PLATFORM_UNIX
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL3_Shutdown();
@@ -34,7 +32,10 @@ Game::~Game()
 
 int Game::Init()
 {
-    InitSDL();
+    if (InitSDL())
+    {
+        return 1;
+    }
 
     InitIMGUI();
 
@@ -51,14 +52,7 @@ int Game::Main()
 
     // Main loop
     bool done = false;
-#ifdef __EMSCRIPTEN__
-    // For an Emscripten build we are disabling file-system access, so let's not attempt to do a fopen() of the imgui.ini file.
-    // You may manually call LoadIniSettingsFromMemory() to load settings from your own storage.
-    io.IniFilename = nullptr;
-    EMSCRIPTEN_MAINLOOP_BEGIN
-#else
     while (!done)
-#endif
     {
         // Poll and handle events (inputs, window resize, etc.)
         // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
@@ -71,12 +65,15 @@ int Game::Main()
         {
             ImGui_ImplSDL3_ProcessEvent(&event);
             if (event.type == SDL_EVENT_QUIT)
+            {
                 done = true;
-            if (event.type == SDL_EVENT_WINDOW_CLOSE_REQUESTED && event.window.windowID == SDL_GetWindowID(m_Window))
+            }
+            else if (event.type == SDL_EVENT_WINDOW_CLOSE_REQUESTED && event.window.windowID == SDL_GetWindowID(m_Window))
+            {
                 done = true;
+            }
         }
 
-        // [If using SDL_MAIN_USE_CALLBACKS: all code below would likely be your SDL_AppIterate() function]
         if (SDL_GetWindowFlags(m_Window) & SDL_WINDOW_MINIMIZED)
         {
             SDL_Delay(10);
@@ -137,12 +134,7 @@ int Game::Main()
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         SDL_GL_SwapWindow(m_Window);
 #endif
-
     }
-#ifdef __EMSCRIPTEN__
-    EMSCRIPTEN_MAINLOOP_END;
-#endif
-
     return 0;
 }
 
@@ -218,7 +210,7 @@ int Game::InitSDL()
     return 0;
 }
 
-int Game::InitIMGUI()
+void Game::InitIMGUI()
 {
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
@@ -258,6 +250,4 @@ int Game::InitIMGUI()
     //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Cousine-Regular.ttf");
     //ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf");
     //IM_ASSERT(font != nullptr);
-
-    return 0;
 }

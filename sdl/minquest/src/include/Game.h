@@ -23,6 +23,5 @@ class Game
 #endif
 
         int InitSDL();
-        int InitIMGUI();
-
+        void InitIMGUI();
 };
