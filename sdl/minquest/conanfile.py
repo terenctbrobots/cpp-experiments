@@ -10,6 +10,7 @@ class MinquestRecipe(ConanFile):
         self.requires("sdl_image/3.2.4")
         self.requires("imgui/1.92.5")
         self.requires("spdlog/1.16.0")
+        self.requires("nlohmann_json/3.12.0")
 
     def layout(self):
         cmake_layout(self)

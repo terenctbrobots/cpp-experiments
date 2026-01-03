@@ -18,6 +18,7 @@ find_package(SDL3_image)
 find_package(SDL3 REQUIRED)
 find_package(spdlog REQUIRED)
 find_package(imgui REQUIRED)
+find_package(nlohmann_json)
 
 set(HEADER_FILES 
         src/include/Game.h 
@@ -40,6 +41,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
         SDL3::SDL3
         spdlog::spdlog
         imgui::imgui
+        nlohmann_json::nlohmann_json
         )
 
 # Define the source and destination directories

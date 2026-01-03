@@ -24,4 +24,8 @@ class Game
 
         int InitSDL();
         void InitIMGUI();
+
+        bool InputEvents();
+        int RenderGame();
+        int RenderGui(); // Right we assume the GUI is over the game
 };
