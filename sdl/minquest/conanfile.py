@@ -7,6 +7,7 @@ class MinquestRecipe(ConanFile):
 
     def requirements(self):
         self.requires("sdl/3.2.20")
+        self.requires("sdl_image/3.2.4")
         self.requires("imgui/1.92.5")
         self.requires("spdlog/1.16.0")
 
