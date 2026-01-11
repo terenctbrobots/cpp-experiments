@@ -14,11 +14,26 @@ configure_file(
     "${CMAKE_CURRENT_BINARY_DIR}/Config.h"
 )
 
-find_package(SDL3_image)
+find_package(SDL3_image REQUIRED)
 find_package(SDL3 REQUIRED)
 find_package(spdlog REQUIRED)
 find_package(imgui REQUIRED)
-find_package(nlohmann_json)
+find_package(nlohmann_json REQUIRED)
+
+add_library(GameCore STATIC
+        lib/include/Image.h
+        lib/include/Resources.h
+        lib/include/Resource.h
+        lib/include/Sprite.h
+        lib/Image.cpp
+        lib/Resources.cpp
+        lib/Resource.cpp
+        lib/Sprite.cpp
+)
+
+target_include_directories(GameCore PRIVATE
+        lib/include
+)
 
 set(HEADER_FILES 
         src/include/Game.h 
@@ -32,9 +47,15 @@ add_executable(${PROJECT_NAME}
         src/backend/imgui_impl_sdl3.cpp
         src/main.cpp
         src/Game.cpp
+ 
 )
 
-target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR} src/include src/backend ) 
+target_include_directories(${PROJECT_NAME} PRIVATE 
+        ${CMAKE_CURRENT_BINARY_DIR} 
+        src/include
+        src/backend 
+        lib/include
+) 
 
 target_link_libraries(${PROJECT_NAME} PRIVATE 
         SDL3_image::SDL3_image
@@ -42,6 +63,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
         spdlog::spdlog
         imgui::imgui
         nlohmann_json::nlohmann_json
+        GameCore
         )
 
 # Define the source and destination directories
