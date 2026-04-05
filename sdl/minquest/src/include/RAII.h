@@ -1,0 +1,5 @@
+class RAII
+{
+    RAII();
+    ~RAII();
+}

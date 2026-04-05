@@ -9,7 +9,7 @@ class Game
     public:
         int Init();
         int Main();
-
+        int Cleanup();
 
         ~Game();
     private:

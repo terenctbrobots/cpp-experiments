@@ -9,5 +9,7 @@ int main(int argc, char*argv[])
 
     game.Main();
 
+    game.Cleanup();
+
     return 0;
 }

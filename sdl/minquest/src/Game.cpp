@@ -43,6 +43,11 @@ int Game::Init()
     return 0;
 }
 
+int Game::Cleanup()
+{
+    
+}
+
 int Game::Main()
 {
     // Our state
