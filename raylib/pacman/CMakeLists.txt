@@ -6,9 +6,9 @@ project(pacman LANGUAGES CXX)
 #     "${CMAKE_CURRENT_BINARY_DIR}/Config.h"
 # )
 
-find_package(raylib CONFIG REQUIRED)
-find_package(spdlog REQUIRED)
-find_package(nlohmann_json REQUIRED)
+find_package(raylib)
+find_package(spdlog)
+find_package(nlohmann_json)
 
 # add_library(GameCore STATIC
 #         lib/include/Image.h
@@ -25,26 +25,23 @@ find_package(nlohmann_json REQUIRED)
 #         lib/include
 # )
 
-set(HEADER_FILES 
-        lesson1/include/Game.h) 
+# set(HEADER_FILES 
+#         lesson1/include/Game.h) 
 #         src/backend/imgui_impl_opengl3.h 
 #         src/backend/imgui_impl_sdl3.h
-#         src/backend/imgui_impl_opengl3_loader.h)
+#         src/backend/imgui_impl_opecmake .. -DCMAKE_TOOcd LCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Debugcngl3_loader.h)
 
 add_executable(${PROJECT_NAME}
-        ${HEADER_FILES}
-        lesson1/main.cpp
-        lesson1/Game.cpp
- 
+        main.cpp 
 )
 
-target_include_directories(${PROJECT_NAME} PRIVATE 
-        ${CMAKE_CURRENT_BINARY_DIR} 
-        lesson1/include
-) 
+# target_include_directories(${PROJECT_NAME} PRIVATE 
+#         ${CMAKE_CURRENT_BINARY_DIR} 
+#         lesson1/include
+# ) 
 
 target_link_libraries(${PROJECT_NAME} PRIVATE 
-        raylib::raylib
+        raylib
         spdlog::spdlog
         nlohmann_json::nlohmann_json
         )
