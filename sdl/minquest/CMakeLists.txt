@@ -19,6 +19,7 @@ find_package(SDL3 REQUIRED)
 find_package(spdlog REQUIRED)
 find_package(imgui REQUIRED)
 find_package(nlohmann_json REQUIRED)
+find_package(gaia REQUIRED)
 
 add_library(GameCore STATIC
         lib/include/Image.h
@@ -63,6 +64,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
         spdlog::spdlog
         imgui::imgui
         nlohmann_json::nlohmann_json
+        gaia::gaia
         GameCore
         )
 
