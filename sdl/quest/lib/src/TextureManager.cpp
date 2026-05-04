@@ -9,7 +9,7 @@ uint32_t TextureManager::Load(SDL_Renderer* renderer, const std::string& filePat
 {
     if (m_PathMap.count(filePath))
     {
-         return m_PathMap[filePath];
+        return m_PathMap[filePath];
     };
 
     SDL_Texture* tex = IMG_LoadTexture(renderer, filePath.c_str());

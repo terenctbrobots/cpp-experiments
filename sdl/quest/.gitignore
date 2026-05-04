@@ -5,3 +5,4 @@ cmake_install.cmake
 CMakeCache.txt
 app/quest
 app/app
+compile_commands.json

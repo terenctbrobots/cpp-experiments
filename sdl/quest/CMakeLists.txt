@@ -3,6 +3,8 @@ project(Quest LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 #find_package(Catch2 REQUIRED)
 find_package(SDL3_image REQUIRED)
 find_package(SDL3 REQUIRED)
