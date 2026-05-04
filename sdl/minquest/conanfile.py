@@ -11,6 +11,7 @@ class MinquestRecipe(ConanFile):
         self.requires("imgui/1.92.5")
         self.requires("spdlog/1.16.0")
         self.requires("nlohmann_json/3.12.0")
+        self.requires("gaia-ecs/0.9.2")
 
     def layout(self):
         cmake_layout(self)
