@@ -1,11 +1,12 @@
 
+if(UNIX)
 set(IMGUI_BACKEND
         backend/imgui_impl_opengl3.h 
         backend/imgui_impl_sdl3.h
         backend/imgui_impl_opengl3_loader.h
         backend/imgui_impl_opengl3.cpp
         backend/imgui_impl_sdl3.cpp)
-
+endif()
 
 add_library(GameCore
     ${IMGUI_BACKEND}
