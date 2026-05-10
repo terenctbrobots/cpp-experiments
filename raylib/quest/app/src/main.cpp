@@ -1,33 +1,47 @@
-#include "raylib.h"
+#include <gaia.h>
 
-int main(int argc, char*argv[])
-{
-    // 1. Initialization
-    const int screenWidth = 800;
-    const int screenHeight = 450;
-    InitWindow(screenWidth, screenHeight, "Raylib - Basic Input Example");
+using namespace gaia;
 
-    Vector2 ballPosition = { (float)screenWidth/2, (float)screenHeight/2 };
-    SetTargetFPS(60); // Set game to run at 60 frames-per-second
+struct Position { float x, y, z; };
+struct Velocity { float x, y, z; };
+struct Health   { float value;   };
 
-    // 2. Main Game Loop
-    while (!WindowShouldClose()) {    // Detect window close button or ESC key
-        // Update
-        if (IsKeyDown(KEY_RIGHT)) ballPosition.x += 2.0f;
-        if (IsKeyDown(KEY_LEFT)) ballPosition.x -= 2.0f;
-        if (IsKeyDown(KEY_UP)) ballPosition.y -= 2.0f;
-        if (IsKeyDown(KEY_DOWN)) ballPosition.y += 2.0f;
+int main() {
+    ecs::World w;
+    const float dt = 0.016f;
 
-        // Draw
-        BeginDrawing();
-            ClearBackground(RAYWHITE);
-            DrawText("Move the ball with arrow keys", 10, 10, 20, DARKGRAY);
-            DrawCircleV(ballPosition, 40, MAROON);
-        EndDrawing();
+    auto moveSystem = w.system()
+        .all<Position>()
+        .all<Velocity>()
+        .on_each([&](ecs::Iter& it) {
+            auto p = it.view_mut<Position>();
+            auto v = it.view<Velocity>();
+            GAIA_EACH(it) {
+                p[i].x += v[i].x * dt;
+                p[i].y += v[i].y * dt;
+                p[i].z += v[i].z * dt;
+            }
+        });
+
+    auto healthSystem = w.system()
+        .all<Health>()
+        .on_each([](ecs::Iter& it) {
+            auto h = it.view_mut<Health>();
+            GAIA_EACH(it) {
+                h[i].value -= 1.0f;
+            }
+        });
+
+    for (int i = 0; i < 5; i++) {
+        ecs::Entity e = w.add();
+        w.add<Position>(e, {0.f, 0.f, 0.f});
+        w.add<Velocity>(e, {1.f, 0.5f, 0.f});
+        w.add<Health>(e, {100.f});
     }
 
-    // 3. De-Initialization
-    CloseWindow();        // Close window and OpenGL context
+    while (true) {
+        w.update(); // runs all builder systems + GC
+    }
 
     return 0;
 }
