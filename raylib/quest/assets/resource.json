@@ -1,0 +1,19 @@
+{
+    "sprites" : [
+        {
+            "image": "player",
+            "frames": 6,
+            "srcX": 0,
+            "srcY": 0,
+            "size_x": 32,
+            "size_y": 32
+        }
+    ],
+    "images" : [
+        {
+            "name": "player",
+            "file": "assets/characters/player.png",
+            "type": "png"
+        }
+    ]
+}
