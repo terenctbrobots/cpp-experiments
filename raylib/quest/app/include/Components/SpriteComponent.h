@@ -2,12 +2,12 @@
 
 #include <cstdint>
 
-struct SpriteComponet
+// Forward Declarations
+struct Texture2D;
+struct Rectangle;
+
+struct SpriteComponent
 {
-    uint32_t m_TextureId;
-
-    float m_Frames;
-    float m_Width;
-    float m_Height;
-
+    Texture2D m_Texture;
+    Rectangle m_SrcRect;
 };

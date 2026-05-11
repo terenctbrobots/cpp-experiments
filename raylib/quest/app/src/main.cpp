@@ -1,13 +1,30 @@
 #include <gaia.h>
-
+#include "raylib.h"
 // using namespace gaia;
 
 // struct Position { float x, y, z; };
 // struct Velocity { float x, y, z; };
 // struct Health   { float value;   };
 
+const int screenWidth = 800;
+const int screenHeight = 450;
+
 int main() 
 {
+
+    InitWindow(screenWidth, screenHeight,"Quest");
+    SetTargetFPS(60);
+
+    while (!WindowShouldClose())
+    {
+        BeginDrawing();
+            ClearBackground(RAYWHITE);
+            DrawText("Quest", 190, 200, 20, LIGHTGRAY);
+        EndDrawing();
+    }
+
+    CloseWindow();
+
     // ecs::World w;
     // const float dt = 0.016f;
 
