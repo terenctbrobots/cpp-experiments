@@ -1,5 +1,13 @@
+
 # Create the executable
-add_executable(quest src/main.cpp)
+add_executable(quest 
+    src/main.cpp
+    src/Player.cpp
+    src/Render.cpp
+    src/Game.cpp
+    )
+
+target_include_directories(quest PUBLIC include)
 
 # Link the internal library. 
 # Because of the 'PUBLIC' include in my_lib, my_app can find the headers automatically.
@@ -11,7 +19,7 @@ target_link_libraries(quest PRIVATE
     )
 
 # Define the source and destination directories
-set(ASSETS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/assets")
+set(ASSETS_DIR "${CMAKE_SOURCE_DIR}/assets")
 set(DEST_DIR "$<TARGET_FILE_DIR:quest>/assets")
 
 # Add a custom command to run after 'minquest' is built

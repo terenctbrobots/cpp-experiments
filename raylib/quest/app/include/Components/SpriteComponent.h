@@ -1,10 +1,7 @@
 #pragma once
 
 #include <cstdint>
-
-// Forward Declarations
-struct Texture2D;
-struct Rectangle;
+#include "raylib.h"
 
 struct SpriteComponent
 {
