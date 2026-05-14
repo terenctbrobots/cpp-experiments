@@ -1,4 +1,8 @@
 #pragma once
 #include <gaia.h>
 
-bool CreatePlayer(gaia::ecs::World& world);
+namespace Player
+{
+    bool Create(gaia::ecs::World& world);
+    void Move(gaia::ecs::World& world, float speed, float dt, float x, float y);
+}

@@ -17,6 +17,8 @@ const int screenHeight = 720;
 const int virtualWidth = 320;
 const int virtualHeight = 180;
 
+const float speed = 200.0f;
+
 int main() 
 {
     gaia::ecs::World world;
@@ -24,7 +26,7 @@ int main()
     InitWindow(screenWidth, screenHeight,"Quest");
     SetTargetFPS(60);
 
-    if (!CreatePlayer(world))
+    if (!Player::Create(world))
     {
         CloseWindow();
         return 0;
@@ -35,6 +37,14 @@ int main()
 
     while (!WindowShouldClose())
     {
+
+        float dt = GetFrameTime();
+
+        if (IsKeyDown(KEY_RIGHT)) Player::Move(world, speed, dt, 1.0, 0);
+        if (IsKeyDown(KEY_LEFT))  Player::Move(world, speed, dt, -1.0, 0);
+        if (IsKeyDown(KEY_DOWN))  Player::Move(world, speed, dt, 0.0, 1.0);
+        if (IsKeyDown(KEY_UP))    Player::Move(world, speed, dt, 0.0, -1.0);
+
         float scale = fminf((float)GetScreenWidth()/virtualWidth, (float)GetScreenHeight()/virtualHeight);
 
         BeginTextureMode(target);
