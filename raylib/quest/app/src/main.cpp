@@ -11,11 +11,11 @@
 // struct Velocity { float x, y, z; };
 // struct Health   { float value;   };
 
-const int screenWidth = 1280;
-const int screenHeight = 720;
+const int screenWidth = 2560;
+const int screenHeight = 1920;
 
 const int virtualWidth = 320;
-const int virtualHeight = 180;
+const int virtualHeight = 240;
 
 const float speed = 200.0f;
 
