@@ -5,6 +5,8 @@
 #include "Game.h"
 #include "Player.h"
 #include "Render.h"
+
+#include "Components/PlayerComponent.h"
 // using namespace gaia;
 
 // struct Position { float x, y, z; };
@@ -17,20 +19,23 @@ const int screenHeight = 1920;
 const int virtualWidth = 320;
 const int virtualHeight = 240;
 
-const float speed = 200.0f;
-
 int main() 
 {
     gaia::ecs::World world;
+    Game game(world);
+
 
     InitWindow(screenWidth, screenHeight,"Quest");
     SetTargetFPS(60);
 
-    if (!Player::Create(world))
+    gaia::ecs::Entity player = Player::Create(world);
+
+    if (player == gaia::ecs::EntityBad)
     {
         CloseWindow();
         return 0;
     }
+
 
     RenderTexture2D target = LoadRenderTexture(virtualWidth, virtualHeight);
     SetTextureFilter(target.texture, TEXTURE_FILTER_POINT);
@@ -40,10 +45,25 @@ int main()
 
         float dt = GetFrameTime();
 
-        if (IsKeyDown(KEY_RIGHT)) Player::Move(world, speed, dt, 1.0, 0);
-        if (IsKeyDown(KEY_LEFT))  Player::Move(world, speed, dt, -1.0, 0);
-        if (IsKeyDown(KEY_DOWN))  Player::Move(world, speed, dt, 0.0, 1.0);
-        if (IsKeyDown(KEY_UP))    Player::Move(world, speed, dt, 0.0, -1.0);
+        if (IsKeyDown(KEY_RIGHT)) world.set<PlayerComponent>(player) = {1.0, 0};
+        if (IsKeyDown(KEY_LEFT)) world.set<PlayerComponent>(player) = {-1.0, 0};
+        if (IsKeyDown(KEY_DOWN)) world.set<PlayerComponent>(player) = {0, 1.0};
+        if (IsKeyDown(KEY_UP)) world.set<PlayerComponent>(player) = {0, -1.0};
+
+        if (IsKeyReleased(KEY_RIGHT) || 
+            IsKeyReleased(KEY_LEFT) ||
+            IsKeyReleased(KEY_DOWN) ||
+            IsKeyReleased(KEY_UP))
+            {
+                world.set<PlayerComponent>(player) = {0,0};
+            }
+
+        Player::Move(world, dt);
+
+
+        world.update();
+
+
 
         float scale = fminf((float)GetScreenWidth()/virtualWidth, (float)GetScreenHeight()/virtualHeight);
 
@@ -65,7 +85,7 @@ int main()
         EndDrawing();
     }
 
-    Game::Cleanup(world);
+    game.Cleanup();
 
     CloseWindow();
     

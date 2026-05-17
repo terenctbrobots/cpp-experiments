@@ -6,7 +6,9 @@
 #include "Components/SpriteComponent.h"
 #include "spdlog/spdlog.h"
 
-bool Player::Create(gaia::ecs::World& world)
+const float speed = 100.0f;
+
+gaia::ecs::Entity Player::Create(gaia::ecs::World& world)
 {
     gaia::ecs::Entity entity  = world.add();
 
@@ -18,24 +20,24 @@ bool Player::Create(gaia::ecs::World& world)
     if (playerTexture.id <= 0)
     {
         spdlog::error("Could not load Player Texture");
-        return false;
+        return gaia::ecs::EntityBad;
     }
 
     world.add<SpriteComponent>(entity, {std::move(playerTexture), {0,0,64,64}});
 
-    return true;
+    return entity;
 }
 
-void Player::Move(gaia::ecs::World& world, float speed, float dt, float x, float y)
+void Player::Move(gaia::ecs::World& world, float dt)
 {
     gaia::ecs::Query q = world.query()
         .all<Transform2D&>()
         .all<PlayerComponent>();
 
-    q.each([=] (Transform2D& pos)
+    q.each([=] (Transform2D& pos, const PlayerComponent& player)
     {
-        pos.m_X += x*dt*speed;
-        pos.m_Y += y*dt*speed;
+        pos.m_X += player.m_DirectionX*dt*speed;
+        pos.m_Y += player.m_DirectionY*dt*speed;
     });
 
 }
