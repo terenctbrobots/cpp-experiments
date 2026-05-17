@@ -1,10 +1,11 @@
 #include "Game.h"
 
 #include "Components/SpriteComponent.h"
+#include "Systems/MovementSystem.h"
 
 void Game::RegisterSystems()
 {
-
+    RegisterMovementSystem(m_World);
 }
 
 void Game::Cleanup()

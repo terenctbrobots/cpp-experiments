@@ -5,6 +5,7 @@ add_executable(quest
     src/Player.cpp
     src/Render.cpp
     src/Game.cpp
+    src/Systems/MovementSystem.cpp
     )
 
 target_include_directories(quest PUBLIC include)

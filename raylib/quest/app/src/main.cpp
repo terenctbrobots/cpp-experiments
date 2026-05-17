@@ -24,6 +24,7 @@ int main()
     gaia::ecs::World world;
     Game game(world);
 
+    game.RegisterSystems();
 
     InitWindow(screenWidth, screenHeight,"Quest");
     SetTargetFPS(60);
@@ -37,6 +38,7 @@ int main()
     }
 
 
+
     RenderTexture2D target = LoadRenderTexture(virtualWidth, virtualHeight);
     SetTextureFilter(target.texture, TEXTURE_FILTER_POINT);
 
@@ -45,20 +47,20 @@ int main()
 
         float dt = GetFrameTime();
 
-        if (IsKeyDown(KEY_RIGHT)) world.set<PlayerComponent>(player) = {1.0, 0};
-        if (IsKeyDown(KEY_LEFT)) world.set<PlayerComponent>(player) = {-1.0, 0};
-        if (IsKeyDown(KEY_DOWN)) world.set<PlayerComponent>(player) = {0, 1.0};
-        if (IsKeyDown(KEY_UP)) world.set<PlayerComponent>(player) = {0, -1.0};
+        if (IsKeyDown(KEY_RIGHT)) world.set<PlayerComponent>(player) = {dt, 1.0, 0};
+        if (IsKeyDown(KEY_LEFT)) world.set<PlayerComponent>(player) = {dt, -1.0, 0};
+        if (IsKeyDown(KEY_DOWN)) world.set<PlayerComponent>(player) = {dt, 0, 1.0};
+        if (IsKeyDown(KEY_UP)) world.set<PlayerComponent>(player) = {dt, 0, -1.0};
 
         if (IsKeyReleased(KEY_RIGHT) || 
             IsKeyReleased(KEY_LEFT) ||
             IsKeyReleased(KEY_DOWN) ||
             IsKeyReleased(KEY_UP))
             {
-                world.set<PlayerComponent>(player) = {0,0};
+                world.set<PlayerComponent>(player) = {dt, 0,0};
             }
 
-        Player::Move(world, dt);
+        //Player::Move(world, dt);
 
 
         world.update();

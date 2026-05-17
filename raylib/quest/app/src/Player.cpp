@@ -27,17 +27,3 @@ gaia::ecs::Entity Player::Create(gaia::ecs::World& world)
 
     return entity;
 }
-
-void Player::Move(gaia::ecs::World& world, float dt)
-{
-    gaia::ecs::Query q = world.query()
-        .all<Transform2D&>()
-        .all<PlayerComponent>();
-
-    q.each([=] (Transform2D& pos, const PlayerComponent& player)
-    {
-        pos.m_X += player.m_DirectionX*dt*speed;
-        pos.m_Y += player.m_DirectionY*dt*speed;
-    });
-
-}
