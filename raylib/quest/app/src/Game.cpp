@@ -2,10 +2,14 @@
 
 #include "Components/SpriteComponent.h"
 #include "Systems/MovementSystem.h"
+#include "Systems/RenderSystem.h"
 
 void Game::RegisterSystems()
 {
-    RegisterMovementSystem(m_World);
+    auto movementSystem = RegisterMovementSystem(m_World);
+    auto renderSystem = RegisterRenderSystem(m_World);
+
+    m_World.add(movementSystem.entity(), gaia::ecs::Pair{gaia::ecs::DependsOn, renderSystem.entity()});
 }
 
 void Game::Cleanup()

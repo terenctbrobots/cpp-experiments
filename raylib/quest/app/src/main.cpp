@@ -4,7 +4,6 @@
 
 #include "Game.h"
 #include "Player.h"
-#include "Render.h"
 
 #include "Components/PlayerComponent.h"
 // using namespace gaia;
@@ -37,8 +36,6 @@ int main()
         return 0;
     }
 
-
-
     RenderTexture2D target = LoadRenderTexture(virtualWidth, virtualHeight);
     SetTextureFilter(target.texture, TEXTURE_FILTER_POINT);
 
@@ -59,21 +56,15 @@ int main()
             {
                 world.set<PlayerComponent>(player) = {dt, 0,0};
             }
-
-        //Player::Move(world, dt);
-
-
+    
+        BeginTextureMode(target);
+    
         world.update();
 
-
+        EndTextureMode();
 
         float scale = fminf((float)GetScreenWidth()/virtualWidth, (float)GetScreenHeight()/virtualHeight);
-
-        BeginTextureMode(target);
-        ClearBackground(BLACK);
-        Render(world);
-        EndTextureMode();
-        
+    
         BeginDrawing();
         Rectangle sourceRect = { 0.0f, 0.0f, (float)target.texture.width, -(float)target.texture.height};
         Rectangle destRect = {
