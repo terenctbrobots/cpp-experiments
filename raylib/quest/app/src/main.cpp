@@ -22,8 +22,9 @@ int main()
 {
     gaia::ecs::World world;
     Game game(world);
+    float dt = 0.0f;
 
-    game.RegisterSystems();
+    game.RegisterSystems(dt);
 
     InitWindow(screenWidth, screenHeight,"Quest");
     SetTargetFPS(60);
@@ -42,19 +43,19 @@ int main()
     while (!WindowShouldClose())
     {
 
-        float dt = GetFrameTime();
+        dt = GetFrameTime();
 
-        if (IsKeyDown(KEY_RIGHT)) world.set<PlayerComponent>(player) = {dt, 1.0, 0};
-        if (IsKeyDown(KEY_LEFT)) world.set<PlayerComponent>(player) = {dt, -1.0, 0};
-        if (IsKeyDown(KEY_DOWN)) world.set<PlayerComponent>(player) = {dt, 0, 1.0};
-        if (IsKeyDown(KEY_UP)) world.set<PlayerComponent>(player) = {dt, 0, -1.0};
+        if (IsKeyDown(KEY_RIGHT)) world.set<PlayerComponent>(player) = {1.0, 0};
+        if (IsKeyDown(KEY_LEFT)) world.set<PlayerComponent>(player) = {-1.0, 0};
+        if (IsKeyDown(KEY_DOWN)) world.set<PlayerComponent>(player) = {0, 1.0};
+        if (IsKeyDown(KEY_UP)) world.set<PlayerComponent>(player) = {0, -1.0};
 
         if (IsKeyReleased(KEY_RIGHT) || 
             IsKeyReleased(KEY_LEFT) ||
             IsKeyReleased(KEY_DOWN) ||
             IsKeyReleased(KEY_UP))
             {
-                world.set<PlayerComponent>(player) = {dt, 0,0};
+                world.set<PlayerComponent>(player) = {0, 0};
             }
     
         BeginTextureMode(target);

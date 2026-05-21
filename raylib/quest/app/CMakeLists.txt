@@ -4,6 +4,7 @@ add_executable(quest
     src/main.cpp
     src/Player.cpp
     src/Game.cpp
+    src/Animation.cpp
     src/Systems/MovementSystem.cpp
     src/Systems/RenderSystem.cpp
     )

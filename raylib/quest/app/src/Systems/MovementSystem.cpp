@@ -5,14 +5,14 @@
 
 const float speed = 100.0f;
 
-gaia::ecs::SystemBuilder RegisterMovementSystem(gaia::ecs::World& world)
+gaia::ecs::SystemBuilder RegisterMovementSystem(gaia::ecs::World& world, float& dt)
 {
     return world.system()
         .all<Transform2D&>()
         .all<PlayerComponent>()
-        .on_each([](Transform2D& pos, const PlayerComponent& player)
+        .on_each([&dt](Transform2D& pos, const PlayerComponent& player)
         {
-            pos.m_X += player.m_DirectionX*speed*player.m_deltaTime;
-            pos.m_Y += player.m_DirectionY*speed*player.m_deltaTime;
+            pos.m_X += player.m_DirectionX*speed*dt;
+            pos.m_Y += player.m_DirectionY*speed*dt;
         });
 }

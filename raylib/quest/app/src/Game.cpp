@@ -4,9 +4,9 @@
 #include "Systems/MovementSystem.h"
 #include "Systems/RenderSystem.h"
 
-void Game::RegisterSystems()
+void Game::RegisterSystems(float& dt)
 {
-    auto movementSystem = RegisterMovementSystem(m_World);
+    auto movementSystem = RegisterMovementSystem(m_World, dt);
     auto renderSystem = RegisterRenderSystem(m_World);
 
     m_World.add(movementSystem.entity(), gaia::ecs::Pair{gaia::ecs::DependsOn, renderSystem.entity()});
