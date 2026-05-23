@@ -5,7 +5,7 @@
 #include "Components/AnimationDataComponent.h"
 #include "Components/AnimationComponent.h"
 #include "Components/Transform2D.h"
-#include "Components/PlayerComponent.h"
+#include "Components/VelocityComponent.h"
 #include "Components/SpriteComponent.h"
 #include "spdlog/spdlog.h"
 
@@ -15,7 +15,7 @@ gaia::ecs::Entity Player::Create(gaia::ecs::World& world)
 {
     gaia::ecs::Entity entity  = world.add();
 
-    world.add<PlayerComponent>(entity);
+    world.add<VelocityComponent>(entity, {speed, {0.0f,0.0f}});
 
     world.add<Transform2D>(entity, {0.0f,0.0f});
     Texture2D playerTexture = LoadTexture("./assets/characters/player.png");

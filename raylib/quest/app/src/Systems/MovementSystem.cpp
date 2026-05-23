@@ -1,18 +1,16 @@
 #include "Systems/MovementSystem.h"
 
-#include "Components/PlayerComponent.h"
+#include "Components/VelocityComponent.h"
 #include "Components/Transform2D.h"
-
-const float speed = 100.0f;
 
 gaia::ecs::SystemBuilder RegisterMovementSystem(gaia::ecs::World& world, float& dt)
 {
     return world.system()
         .all<Transform2D&>()
-        .all<PlayerComponent>()
-        .on_each([&dt](Transform2D& pos, const PlayerComponent& player)
+        .all<VelocityComponent>()
+        .on_each([&dt](Transform2D& pos, const VelocityComponent& velocity)
         {
-            pos.m_X += player.m_DirectionX*speed*dt;
-            pos.m_Y += player.m_DirectionY*speed*dt;
+            pos.m_X += velocity.m_Direction.x*velocity.m_Speed*dt;
+            pos.m_Y += velocity.m_Direction.y*velocity.m_Speed*dt;
         });
 }

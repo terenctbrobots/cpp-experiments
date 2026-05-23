@@ -3,7 +3,7 @@
 #include "raylib.h"
 #include "Game.h"
 #include "Player.h"
-#include "Components/PlayerComponent.h"
+#include "Components/VelocityComponent.h"
 
 const int screenWidth = 640;
 const int screenHeight = 480;
@@ -38,17 +38,40 @@ int main()
 
         dt = GetFrameTime();
 
-        if (IsKeyDown(KEY_RIGHT)) world.set<PlayerComponent>(player) = {1.0, 0};
-        if (IsKeyDown(KEY_LEFT)) world.set<PlayerComponent>(player) = {-1.0, 0};
-        if (IsKeyDown(KEY_DOWN)) world.set<PlayerComponent>(player) = {0, 1.0};
-        if (IsKeyDown(KEY_UP)) world.set<PlayerComponent>(player) = {0, -1.0};
+        if (IsKeyDown(KEY_RIGHT))
+        {
+            auto& velocity = world.set<VelocityComponent>(player);
+            velocity.m_Direction.x = 1.0f;
+            velocity.m_Direction.y = 0.0f;
+        }
+        if (IsKeyDown(KEY_LEFT))
+        {
+            auto& velocity = world.set<VelocityComponent>(player);
+            velocity.m_Direction.x = -1.0f;
+            velocity.m_Direction.y = 0.0f;
+        }
+        if (IsKeyDown(KEY_DOWN))
+        {
+           auto& velocity = world.set<VelocityComponent>(player);
+           velocity.m_Direction.x = 0.0f;
+           velocity.m_Direction.y = 1.0f;
+        }
+        
+        if (IsKeyDown(KEY_UP))
+        {
+           auto& velocity = world.set<VelocityComponent>(player);
+           velocity.m_Direction.x = 0.0f;
+           velocity.m_Direction.y = -1.0f;
+        }
 
         if (IsKeyReleased(KEY_RIGHT) || 
             IsKeyReleased(KEY_LEFT) ||
             IsKeyReleased(KEY_DOWN) ||
             IsKeyReleased(KEY_UP))
             {
-                world.set<PlayerComponent>(player) = {0, 0};
+                auto& velocity = world.set<VelocityComponent>(player);
+                velocity.m_Direction.x = 0.0f;
+                velocity.m_Direction.y = 0.0f;
             }
     
         BeginTextureMode(target);
