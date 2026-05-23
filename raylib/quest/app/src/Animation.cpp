@@ -12,13 +12,30 @@ bool Animation::Load(const std::string& fileName, AnimationDataComponent& animat
 
     if (!file.is_open())
     {
+        spdlog::error("Could not open %s json file", fileName);
         return false;
     }
 
     nlohmann::json jsonData = nlohmann::json::parse(file);
 
+    if (jsonData["width"] == nullptr)
+    {
+        spdlog::error("Mandatory width field not found");
+        return false;
+    }
     animation.m_Width = jsonData["width"];
+
+    if (jsonData["height"] == nullptr)
+    {
+        spdlog::error("Mandatory height field not found");
+    }
     animation.m_Height = jsonData["height"];
+
+    if (jsonData["defaultAnimation"] == nullptr)
+    {
+        spdlog::error("Mandatory defaultAnimation field not found");
+    }
+    animation.m_DefaultAnimation = jsonData["defaultAnimation"];
 
     animation.m_AnimationList.clear();
 
@@ -43,7 +60,20 @@ bool Animation::Load(const std::string& fileName, AnimationDataComponent& animat
         }
 
         AnimationFrame frameData;
+        if (frameJson["frameRate"] == nullptr)
+        {
+            spdlog::error("Mandatory frameRate field not found");
+            return false;
+        }
+        
         frameData.m_FrameRate = frameJson["frameRate"];
+
+        if (frameJson["frames"] == nullptr)
+        {
+            spdlog::error("Mandatory frames field not found");
+            return false;
+        }
+
         frameData.m_Frames = frameJson["frames"];
 
         for (int xCount = 0; xCount < frameData.m_Frames; xCount++) 
