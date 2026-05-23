@@ -12,7 +12,6 @@ bool Animation::Load(const std::string& fileName, AnimationDataComponent& animat
 
     if (!file.is_open())
     {
-        spdlog::error("Cannot open animation file %s",fileName);
         return false;
     }
 
@@ -45,7 +44,7 @@ bool Animation::Load(const std::string& fileName, AnimationDataComponent& animat
 
         AnimationFrame frameData;
         frameData.m_FrameRate = frameJson["frameRate"];
-        frameData.m_Frames = frameJson["m_Frames"];
+        frameData.m_Frames = frameJson["frames"];
 
         for (int xCount = 0; xCount < frameData.m_Frames; xCount++) 
         {

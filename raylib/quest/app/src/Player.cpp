@@ -1,6 +1,9 @@
 
 #include "Player.h"
 
+#include "Animation.h"
+
+#include "Components/AnimationDataComponent.h"
 #include "Components/Transform2D.h"
 #include "Components/PlayerComponent.h"
 #include "Components/SpriteComponent.h"
@@ -24,6 +27,15 @@ gaia::ecs::Entity Player::Create(gaia::ecs::World& world)
     }
 
     world.add<SpriteComponent>(entity, {std::move(playerTexture), {0,0,64,64}});
+
+    AnimationDataComponent animationData;
+    
+    if (!Animation::Load("./assets/characters/player.json", animationData))
+    {
+        spdlog::error("Could not load Player animation data");
+        return gaia::ecs::EntityBad;
+    }
+    world.add<AnimationDataComponent>(entity, std::move(animationData));
 
     return entity;
 }
