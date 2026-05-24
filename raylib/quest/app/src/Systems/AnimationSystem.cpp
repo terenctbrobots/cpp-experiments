@@ -16,8 +16,18 @@ gaia::ecs::SystemBuilder RegisterAnimationSystem(gaia::ecs::World& world, float&
 
             AnimationFrame frame = animationData.m_AnimationList.at(animation.m_CurrentAnimation);
 
+            if (animation.m_Timer >= frame.m_FrameDuration)
+            {
+                animation.m_CurrentFrame += 1;
 
-            // pos.m_X += velocity.m_Direction.x*velocity.m_Speed*dt;
-            // pos.m_Y += velocity.m_Direction.y*velocity.m_Speed*dt;
+                if (animation.m_CurrentFrame == frame.m_Frames)
+                {
+                    animation.m_CurrentFrame = 0;
+                }
+
+                sprite.m_SrcRect = frame.m_FrameList[animation.m_CurrentFrame];
+
+                animation.m_Timer -= frame.m_FrameDuration;
+            }
         });
 }

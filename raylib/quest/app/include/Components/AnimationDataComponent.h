@@ -8,7 +8,7 @@
 
 struct AnimationFrame
 {
-    std::vector<Rectangle> m_frameList;
+    std::vector<Rectangle> m_FrameList;
     float m_FrameDuration;
     u_int m_Frames;
     bool m_Flip;

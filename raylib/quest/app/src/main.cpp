@@ -17,7 +17,6 @@ int main()
     Game game(world);
     float dt = 0.0f;
 
-    game.RegisterSystems(dt);
 
     InitWindow(screenWidth, screenHeight,"Quest");
     SetTargetFPS(60);
@@ -29,6 +28,8 @@ int main()
         CloseWindow();
         return 0;
     }
+
+    game.RegisterSystems(dt);
 
     RenderTexture2D target = LoadRenderTexture(virtualWidth, virtualHeight);
     SetTextureFilter(target.texture, TEXTURE_FILTER_POINT);

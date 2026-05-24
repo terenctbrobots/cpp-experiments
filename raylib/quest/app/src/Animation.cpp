@@ -26,7 +26,7 @@ void Animation::SetAnimation(gaia::ecs::World& world, gaia::ecs::Entity entity, 
         return;
 
     auto& sprite = world.set<SpriteComponent>(entity);
-    sprite.m_SrcRect = animationFrame.m_frameList[0];
+    sprite.m_SrcRect = animationFrame.m_FrameList[0];
 
 
     if (!world.has<AnimationComponent>(entity))
@@ -114,7 +114,7 @@ bool Animation::Load(const std::string& fileName, AnimationDataComponent& animat
         for (int xCount = 0; xCount < frameData.m_Frames; xCount++) 
         {
             x += xCount * animation.m_Width;
-            frameData.m_frameList.push_back({x,y, animation.m_Width, animation.m_Height});
+            frameData.m_FrameList.push_back({x,y, animation.m_Width, animation.m_Height});
         }
 
         animation.m_AnimationList.emplace(animationJson.key(),std::move(frameData));
