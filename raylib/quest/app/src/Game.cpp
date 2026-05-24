@@ -7,12 +7,12 @@
 
 void Game::RegisterSystems(float& dt)
 {
-//    auto animationSystem = RegisterAnimationSystem(m_World, dt);
+    auto animationSystem = RegisterAnimationSystem(m_World, dt);
     auto movementSystem = RegisterMovementSystem(m_World, dt);
     auto renderSystem = RegisterRenderSystem(m_World);
 
     // movement system execute AFTER animation System
-  //  m_World.add(movementSystem.entity(), gaia::ecs::Pair{gaia::ecs::DependsOn, animationSystem.entity()});
+    m_World.add(movementSystem.entity(), gaia::ecs::Pair{gaia::ecs::DependsOn, animationSystem.entity()});
     // render systems exeecutes AFTER movement System
     m_World.add(renderSystem.entity(), gaia::ecs::Pair{gaia::ecs::DependsOn, movementSystem.entity()});
 }
