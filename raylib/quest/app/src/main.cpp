@@ -5,8 +5,8 @@
 #include "Player.h"
 #include "Components/VelocityComponent.h"
 
-const int screenWidth = 640;
-const int screenHeight = 480;
+const int screenWidth = 1280;
+const int screenHeight = 960;
 
 const int virtualWidth = 320;
 const int virtualHeight = 240;
@@ -35,7 +35,6 @@ int main()
 
     while (!WindowShouldClose())
     {
-
         dt = GetFrameTime();
 
         if (IsKeyDown(KEY_RIGHT))

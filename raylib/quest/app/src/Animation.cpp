@@ -4,7 +4,39 @@
 #include <fstream>
 #include "spdlog/spdlog.h"
 
+#include "Components/AnimationComponent.h"
 #include "Components/AnimationDataComponent.h"
+#include "Components/SpriteComponent.h"
+
+void Animation::SetAnimation(gaia::ecs::World& world, gaia::ecs::Entity entity, const std::string& animationName)
+{
+    if (!world.has<AnimationDataComponent>(entity))
+        return;
+
+    const AnimationDataComponent& animationData = world.get<AnimationDataComponent>(entity);
+
+    auto it = animationData.m_AnimationList.find(animationName);
+
+    if (it == animationData.m_AnimationList.end())
+        return;
+
+    const AnimationFrame& animationFrame = it->second;
+
+    if (!world.has<SpriteComponent>(entity))
+        return;
+
+    auto& sprite = world.set<SpriteComponent>(entity);
+    sprite.m_SrcRect = animationFrame.m_frameList[0];
+
+
+    if (!world.has<AnimationComponent>(entity))
+        return;
+    
+    auto& animation = world.set<AnimationComponent>(entity);
+    animation.m_CurrentAnimation = animationName;
+    animation.m_CurrentFrame = 0;
+    animation.m_Timer = animationFrame.m_FrameDuration;
+}
 
 bool Animation::Load(const std::string& fileName, AnimationDataComponent& animation)
 {
@@ -41,32 +73,18 @@ bool Animation::Load(const std::string& fileName, AnimationDataComponent& animat
 
     nlohmann::json animationListJson = jsonData["animation"];
 
-    float y = 0;
-
     for (auto& animationJson : animationListJson.items())
     {
         nlohmann::json frameJson = animationJson.value();
 
-        Vector2 offset = {0, 0};
-
-        if (frameJson["offsetX"] != nullptr)
-        {
-            offset.x = animation.m_Width * (float)frameJson["offsetX"];
-        }
-
-        if (frameJson["offsetY"] != nullptr)
-        {
-            offset.y = animation.m_Height * (float)frameJson["offsetY"];
-        }
-
         AnimationFrame frameData;
-        if (frameJson["frameRate"] == nullptr)
+        if (frameJson["frameRate"] == nullptr || frameJson["frameRate"] == 0)
         {
-            spdlog::error("Mandatory frameRate field not found");
+            spdlog::error("Mandatory frameRate field not found or zero");
             return false;
         }
         
-        frameData.m_FrameRate = frameJson["frameRate"];
+        frameData.m_FrameDuration = 1.0f /  (float)frameJson["frameRate"];
 
         if (frameJson["frames"] == nullptr)
         {
@@ -76,15 +94,30 @@ bool Animation::Load(const std::string& fileName, AnimationDataComponent& animat
 
         frameData.m_Frames = frameJson["frames"];
 
+        if (frameJson["flip"] != nullptr)
+        {
+            frameData.m_Flip = frameJson["flip"];
+        }
+
+        float x,y = 0;
+
+        if (frameJson["x"] != nullptr)
+        {
+            x = frameJson["x"];
+        }
+
+        if (frameJson["y"] != nullptr)
+        {
+            y = frameJson["y"];
+        }
+
         for (int xCount = 0; xCount < frameData.m_Frames; xCount++) 
         {
-            float x = xCount * animation.m_Width;
+            x += xCount * animation.m_Width;
             frameData.m_frameList.push_back({x,y, animation.m_Width, animation.m_Height});
         }
 
         animation.m_AnimationList.emplace(animationJson.key(),std::move(frameData));
-
-        y += animation.m_Height;
     }
 
     return true;

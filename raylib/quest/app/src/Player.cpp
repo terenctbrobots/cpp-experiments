@@ -35,9 +35,12 @@ gaia::ecs::Entity Player::Create(gaia::ecs::World& world)
         return gaia::ecs::EntityBad;
     }
 
-    world.add<AnimationComponent>(entity, {animationData.m_DefaultAnimation, 0, 0.0f});
+    std::string defaultAnimation = animationData.m_DefaultAnimation;
 
+    world.add<AnimationComponent>(entity);
     world.add<AnimationDataComponent>(entity, std::move(animationData));
+
+    Animation::SetAnimation(world, entity, defaultAnimation);
 
     return entity;
 }

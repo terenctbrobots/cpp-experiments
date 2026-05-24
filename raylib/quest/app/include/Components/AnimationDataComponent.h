@@ -9,9 +9,9 @@
 struct AnimationFrame
 {
     std::vector<Rectangle> m_frameList;
-    u_int m_FrameRate;
+    float m_FrameDuration;
     u_int m_Frames;
-    Vector2 m_Offset;
+    bool m_Flip;
 };
 
 struct AnimationDataComponent
