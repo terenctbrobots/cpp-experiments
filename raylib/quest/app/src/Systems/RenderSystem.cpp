@@ -7,7 +7,7 @@ gaia::ecs::SystemBuilder RegisterRenderSystem(gaia::ecs::World& world)
 {
     return world.system()
         .all<Transform2D>()
-        .all<SpriteComponent>()
+        .all<SpriteComponent>() 
         .on_each([](const Transform2D& pos, const SpriteComponent& sprite)
         {
             ClearBackground(BLACK);

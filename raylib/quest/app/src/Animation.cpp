@@ -99,7 +99,8 @@ bool Animation::Load(const std::string& fileName, AnimationDataComponent& animat
             frameData.m_Flip = frameJson["flip"];
         }
 
-        float x,y = 0;
+        float x = 0;
+        float y = 0;
 
         if (frameJson["x"] != nullptr)
         {

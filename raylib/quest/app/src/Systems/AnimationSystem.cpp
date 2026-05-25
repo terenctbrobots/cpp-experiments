@@ -9,7 +9,7 @@ gaia::ecs::SystemBuilder RegisterAnimationSystem(gaia::ecs::World& world, float&
     return world.system()
         .all<SpriteComponent&>()
         .all<AnimationComponent&>()
-        .all<AnimationDataComponent&>()
+        .all<AnimationDataComponent>()
         .on_each([&dt](SpriteComponent& sprite, AnimationComponent& animation, const AnimationDataComponent& animationData)
         {
             animation.m_Timer += dt;
