@@ -49,4 +49,11 @@ void Player::Movement(gaia::ecs::World& world, gaia::ecs::Entity& player, Vector
 {
     auto& velocity = world.set<VelocityComponent>(player);
     velocity.m_Direction = direction;
+
+    auto& animation = world.get<AnimationComponent>(player);
+
+    if (animation.m_CurrentAnimation != animationName)
+    {
+        Animation::SetAnimation(world, player, animationName);
+    }
 }

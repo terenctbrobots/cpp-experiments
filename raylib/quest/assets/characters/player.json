@@ -32,13 +32,13 @@
         "move_left": {
             "frameRate": 5,
             "frames": 6,
-            "y": 192
+            "y": 192,
+            "flip": true
         },
         "move_right": {
             "frameRate": 5,
             "frames": 6,
-            "y": 192,
-            "flip": true
+            "y": 192
         },
         "move_up": {
             "frameRate": 5,
