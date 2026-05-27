@@ -8,16 +8,42 @@
             "frames": 6,
             "y": 0
         },
-        "move_right": {
-            "frameRate": 8,
+        "idle_right": {
+            "frameRate": 5,
             "frames": 6,
             "y": 48
         },
-        "move_left": {
-            "frameRate": 8,
+        "idle_left": {
+            "frameRate": 5,
             "frames": 6,
             "y": 48,
             "flip": true
+        },
+        "idle_down": {
+            "frameRate": 5,
+            "frames": 6,
+            "y": 96
+        },
+        "move_down": {
+            "frameRate": 5,
+            "frames": 6,
+            "y": 144
+        },
+        "move_left": {
+            "frameRate": 5,
+            "frames": 6,
+            "y": 192
+        },
+        "move_right": {
+            "frameRate": 5,
+            "frames": 6,
+            "y": 192,
+            "flip": true
+        },
+        "move_up": {
+            "frameRate": 5,
+            "frames": 6,
+            "y": 240
         }
     }
 }

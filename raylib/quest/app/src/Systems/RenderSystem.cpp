@@ -12,6 +12,10 @@ gaia::ecs::SystemBuilder RegisterRenderSystem(gaia::ecs::World& world)
         {
             ClearBackground(BLACK);
 
-            DrawTextureRec(sprite.m_Texture, sprite.m_SrcRect, pos, WHITE);
+            Rectangle drawRect = sprite.m_SrcRect;
+
+            if (sprite.m_Flip) drawRect.width *= -1.0f;
+
+            DrawTextureRec(sprite.m_Texture, drawRect, pos, WHITE);
         });
 }

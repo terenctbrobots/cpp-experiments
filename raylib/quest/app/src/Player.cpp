@@ -44,3 +44,9 @@ gaia::ecs::Entity Player::Create(gaia::ecs::World& world)
 
     return entity;
 }
+
+void Player::Movement(gaia::ecs::World& world, gaia::ecs::Entity& player, Vector2 direction, std::string animationName)
+{
+    auto& velocity = world.set<VelocityComponent>(player);
+    velocity.m_Direction = direction;
+}

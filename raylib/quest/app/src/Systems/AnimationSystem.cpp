@@ -26,6 +26,7 @@ gaia::ecs::SystemBuilder RegisterAnimationSystem(gaia::ecs::World& world, float&
                 }
 
                 sprite.m_SrcRect = frame.m_FrameList[animation.m_CurrentFrame];
+                sprite.m_Flip = frame.m_Flip;
 
                 animation.m_Timer -= frame.m_FrameDuration;
             }

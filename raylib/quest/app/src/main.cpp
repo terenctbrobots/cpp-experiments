@@ -40,28 +40,21 @@ int main()
 
         if (IsKeyDown(KEY_RIGHT))
         {
-            auto& velocity = world.set<VelocityComponent>(player);
-            velocity.m_Direction.x = 1.0f;
-            velocity.m_Direction.y = 0.0f;
+            Player::Movement(world, player, {1.0f, 0.0f}, "move_right");
         }
         if (IsKeyDown(KEY_LEFT))
         {
-            auto& velocity = world.set<VelocityComponent>(player);
-            velocity.m_Direction.x = -1.0f;
-            velocity.m_Direction.y = 0.0f;
+            Player::Movement(world, player, {-1.0f, 0.0f}, "move_left");
         }
+
         if (IsKeyDown(KEY_DOWN))
         {
-           auto& velocity = world.set<VelocityComponent>(player);
-           velocity.m_Direction.x = 0.0f;
-           velocity.m_Direction.y = 1.0f;
+           Player::Movement(world, player, {0.0f, 1.0f}, "move_down");
         }
         
         if (IsKeyDown(KEY_UP))
         {
-           auto& velocity = world.set<VelocityComponent>(player);
-           velocity.m_Direction.x = 0.0f;
-           velocity.m_Direction.y = -1.0f;
+           Player::Movement(world, player, {0.0f, -1.0f}, "move_up");
         }
 
         if (IsKeyReleased(KEY_RIGHT) || 
@@ -69,9 +62,7 @@ int main()
             IsKeyReleased(KEY_DOWN) ||
             IsKeyReleased(KEY_UP))
             {
-                auto& velocity = world.set<VelocityComponent>(player);
-                velocity.m_Direction.x = 0.0f;
-                velocity.m_Direction.y = 0.0f;
+                Player::Movement(world, player, {0.0f, 0.0f}, "idle");
             }
     
         BeginTextureMode(target);

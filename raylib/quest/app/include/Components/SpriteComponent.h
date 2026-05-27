@@ -7,4 +7,5 @@ struct SpriteComponent
 {
     Texture2D m_Texture;
     Rectangle m_SrcRect;
+    bool m_Flip;
 };
