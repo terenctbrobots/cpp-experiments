@@ -44,6 +44,27 @@
             "frameRate": 5,
             "frames": 6,
             "y": 240
+        },
+        "attack_down": {
+            "frameRate": 5,
+            "frames": 4,
+            "y": 228
+        },
+        "attack_left": {
+            "frameRate": 5,
+            "frames": 4,
+            "y": 336,
+            "flip": true
+        },
+        "attack_right": {
+            "frameRate": 5,
+            "frames": 4,
+            "y": 336
+        },
+        "attack_up": {
+            "frameRate": 5,
+            "frames": 4,
+            "y": 384
         }
     }
 }
