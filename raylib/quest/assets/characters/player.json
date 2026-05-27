@@ -1,9 +1,9 @@
 {
     "width": 48,
     "height": 48,
-    "defaultAnimation": "idle",
+    "defaultAnimation": "idle_down",
     "animation": {
-        "idle": {
+        "idle_down": {
             "frameRate": 5,
             "frames": 6,
             "y": 0
@@ -19,7 +19,7 @@
             "y": 48,
             "flip": true
         },
-        "idle_down": {
+        "idle_up": {
             "frameRate": 5,
             "frames": 6,
             "y": 96

@@ -57,3 +57,34 @@ void Player::Movement(gaia::ecs::World& world, gaia::ecs::Entity& player, Vector
         Animation::SetAnimation(world, player, animationName);
     }
 }
+
+void Player::Idle(gaia::ecs::World& world, gaia::ecs::Entity& player)
+{
+    auto& velocity = world.set<VelocityComponent>(player);
+    velocity.m_Direction = {0.0f, 0.0f};
+
+    auto& animation = world.get<AnimationComponent>(player);
+    std::string nextAnimation = "idle_up";
+
+    if (animation.m_CurrentAnimation == "move_left")
+    {
+        nextAnimation = "idle_left";
+    }
+    
+    if (animation.m_CurrentAnimation == "move_right")
+    {
+        nextAnimation = "idle_right";
+    }
+
+    if (animation.m_CurrentAnimation == "move_down")
+    {
+        nextAnimation = "idle_down";
+    }
+    
+    Animation::SetAnimation(world, player, nextAnimation);
+}
+
+void Player::Attack(gaia::ecs::World& world, gaia::ecs::Entity& player)
+{
+
+}

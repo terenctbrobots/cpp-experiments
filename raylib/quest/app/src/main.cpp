@@ -62,7 +62,7 @@ int main()
             IsKeyReleased(KEY_DOWN) ||
             IsKeyReleased(KEY_UP))
             {
-                Player::Movement(world, player, {0.0f, 0.0f}, "idle");
+                Player::Idle(world, player);
             }
     
         BeginTextureMode(target);
