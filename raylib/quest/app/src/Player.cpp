@@ -95,22 +95,26 @@ void Player::Attack(gaia::ecs::World& world, gaia::ecs::Entity& player)
 {
     auto& animation = world.get<AnimationComponent>(player);
 
-    if (animation.m_CurrentAnimation == "idle_left")
+    if (animation.m_CurrentAnimation == "idle_left" ||
+        animation.m_CurrentAnimation == "move_left")
     {
         Animation::SetAnimation(world, player, "attack_left");
     }
 
-    if (animation.m_CurrentAnimation == "idle_right")
+    if (animation.m_CurrentAnimation == "idle_right" ||
+        animation.m_CurrentAnimation == "move_right")
     {
         Animation::SetAnimation(world, player, "attack_right");
     }
 
-    if (animation.m_CurrentAnimation == "idle_down")
+    if (animation.m_CurrentAnimation == "idle_down" ||
+        animation.m_CurrentAnimation == "move_down")
     {
         Animation::SetAnimation(world, player, "attack_down");
     }
 
-    if (animation.m_CurrentAnimation == "idle_up")
+    if (animation.m_CurrentAnimation == "idle_up" ||
+        animation.m_CurrentAnimation == "move_up")
     {
         Animation::SetAnimation(world, player, "attack_up");
     }
