@@ -57,13 +57,20 @@ int main()
            Player::Movement(world, player, {0.0f, -1.0f}, "move_up");
         }
 
+        if (IsKeyDown(KEY_SPACE))
+        {
+            Player::Attack(world, player);
+        }
+
         if (IsKeyReleased(KEY_RIGHT) || 
             IsKeyReleased(KEY_LEFT) ||
             IsKeyReleased(KEY_DOWN) ||
-            IsKeyReleased(KEY_UP))
+            IsKeyReleased(KEY_UP) ||
+            IsKeyReleased(KEY_SPACE))
             {
                 Player::Idle(world, player);
             }
+
     
         BeginTextureMode(target);
     

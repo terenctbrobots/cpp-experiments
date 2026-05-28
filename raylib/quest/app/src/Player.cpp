@@ -64,27 +64,54 @@ void Player::Idle(gaia::ecs::World& world, gaia::ecs::Entity& player)
     velocity.m_Direction = {0.0f, 0.0f};
 
     auto& animation = world.get<AnimationComponent>(player);
-    std::string nextAnimation = "idle_up";
-
-    if (animation.m_CurrentAnimation == "move_left")
+  
+    if (animation.m_CurrentAnimation == "move_left" || 
+        animation.m_CurrentAnimation == "attack_left")
     {
-        nextAnimation = "idle_left";
+        Animation::SetAnimation(world, player, "idle_left");
     }
     
-    if (animation.m_CurrentAnimation == "move_right")
+    if (animation.m_CurrentAnimation == "move_right" ||
+        animation.m_CurrentAnimation == "attack_right")
     {
-        nextAnimation = "idle_right";
+        Animation::SetAnimation(world, player, "idle_right");
     }
 
-    if (animation.m_CurrentAnimation == "move_down")
+    if (animation.m_CurrentAnimation == "move_down" ||
+        animation.m_CurrentAnimation == "attack_down")
     {
-        nextAnimation = "idle_down";
+        Animation::SetAnimation(world, player, "idle_down");
     }
     
-    Animation::SetAnimation(world, player, nextAnimation);
+    if (animation.m_CurrentAnimation == "move_up" || 
+        animation.m_CurrentAnimation == "attack_up")
+    {
+        Animation::SetAnimation(world, player, "idle_up");
+    }
 }
+  
 
 void Player::Attack(gaia::ecs::World& world, gaia::ecs::Entity& player)
 {
+    auto& animation = world.get<AnimationComponent>(player);
 
+    if (animation.m_CurrentAnimation == "idle_left")
+    {
+        Animation::SetAnimation(world, player, "attack_left");
+    }
+
+    if (animation.m_CurrentAnimation == "idle_right")
+    {
+        Animation::SetAnimation(world, player, "attack_right");
+    }
+
+    if (animation.m_CurrentAnimation == "idle_down")
+    {
+        Animation::SetAnimation(world, player, "attack_down");
+    }
+
+    if (animation.m_CurrentAnimation == "idle_up")
+    {
+        Animation::SetAnimation(world, player, "attack_up");
+    }
 }
