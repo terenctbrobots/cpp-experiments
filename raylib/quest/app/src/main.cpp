@@ -37,9 +37,16 @@ int main()
     RenderTexture2D target = LoadRenderTexture(virtualWidth, virtualHeight);
     SetTextureFilter(target.texture, TEXTURE_FILTER_POINT);
 
-    while (!WindowShouldClose())
+    bool shouldExit = false;
+
+    while (!WindowShouldClose() && !shouldExit)
     {
         dt = GetFrameTime();
+
+        if (IsKeyPressed(KEY_ESCAPE))
+        {
+            shouldExit = true;
+        }
 
         if (IsKeyDown(KEY_RIGHT))
         {
