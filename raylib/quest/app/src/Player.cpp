@@ -2,10 +2,11 @@
 #include "Player.h"
 
 #include "Animation.h"
+#include "Hash.h"
 #include "Components/AnimationDataComponent.h"
 #include "Components/AnimationComponent.h"
 #include "Components/Transform2D.h"
-#include "Components/VelocityComponent.h"
+#include "Components/VelocityComponent.h" 
 #include "Components/SpriteComponent.h"
 #include "spdlog/spdlog.h"
 
@@ -35,7 +36,7 @@ gaia::ecs::Entity Player::Create(gaia::ecs::World& world)
         return gaia::ecs::EntityBad;
     }
 
-    std::string defaultAnimation = animationData.m_DefaultAnimation;
+    uint32_t defaultAnimation = animationData.m_DefaultAnimation;
 
     world.add<AnimationComponent>(entity);
     world.add<AnimationDataComponent>(entity, std::move(animationData));
@@ -45,7 +46,7 @@ gaia::ecs::Entity Player::Create(gaia::ecs::World& world)
     return entity;
 }
 
-void Player::Movement(gaia::ecs::World& world, gaia::ecs::Entity& player, Vector2 direction, std::string animationName)
+void Player::Movement(gaia::ecs::World& world, gaia::ecs::Entity& player, Vector2 direction, uint32_t animationName)
 {
     auto& velocity = world.set<VelocityComponent>(player);
     velocity.m_Direction = direction;
@@ -65,28 +66,28 @@ void Player::Idle(gaia::ecs::World& world, gaia::ecs::Entity& player)
 
     auto& animation = world.get<AnimationComponent>(player);
   
-    if (animation.m_CurrentAnimation == "move_left" || 
-        animation.m_CurrentAnimation == "attack_left")
+    if (animation.m_CurrentAnimation == HS("move_left") || 
+        animation.m_CurrentAnimation == HS("attack_left"))
     {
-        Animation::SetAnimation(world, player, "idle_left");
+        Animation::SetAnimation(world, player, HS("idle_left"));
     }
     
-    if (animation.m_CurrentAnimation == "move_right" ||
-        animation.m_CurrentAnimation == "attack_right")
+    if (animation.m_CurrentAnimation == HS("move_right") ||
+        animation.m_CurrentAnimation == HS("attack_right"))
     {
-        Animation::SetAnimation(world, player, "idle_right");
+        Animation::SetAnimation(world, player, HS("idle_right"));
     }
 
-    if (animation.m_CurrentAnimation == "move_down" ||
-        animation.m_CurrentAnimation == "attack_down")
+    if (animation.m_CurrentAnimation == HS("move_down") ||
+        animation.m_CurrentAnimation == HS("attack_down"))
     {
-        Animation::SetAnimation(world, player, "idle_down");
+        Animation::SetAnimation(world, player, HS("idle_down"));
     }
     
-    if (animation.m_CurrentAnimation == "move_up" || 
-        animation.m_CurrentAnimation == "attack_up")
+    if (animation.m_CurrentAnimation == HS("move_up") || 
+        animation.m_CurrentAnimation == HS("attack_up"))
     {
-        Animation::SetAnimation(world, player, "idle_up");
+        Animation::SetAnimation(world, player, HS("idle_up"));
     }
 }
   
@@ -95,27 +96,27 @@ void Player::Attack(gaia::ecs::World& world, gaia::ecs::Entity& player)
 {
     auto& animation = world.get<AnimationComponent>(player);
 
-    if (animation.m_CurrentAnimation == "idle_left" ||
-        animation.m_CurrentAnimation == "move_left")
+    if (animation.m_CurrentAnimation == HS("idle_left") ||
+        animation.m_CurrentAnimation == HS("move_left"))
     {
-        Animation::SetAnimation(world, player, "attack_left");
+        Animation::SetAnimation(world, player, HS("attack_left"));
     }
 
-    if (animation.m_CurrentAnimation == "idle_right" ||
-        animation.m_CurrentAnimation == "move_right")
+    if (animation.m_CurrentAnimation == HS("idle_right") ||
+        animation.m_CurrentAnimation == HS("move_right"))
     {
-        Animation::SetAnimation(world, player, "attack_right");
+        Animation::SetAnimation(world, player, HS("attack_right"));
     }
 
-    if (animation.m_CurrentAnimation == "idle_down" ||
-        animation.m_CurrentAnimation == "move_down")
+    if (animation.m_CurrentAnimation == HS("idle_down") ||
+        animation.m_CurrentAnimation == HS("move_down"))
     {
-        Animation::SetAnimation(world, player, "attack_down");
+        Animation::SetAnimation(world, player, HS("attack_down"));
     }
 
-    if (animation.m_CurrentAnimation == "idle_up" ||
-        animation.m_CurrentAnimation == "move_up")
+    if (animation.m_CurrentAnimation == HS("idle_up") ||
+        animation.m_CurrentAnimation == HS("move_up"))
     {
-        Animation::SetAnimation(world, player, "attack_up");
+        Animation::SetAnimation(world, player, HS("attack_up"));
     }
 }

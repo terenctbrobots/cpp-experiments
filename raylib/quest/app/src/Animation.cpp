@@ -4,11 +4,13 @@
 #include <fstream>
 #include "spdlog/spdlog.h"
 
+#include "Hash.h"
+
 #include "Components/AnimationComponent.h"
 #include "Components/AnimationDataComponent.h"
 #include "Components/SpriteComponent.h"
 
-void Animation::SetAnimation(gaia::ecs::World& world, gaia::ecs::Entity entity, const std::string& animationName)
+void Animation::SetAnimation(gaia::ecs::World& world, gaia::ecs::Entity entity, const uint32_t animationName)
 {
     if (!world.has<AnimationDataComponent>(entity))
         return;
@@ -67,7 +69,7 @@ bool Animation::Load(const std::string& fileName, AnimationDataComponent& animat
     {
         spdlog::error("Mandatory defaultAnimation field not found");
     }
-    animation.m_DefaultAnimation = jsonData["defaultAnimation"];
+    animation.m_DefaultAnimation = HS(jsonData["defaultAnimation"]);
 
     animation.m_AnimationList.clear();
 
@@ -122,7 +124,7 @@ bool Animation::Load(const std::string& fileName, AnimationDataComponent& animat
             frameData.m_FrameList.push_back({x,y, animation.m_Width, animation.m_Height});
         }
 
-        animation.m_AnimationList.emplace(animationJson.key(),std::move(frameData));
+        animation.m_AnimationList.emplace(HS(animationJson.key()),std::move(frameData));
     }
 
     return true;

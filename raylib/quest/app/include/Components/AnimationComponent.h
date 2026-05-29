@@ -4,7 +4,7 @@
 
 struct AnimationComponent
 {
-    std::string m_CurrentAnimation;
+    uint32_t m_CurrentAnimation;
     u_int16_t m_CurrentFrame;
     float m_Timer;
 };

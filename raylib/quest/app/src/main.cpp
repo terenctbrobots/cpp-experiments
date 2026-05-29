@@ -2,6 +2,7 @@
 #include <cmath>
 #include "raylib.h"
 #include "Game.h"
+#include "Hash.h"
 #include "Player.h"
 #include "Components/VelocityComponent.h"
 
@@ -40,21 +41,21 @@ int main()
 
         if (IsKeyDown(KEY_RIGHT))
         {
-            Player::Movement(world, player, {1.0f, 0.0f}, "move_right");
+            Player::Movement(world, player, {1.0f, 0.0f}, HS("move_right"));
         }
         if (IsKeyDown(KEY_LEFT))
         {
-            Player::Movement(world, player, {-1.0f, 0.0f}, "move_left");
+            Player::Movement(world, player, {-1.0f, 0.0f}, HS("move_left"));
         }
 
         if (IsKeyDown(KEY_DOWN))
         {
-           Player::Movement(world, player, {0.0f, 1.0f}, "move_down");
+           Player::Movement(world, player, {0.0f, 1.0f}, HS("move_down"));
         }
         
         if (IsKeyDown(KEY_UP))
         {
-           Player::Movement(world, player, {0.0f, -1.0f}, "move_up");
+           Player::Movement(world, player, {0.0f, -1.0f}, HS("move_up"));
         }
 
         if (IsKeyDown(KEY_SPACE))

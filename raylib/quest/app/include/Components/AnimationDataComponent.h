@@ -5,6 +5,7 @@
 #include <vector>
 #include <unordered_map>
 #include <string>
+#include <cstdint>
 
 struct AnimationFrame
 {
@@ -19,7 +20,7 @@ struct AnimationDataComponent
     float m_Width;
     float m_Height;
 
-    std::string m_DefaultAnimation;
+    uint32_t m_DefaultAnimation;
 
-    std::unordered_map<std::string, AnimationFrame> m_AnimationList;
+    std::unordered_map<uint32_t, AnimationFrame> m_AnimationList;
 };
