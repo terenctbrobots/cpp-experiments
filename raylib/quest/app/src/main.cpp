@@ -1,6 +1,8 @@
 #include <gaia.h>
 #include <cmath>
 #include "raylib.h"
+
+#include "Animation.h"
 #include "Game.h"
 #include "Hash.h"
 #include "Player.h"
@@ -41,21 +43,21 @@ int main()
 
         if (IsKeyDown(KEY_RIGHT))
         {
-            Player::Movement(world, player, {1.0f, 0.0f}, HS("move_right"));
+            Player::Movement(world, player, {1.0f, 0.0f}, Animation::MOVE_RIGHT);
         }
         if (IsKeyDown(KEY_LEFT))
         {
-            Player::Movement(world, player, {-1.0f, 0.0f}, HS("move_left"));
+            Player::Movement(world, player, {-1.0f, 0.0f}, Animation::MOVE_LEFT);
         }
 
         if (IsKeyDown(KEY_DOWN))
         {
-           Player::Movement(world, player, {0.0f, 1.0f}, HS("move_down"));
+           Player::Movement(world, player, {0.0f, 1.0f}, Animation::MOVE_DOWN);
         }
         
         if (IsKeyDown(KEY_UP))
         {
-           Player::Movement(world, player, {0.0f, -1.0f}, HS("move_up"));
+           Player::Movement(world, player, {0.0f, -1.0f}, Animation::MOVE_UP);
         }
 
         if (IsKeyDown(KEY_SPACE))
