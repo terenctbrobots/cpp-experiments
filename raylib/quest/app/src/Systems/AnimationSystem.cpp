@@ -2,15 +2,15 @@
 
 #include "Components/AnimationComponent.h"
 #include "Components/AnimationDataComponent.h"
-#include "Components/SpriteComponent.h"
+#include "Components/ImageComponent.h"
 
 gaia::ecs::SystemBuilder RegisterAnimationSystem(gaia::ecs::World& world, float& dt)
 {
     return world.system()
-        .all<SpriteComponent&>()
+        .all<ImageComponent&>()
         .all<AnimationComponent&>()
         .all<AnimationDataComponent>()
-        .on_each([&dt](SpriteComponent& sprite, AnimationComponent& animation, const AnimationDataComponent& animationData)
+        .on_each([&dt](ImageComponent& sprite, AnimationComponent& animation, const AnimationDataComponent& animationData)
         {
             animation.m_Timer += dt;
 

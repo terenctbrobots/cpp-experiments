@@ -1,14 +1,14 @@
 #include "Systems/RenderSystem.h"
 
-#include "Components/SpriteComponent.h"
+#include "Components/ImageComponent.h"
 #include "Components/Transform2D.h"
 
 gaia::ecs::SystemBuilder RegisterRenderSystem(gaia::ecs::World& world)
 {
     return world.system()
         .all<Transform2D>()
-        .all<SpriteComponent>() 
-        .on_each([](const Transform2D& pos, const SpriteComponent& sprite)
+        .all<ImageComponent>() 
+        .on_each([](const Transform2D& pos, const ImageComponent& sprite)
         {
             ClearBackground(BLACK);
 

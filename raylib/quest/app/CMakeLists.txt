@@ -6,6 +6,8 @@ add_executable(quest
     src/Game.cpp
     src/Hash.cpp
     src/Animation.cpp
+    src/TileList.cpp
+    src/TextureManager.cpp
     src/Systems/AnimationSystem.cpp
     src/Systems/MovementSystem.cpp
     src/Systems/RenderSystem.cpp

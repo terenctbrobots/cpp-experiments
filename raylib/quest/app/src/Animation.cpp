@@ -8,7 +8,7 @@
 
 #include "Components/AnimationComponent.h"
 #include "Components/AnimationDataComponent.h"
-#include "Components/SpriteComponent.h"
+#include "Components/ImageComponent.h"
 
 void Animation::SetAnimation(gaia::ecs::World& world, gaia::ecs::Entity entity, const uint32_t animationName)
 {
@@ -24,10 +24,10 @@ void Animation::SetAnimation(gaia::ecs::World& world, gaia::ecs::Entity entity, 
 
     const AnimationFrame& animationFrame = it->second;
 
-    if (!world.has<SpriteComponent>(entity))
+    if (!world.has<ImageComponent>(entity))
         return;
 
-    auto& sprite = world.set<SpriteComponent>(entity);
+    auto& sprite = world.set<ImageComponent>(entity);
     sprite.m_SrcRect = animationFrame.m_FrameList[0];
 
 

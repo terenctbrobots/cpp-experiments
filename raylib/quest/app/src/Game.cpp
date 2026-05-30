@@ -1,6 +1,7 @@
 #include "Game.h"
 
-#include "Components/SpriteComponent.h"
+#include "TextureManager.h"
+#include "Components/ImageComponent.h"
 #include "Systems/AnimationSystem.h"
 #include "Systems/MovementSystem.h"
 #include "Systems/RenderSystem.h"
@@ -19,11 +20,5 @@ void Game::RegisterSystems(float& dt)
 
 void Game::Cleanup()
 {
-    gaia::ecs::Query q = m_World.query()
-    .all<SpriteComponent>();
-
-    q.each([&] (const SpriteComponent& sprite)
-    {
-        UnloadTexture(sprite.m_Texture);
-    });
+    TextureManager::Clear(m_World);
 }

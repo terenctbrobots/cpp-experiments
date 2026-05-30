@@ -3,11 +3,12 @@
 
 #include "Animation.h"
 #include "Hash.h"
+#include "TextureManager.h"
 #include "Components/AnimationDataComponent.h"
 #include "Components/AnimationComponent.h"
 #include "Components/Transform2D.h"
 #include "Components/VelocityComponent.h" 
-#include "Components/SpriteComponent.h"
+#include "Components/ImageComponent.h"
 #include "spdlog/spdlog.h"
 
 const float speed = 100.0f;
@@ -27,7 +28,9 @@ gaia::ecs::Entity Player::Create(gaia::ecs::World& world)
         return gaia::ecs::EntityBad;
     }
 
-    world.add<SpriteComponent>(entity, {std::move(playerTexture), {0,0,64,64}});
+    TextureManager::Add(world, playerTexture);
+
+    world.add<ImageComponent>(entity, {std::move(playerTexture), {0,0,64,64}});
 
     AnimationDataComponent animationData;
     
