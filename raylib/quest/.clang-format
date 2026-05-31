@@ -12,3 +12,6 @@ BreakBeforeBraces: Allman
 IndentWidth: 4
 TabWidth: 4
 UseTab: Never
+# Set the maximum line length before Clang-Format forces a wrap
+ColumnLimit: 120
+NamespaceIndentation: All
