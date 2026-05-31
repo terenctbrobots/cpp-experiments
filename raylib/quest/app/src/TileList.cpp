@@ -1,20 +1,18 @@
 #include "TileList.h"
 
-#include <fstream>
-#include <nlohmann/json.hpp>
+#include "Hash.h"
+#include "TextureManager.h"
 #include "raylib.h"
 #include "spdlog/spdlog.h"
-#include "TextureManager.h"
-#include "Hash.h"
+
+#include <fstream>
+#include <nlohmann/json.hpp>
 
 static std::unordered_map<u_int32_t, TileList::Tile> s_TileList;
 
 bool TileList::LoadTileList()
 {
-    LoadTileSet(
-        "./assets/tilesets/plains.json",
-        "./assets/tilesets/plains.png"
-    );
+    LoadTileSet("./assets/tilesets/plains.json", "./assets/tilesets/plains.png");
     return true;
 }
 
@@ -25,7 +23,7 @@ bool TileList::LoadTileSet(const std::string& tileSetFilename, const std::string
     if (tilesetTexture.id <= 0)
     {
         spdlog::error("Could not load Tileset Texture {}", textureFilename);
-        return false;    
+        return false;
     }
 
     TextureManager::Add(tilesetTexture);
@@ -62,29 +60,29 @@ bool TileList::LoadTileSet(const std::string& tileSetFilename, const std::string
         return false;
     }
 
-    float tileHeight = jsonData["tile_heigth"];
+    float tileHeight = jsonData["tile_height"];
 
-    if (jsonData["width"] == nullptr)
+    if (jsonData["column"] == nullptr)
     {
-        spdlog::error("Mandatory width field not found");
+        spdlog::error("Mandatory column field not found");
         return false;
     }
 
-    int width = jsonData["width"];
+    int column = jsonData["column"];
 
-    if (jsonData["height"] == nullptr)
+    if (jsonData["row"] == nullptr)
     {
-        spdlog::error("Mandatory height field not found");
+        spdlog::error("Mandatory row field not found");
         return false;
     }
 
-    int height = jsonData["height"];
+    int row = jsonData["row"];
 
     int tileCount = 0;
 
-    for (int y=0; y < height; y++)
+    for (int y = 0; y < row; y++)
     {
-        for (int x=0; x < width; x++)
+        for (int x = 0; x < column; x++)
         {
             std::string baseName = name;
             baseName += std::to_string(tileCount++);
@@ -92,7 +90,7 @@ bool TileList::LoadTileSet(const std::string& tileSetFilename, const std::string
             Tile newTile;
             newTile.m_Name = baseName;
             newTile.m_Texture = tilesetTexture;
-            newTile.m_SrcRect = {x*tileWidth, y*tileHeight, tileWidth, tileHeight};
+            newTile.m_SrcRect = {x * tileWidth, y * tileHeight, tileWidth, tileHeight};
 
             u_int32_t key = HS(baseName);
 
@@ -132,7 +130,7 @@ bool TileList::LoadTileSet(const std::string& tileSetFilename, const std::string
             }
             int y = tileJson["y"];
 
-            newTile.m_SrcRect = {x*tileWidth, y*tileHeight, tileWidth, tileHeight};
+            newTile.m_SrcRect = {x * tileWidth, y * tileHeight, tileWidth, tileHeight};
 
             u_int32_t key = HS(newTile.m_Name);
 

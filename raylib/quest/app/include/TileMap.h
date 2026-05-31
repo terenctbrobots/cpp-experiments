@@ -5,7 +5,21 @@
 #include <gaia.h>
 #include <string>
 
-namespace TileMap
+struct TileMapConfig
 {
-    gaia::ecs::Entity CreateMap(gaia::ecs::World &world, std::string &name, int width, int height);
-}
+    std::string m_Name;
+    int m_Column;
+    int m_Row;
+    float m_TileWidth;
+    float m_TileHeight;
+};
+
+class TileMap
+{
+    public:
+    TileMap(gaia::ecs::Entity root) : m_Root(root) {}
+    static TileMap Create(gaia::ecs::World& world, const TileMapConfig& config);
+
+    private:
+    gaia::ecs::Entity m_Root;
+};

@@ -10,8 +10,12 @@ IncludeCategories:
 # Tell Clang-Format to place opening braces on a new line for everything
 BreakBeforeBraces: Allman
 IndentWidth: 4
+AccessModifierOffset: 0
 TabWidth: 4
 UseTab: Never
 # Set the maximum line length before Clang-Format forces a wrap
 ColumnLimit: 120
 NamespaceIndentation: All
+# Keep standard pointers/references AND rvalue references locked to the type
+PointerAlignment: Left
+ReferenceAlignment: Left
