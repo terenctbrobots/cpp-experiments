@@ -1,4 +1,4 @@
-SortIncludes: CaseSensitive
+SortIncludes: CaseInSensitive
 IncludeBlocks: Regroup
 IncludeCategories:
   - Regex:           '^"(.*)\.(h|hpp)"'

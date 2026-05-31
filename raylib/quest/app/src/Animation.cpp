@@ -1,14 +1,13 @@
 #include "Animation.h"
 
-#include <nlohmann/json.hpp>
-#include <fstream>
-#include "spdlog/spdlog.h"
-
-#include "Hash.h"
-
 #include "Components/AnimationComponent.h"
 #include "Components/AnimationDataComponent.h"
 #include "Components/ImageComponent.h"
+#include "Hash.h"
+#include "spdlog/spdlog.h"
+
+#include <fstream>
+#include <nlohmann/json.hpp>
 
 void Animation::SetAnimation(gaia::ecs::World& world, gaia::ecs::Entity entity, const uint32_t animationName)
 {
@@ -30,10 +29,9 @@ void Animation::SetAnimation(gaia::ecs::World& world, gaia::ecs::Entity entity, 
     auto& sprite = world.set<ImageComponent>(entity);
     sprite.m_SrcRect = animationFrame.m_FrameList[0];
 
-
     if (!world.has<AnimationComponent>(entity))
         return;
-    
+
     auto& animation = world.set<AnimationComponent>(entity);
     animation.m_CurrentAnimation = animationName;
     animation.m_CurrentFrame = 0;
@@ -85,8 +83,8 @@ bool Animation::Load(const std::string& fileName, AnimationDataComponent& animat
             spdlog::error("Mandatory frameRate field not found or zero");
             return false;
         }
-        
-        frameData.m_FrameDuration = 1.0f /  (float)frameJson["frameRate"];
+
+        frameData.m_FrameDuration = 1.0f / (float)frameJson["frameRate"];
 
         if (frameJson["frames"] == nullptr)
         {
@@ -100,7 +98,7 @@ bool Animation::Load(const std::string& fileName, AnimationDataComponent& animat
         {
             frameData.m_Flip = frameJson["flip"];
         }
-        else 
+        else
         {
             frameData.m_Flip = false;
         }
@@ -118,19 +116,19 @@ bool Animation::Load(const std::string& fileName, AnimationDataComponent& animat
             y = frameJson["y"];
         }
 
-        for (int xCount = 0; xCount < frameData.m_Frames; xCount++) 
+        for (int xCount = 0; xCount < frameData.m_Frames; xCount++)
         {
             x += xCount * animation.m_Width;
-            frameData.m_FrameList.push_back({x,y, animation.m_Width, animation.m_Height});
+            frameData.m_FrameList.push_back({x, y, animation.m_Width, animation.m_Height});
         }
 
-        uint32_t key = HS(animationJson.key());
+        const uint32_t key = HS(animationJson.key());
 
         auto [it, inserted] = animation.m_AnimationList.try_emplace(key, frameData);
 
         if (!inserted)
         {
-            spdlog::warn("Duplicate key {} found",animationJson.key());
+            spdlog::warn("Duplicate key {} found", animationJson.key());
         }
     }
 
