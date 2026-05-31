@@ -46,7 +46,7 @@ bool Animation::Load(const std::string& fileName, AnimationDataComponent& animat
 
     if (!file.is_open())
     {
-        spdlog::error("Could not open %s json file", fileName);
+        spdlog::error("Could not open {} json file", fileName);
         return false;
     }
 
@@ -124,7 +124,14 @@ bool Animation::Load(const std::string& fileName, AnimationDataComponent& animat
             frameData.m_FrameList.push_back({x,y, animation.m_Width, animation.m_Height});
         }
 
-        animation.m_AnimationList.emplace(HS(animationJson.key()),std::move(frameData));
+        uint32_t key = HS(animationJson.key());
+
+        auto [it, inserted] = animation.m_AnimationList.try_emplace(key, frameData);
+
+        if (!inserted)
+        {
+            spdlog::warn("Duplicate key {} found",animationJson.key());
+        }
     }
 
     return true;

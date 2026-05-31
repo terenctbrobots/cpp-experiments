@@ -28,7 +28,7 @@ gaia::ecs::Entity Player::Create(gaia::ecs::World& world)
         return gaia::ecs::EntityBad;
     }
 
-    TextureManager::Add(world, playerTexture);
+    TextureManager::Add(playerTexture);
 
     world.add<ImageComponent>(entity, {std::move(playerTexture), {0,0,64,64}});
 

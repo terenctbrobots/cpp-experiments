@@ -1,6 +1,111 @@
 #include "TileList.h"
 
-bool TileList::LoadTileSet(gaia::ecs::World& world)
+#include <fstream>
+#include <nlohmann/json.hpp>
+
+#include "raylib.h"
+#include "spdlog/spdlog.h"
+
+#include "TextureManager.h"
+#include "Hash.h"
+
+static std::unordered_map<u_int32_t, TileList::Tile> s_TileList;
+
+bool TileList::LoadTileList()
 {
+    LoadTileSet(
+        "./assets/tilesets/plains.json",
+        "./assets/tilesets/plains.png"
+    );
+    return true;
+}
+
+bool TileList::LoadTileSet(const std::string& tileSetFilename, const std::string& textureFilename)
+{
+    Texture2D tilesetTexture = LoadTexture(textureFilename.c_str());
+
+    if (tilesetTexture.id <= 0)
+    {
+        spdlog::error("Could not load Tileset Texture {}", textureFilename);
+        return false;    
+    }
+
+    TextureManager::Add(tilesetTexture);
+
+    std::ifstream file(tileSetFilename);
+
+    if (!file.is_open())
+    {
+        spdlog::error("Could not open {} json file", tileSetFilename);
+        return false;
+    }
+
+    nlohmann::json jsonData = nlohmann::json::parse(file);
+
+    if (jsonData["name"] == nullptr)
+    {
+        spdlog::error("Mandatory name field not found");
+        return false;
+    }
+
+    std::string name = jsonData["name"];
+
+    if (jsonData["tile_width"] == nullptr)
+    {
+        spdlog::error("Mandatory tile width field not found");
+        return false;
+    }
+
+    float tileWidth = jsonData["tile_width"];
+
+    if (jsonData["tile_height"] == nullptr)
+    {
+        spdlog::error("Mandatory tile height field not found");
+        return false;
+    }
+
+    float tileHeight = jsonData["tile_heigth"];
+
+    if (jsonData["width"] == nullptr)
+    {
+        spdlog::error("Mandatory width field not found");
+        return false;
+    }
+
+    int width = jsonData["width"];
+
+    if (jsonData["height"] == nullptr)
+    {
+        spdlog::error("Mandatory height field not found");
+        return false;
+    }
+
+    int height = jsonData["height"];
+
+    int tileCount = 0;
+
+    for (int y=0; y < height; y++)
+    {
+        for (int x=0; x < width; x++)
+        {
+            std::string baseName = name;
+            baseName += std::to_string(tileCount++);
+
+            Tile newTile;
+            newTile.m_Name = baseName;
+            newTile.m_Texture = tilesetTexture;
+            newTile.m_SrcRect = {x*tileWidth, y*tileHeight, tileWidth, tileHeight};
+
+            u_int32_t key = HS(baseName);
+
+            auto [it, inserted] = s_TileList.try_emplace(key, newTile);
+
+            if (!inserted)
+            {
+                spdlog::warn("Duplicate tile name found {}", baseName);
+            }
+        }
+    }
+
     return true;
 }

@@ -1,10 +1,16 @@
 #include "Game.h"
 
 #include "TextureManager.h"
+#include "TileList.h"
 #include "Components/ImageComponent.h"
 #include "Systems/AnimationSystem.h"
 #include "Systems/MovementSystem.h"
 #include "Systems/RenderSystem.h"
+
+void Game::SetupTileMap()
+{
+    TileList::LoadTileList();
+}
 
 void Game::RegisterSystems(float& dt)
 {
@@ -20,5 +26,5 @@ void Game::RegisterSystems(float& dt)
 
 void Game::Cleanup()
 {
-    TextureManager::Clear(m_World);
+    TextureManager::Clear();
 }
