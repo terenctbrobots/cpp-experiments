@@ -1,0 +1,14 @@
+SortIncludes: CaseSensitive
+IncludeBlocks: Regroup
+IncludeCategories:
+  - Regex:           '^"(.*)\.(h|hpp)"'
+    Priority:        1
+  - Regex:           '^<extern/(.*)>'
+    Priority:        2
+  - Regex:           '^<(.*)>'
+    Priority:        2
+# Tell Clang-Format to place opening braces on a new line for everything
+BreakBeforeBraces: Allman
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never

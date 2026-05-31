@@ -2,10 +2,8 @@
 
 #include <fstream>
 #include <nlohmann/json.hpp>
-
 #include "raylib.h"
 #include "spdlog/spdlog.h"
-
 #include "TextureManager.h"
 #include "Hash.h"
 
@@ -103,6 +101,46 @@ bool TileList::LoadTileSet(const std::string& tileSetFilename, const std::string
             if (!inserted)
             {
                 spdlog::warn("Duplicate tile name found {}", baseName);
+            }
+        }
+    }
+
+    if (jsonData["unique"] != nullptr)
+    {
+        nlohmann::json uniqueListJson = jsonData["unique"];
+
+        for (auto& uniqueJson : uniqueListJson.items())
+        {
+            nlohmann::json tileJson = uniqueJson.value();
+
+            Tile newTile;
+            newTile.m_Name = uniqueJson.key();
+            newTile.m_Texture = tilesetTexture;
+
+            if (tileJson["x"] == nullptr)
+            {
+                spdlog::error("Mandatory x value on unique tile not found");
+                return false;
+            }
+
+            int x = tileJson["x"];
+
+            if (tileJson["y"] == nullptr)
+            {
+                spdlog::error("Mandatory y value on unique tile not found");
+                return false;
+            }
+            int y = tileJson["y"];
+
+            newTile.m_SrcRect = {x*tileWidth, y*tileHeight, tileWidth, tileHeight};
+
+            u_int32_t key = HS(newTile.m_Name);
+
+            auto [it, inserted] = s_TileList.try_emplace(key, newTile);
+
+            if (!inserted)
+            {
+                spdlog::warn("Duplicate tile name found {}", newTile.m_Name);
             }
         }
     }
