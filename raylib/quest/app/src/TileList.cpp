@@ -145,3 +145,14 @@ bool TileList::LoadTileSet(const std::string& tileSetFilename, const std::string
 
     return true;
 }
+
+const TileList::Tile* TileList::Get(const u_int32_t tileId)
+{
+    auto it = s_TileList.find(tileId);
+    if (it != s_TileList.end())
+    {
+        return &it->second;
+    }
+
+    return nullptr;
+}

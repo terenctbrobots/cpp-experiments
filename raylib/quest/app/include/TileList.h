@@ -1,7 +1,8 @@
 #pragma once
 
-#include <gaia.h>
 #include "raylib.h"
+
+#include <gaia.h>
 
 namespace TileList
 {
@@ -14,4 +15,6 @@ namespace TileList
 
     bool LoadTileList();
     bool LoadTileSet(const std::string& tileSetFilename, const std::string& textureFilename);
-}
+
+    const Tile* Get(const u_int32_t tileId);
+} // namespace TileList
