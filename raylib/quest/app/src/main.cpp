@@ -32,6 +32,8 @@ int main()
         return 0;
     }
 
+    game.SetupTileMap();
+
     game.RegisterSystems(dt);
 
     RenderTexture2D target = LoadRenderTexture(virtualWidth, virtualHeight);

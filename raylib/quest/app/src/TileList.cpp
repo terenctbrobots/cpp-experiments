@@ -12,8 +12,10 @@ static std::unordered_map<u_int32_t, TileList::Tile> s_TileList;
 
 bool TileList::LoadTileList()
 {
-    LoadTileSet("./assets/tilesets/plains.json", "./assets/tilesets/plains.png");
-    return true;
+    bool returnResult = false;
+
+    returnResult = LoadTileSet("./assets/tilesets/plains.json", "./assets/tilesets/plains.png");
+    return returnResult;
 }
 
 bool TileList::LoadTileSet(const std::string& tileSetFilename, const std::string& textureFilename)
@@ -44,7 +46,7 @@ bool TileList::LoadTileSet(const std::string& tileSetFilename, const std::string
         return false;
     }
 
-    std::string name = jsonData["name"];
+    const std::string name = jsonData["name"];
 
     if (jsonData["tile_width"] == nullptr)
     {
@@ -52,7 +54,7 @@ bool TileList::LoadTileSet(const std::string& tileSetFilename, const std::string
         return false;
     }
 
-    float tileWidth = jsonData["tile_width"];
+    const float tileWidth = jsonData["tile_width"];
 
     if (jsonData["tile_height"] == nullptr)
     {
@@ -60,7 +62,7 @@ bool TileList::LoadTileSet(const std::string& tileSetFilename, const std::string
         return false;
     }
 
-    float tileHeight = jsonData["tile_height"];
+    const float tileHeight = jsonData["tile_height"];
 
     if (jsonData["column"] == nullptr)
     {
@@ -68,7 +70,7 @@ bool TileList::LoadTileSet(const std::string& tileSetFilename, const std::string
         return false;
     }
 
-    int column = jsonData["column"];
+    const int column = jsonData["column"];
 
     if (jsonData["row"] == nullptr)
     {
@@ -76,7 +78,7 @@ bool TileList::LoadTileSet(const std::string& tileSetFilename, const std::string
         return false;
     }
 
-    int row = jsonData["row"];
+    const int row = jsonData["row"];
 
     int tileCount = 0;
 
