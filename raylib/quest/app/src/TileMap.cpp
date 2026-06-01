@@ -3,6 +3,7 @@
 #include "Components/ImageComponent.h"
 #include "Components/MapDataComponent.h"
 #include "Components/Transform2D.h"
+#include "Components/LayerComponent.h"
 #include "TileList.h"
 #include "spdlog/spdlog.h"
 
@@ -33,6 +34,7 @@ TileMap TileMap::Create(gaia::ecs::World& world, const TileMapConfig& config)
         world.add<ImageComponent>(tileEntity, std::move(imageComponent));
 
         world.add<Transform2D>(tileEntity, {col * defaultTile->m_SrcRect.width, row * defaultTile->m_SrcRect.height});
+        world.add<LayerOneComponent>(tileEntity);
     }
 
     return TileMap{rootEntity};
