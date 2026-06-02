@@ -4,52 +4,39 @@
 #include "Components/LayerComponent.h"
 #include "Components/Transform2D.h"
 
-gaia::ecs::SystemBuilder RegisterRenderLayerOneSystem(gaia::ecs::World& world)
+void RenderSystem::Init(gaia::ecs::World& world)
 {
-    return world.system()
-        .all<Transform2D>()
-        .all<ImageComponent>() 
-        .all<LayerOneComponent>()
-        .on_each([](const Transform2D& pos, const ImageComponent& sprite)
-        {
-            ClearBackground(BLACK);
-
-            Rectangle drawRect = sprite.m_SrcRect;
-
-            if (sprite.m_Flip) drawRect.width *= -1.0f;
-
-            DrawTextureRec(sprite.m_Texture, drawRect, pos, WHITE);
-        });
+    queryLayerOne = world.query().all<Transform2D>().all<ImageComponent>().all<LayerOneComponent>();
+    queryLayerTwo = world.query().all<Transform2D>().all<ImageComponent>().all<LayerTwoComponent>();
+    queryLayerThree = world.query().all<Transform2D>().all<ImageComponent>().all<LayerThreeComponent>();
 }
 
-gaia::ecs::SystemBuilder RegisterRenderLayerTwoSystem(gaia::ecs::World& world)
+void RenderSystem::Update()
 {
-    return world.system()
-        .all<Transform2D>()
-        .all<ImageComponent>() 
-        .all<LayerTwoComponent>()
-        .on_each([](const Transform2D& pos, const ImageComponent& sprite)
+    queryLayerOne.each(
+        [](const Transform2D& pos, const ImageComponent& sprite)
         {
             Rectangle drawRect = sprite.m_SrcRect;
-
-            if (sprite.m_Flip) drawRect.width *= -1.0f;
-
+            if (sprite.m_Flip)
+                drawRect.width *= -1.0f;
             DrawTextureRec(sprite.m_Texture, drawRect, pos, WHITE);
         });
-}
 
-gaia::ecs::SystemBuilder RegisterRenderLayerThreeSystem(gaia::ecs::World& world)
-{
-    return world.system()
-        .all<Transform2D>()
-        .all<ImageComponent>()
-        .all<LayerThreeComponent>()
-        .on_each([](const Transform2D& pos, const ImageComponent& sprite)
+    queryLayerTwo.each(
+        [](const Transform2D& pos, const ImageComponent& sprite)
         {
             Rectangle drawRect = sprite.m_SrcRect;
+            if (sprite.m_Flip)
+                drawRect.width *= -1.0f;
+            DrawTextureRec(sprite.m_Texture, drawRect, pos, WHITE);
+        });
 
-            if (sprite.m_Flip) drawRect.width *= -1.0f;
-
+    queryLayerThree.each(
+        [](const Transform2D& pos, const ImageComponent& sprite)
+        {
+            Rectangle drawRect = sprite.m_SrcRect;
+            if (sprite.m_Flip)
+                drawRect.width *= -1.0f;
             DrawTextureRec(sprite.m_Texture, drawRect, pos, WHITE);
         });
 }

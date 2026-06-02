@@ -31,7 +31,7 @@ TileMap TileMap::Create(gaia::ecs::World& world, const TileMapConfig& config)
     for (int i = 0; i < total; i++)
     {
         const uint32_t col = i % config.m_Column;
-        const uint32_t row = i / config.m_Column;
+        const uint32_t  row = i / config.m_Column;
 
         gaia::ecs::Entity tileEntity = world.add();
 

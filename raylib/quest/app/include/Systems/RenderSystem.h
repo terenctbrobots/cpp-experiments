@@ -1,7 +1,13 @@
-#pragma once 
+#pragma once
 
 #include <gaia.h>
 
-gaia::ecs::SystemBuilder RegisterRenderLayerOneSystem(gaia::ecs::World& world);
-gaia::ecs::SystemBuilder RegisterRenderLayerTwoSystem(gaia::ecs::World& world);
-gaia::ecs::SystemBuilder RegisterRenderLayerThreeSystem(gaia::ecs::World& world);
+struct RenderSystem
+{
+    gaia::ecs::Query queryLayerOne;
+    gaia::ecs::Query queryLayerTwo;
+    gaia::ecs::Query queryLayerThree;
+
+    void Init(gaia::ecs::World& world);
+    void Update();
+};

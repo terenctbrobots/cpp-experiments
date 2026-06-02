@@ -19,3 +19,21 @@ NamespaceIndentation: All
 # Keep standard pointers/references AND rvalue references locked to the type
 PointerAlignment: Left
 ReferenceAlignment: Left
+# --- Force One-Liners Onto Separate Lines ---
+
+# Forces function definitions onto multiple lines
+AllowShortFunctionsOnASingleLine: None
+
+# Forces 'if', 'else', 'while', and 'for' statements onto multiple lines
+AllowShortBlocksOnASingleLine: false
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+
+# Forces lambdas onto multiple lines
+AllowShortLambdasOnASingleLine: None
+
+# Forces namespaces onto multiple lines
+AllowShortNamespacesOnASingleLine: false
+
+# Forces enum declarations onto multiple lines
+AllowShortEnumsOnASingleLine: false

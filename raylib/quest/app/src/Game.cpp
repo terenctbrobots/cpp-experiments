@@ -3,7 +3,6 @@
 #include "Components/ImageComponent.h"
 #include "Systems/AnimationSystem.h"
 #include "Systems/MovementSystem.h"
-#include "Systems/RenderSystem.h"
 #include "TextureManager.h"
 #include "TileList.h"
 #include "TileMap.h"
@@ -21,18 +20,22 @@ void Game::RegisterSystems(float& dt)
     auto animationSystem = RegisterAnimationSystem(m_World, dt);
     auto movementSystem = RegisterMovementSystem(m_World, dt);
 
-    auto renderLayerOneSystem = RegisterRenderLayerOneSystem(m_World);
-    auto renderLayerTwoSystem = RegisterRenderLayerTwoSystem(m_World);
-    auto renderLayerThreeSystem = RegisterRenderLayerThreeSystem(m_World);
-
     // movement system execute AFTER animation System
     m_World.add(movementSystem.entity(), gaia::ecs::Pair{gaia::ecs::DependsOn, animationSystem.entity()});
-    // render layer one systems exeecutes AFTER movement System
-    m_World.add(renderLayerOneSystem.entity(), gaia::ecs::Pair{gaia::ecs::DependsOn, movementSystem.entity()});
-    // render layer two systems executes AFTER render layer one
-    m_World.add(renderLayerTwoSystem.entity(), gaia::ecs::Pair{gaia::ecs::DependsOn, renderLayerOneSystem.entity()});
-    // render layer three systems executes AFTER render layer two
-    m_World.add(renderLayerThreeSystem.entity(), gaia::ecs::Pair{gaia::ecs::DependsOn, renderLayerTwoSystem.entity()});
+
+    m_RenderSystem.Init(m_World);
 }
 
-void Game::Cleanup() { TextureManager::Clear(); }
+void Game::Update(float& dt)
+{
+}
+
+void Game::Render()
+{
+    m_RenderSystem.Update();
+}
+
+void Game::Cleanup()
+{
+    TextureManager::Clear();
+}
