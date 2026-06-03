@@ -4,13 +4,15 @@
 #include "Components/AnimationDataComponent.h"
 #include "Components/ImageComponent.h"
 
-gaia::ecs::SystemBuilder RegisterAnimationSystem(gaia::ecs::World& world, float& dt)
+void AnimationSystem::Init(gaia::ecs::World& world)
 {
-    return world.system()
-        .all<ImageComponent&>()
-        .all<AnimationComponent&>()
-        .all<AnimationDataComponent>()
-        .on_each([&dt](ImageComponent& sprite, AnimationComponent& animation, const AnimationDataComponent& animationData)
+    m_Query = world.query().all<ImageComponent&>().all<AnimationComponent&>().all<AnimationDataComponent>();
+}
+
+void AnimationSystem::Update(float& dt)
+{
+    m_Query.each(
+        [&dt](ImageComponent& sprite, AnimationComponent& animation, const AnimationDataComponent& animationData)
         {
             animation.m_Timer += dt;
 

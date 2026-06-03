@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Systems/AnimationSystem.h"
+#include "Systems/MovementSystem.h"
 #include "Systems/RenderSystem.h"
 
 #include <gaia.h>
@@ -7,7 +9,9 @@
 class Game
 {
     public:
-    Game(gaia::ecs::World& world) : m_World(world) {}
+    Game(gaia::ecs::World& world) : m_World(world)
+    {
+    }
 
     void SetupTileMap();
     void RegisterSystems(float& dt);
@@ -19,5 +23,8 @@ class Game
 
     private:
     gaia::ecs::World& m_World;
+
     RenderSystem m_RenderSystem;
+    MovementSystem m_MovementSystem;
+    AnimationSystem m_AnimationSystem;
 };

@@ -4,9 +4,9 @@
 
 struct RenderSystem
 {
-    gaia::ecs::Query queryLayerOne;
-    gaia::ecs::Query queryLayerTwo;
-    gaia::ecs::Query queryLayerThree;
+    gaia::ecs::Query m_QueryLayerOne;
+    gaia::ecs::Query m_QueryLayerTwo;
+    gaia::ecs::Query m_QueryLayerThree;
 
     void Init(gaia::ecs::World& world);
     void Update();

@@ -2,4 +2,10 @@
 
 #include <gaia.h>
 
-gaia::ecs::SystemBuilder RegisterMovementSystem(gaia::ecs::World& world, float& dt);
+struct MovementSystem
+{
+    gaia::ecs::Query m_Query;
+
+    void Init(gaia::ecs::World& world);
+    void Update(float& dt);
+};
