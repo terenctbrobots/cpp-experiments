@@ -35,10 +35,12 @@ int main()
 
     game.RegisterSystems(dt);
 
-    RenderTexture2D target = LoadRenderTexture(virtualWidth, virtualHeight);
-    SetTextureFilter(target.texture, TEXTURE_FILTER_POINT);
-
     bool shouldExit = false;
+
+    Camera2D camera = {0};
+    camera.offset = (Vector2){(float)screenWidth / 2.0f, (float)screenHeight / 2.0f};
+    camera.rotation = 0.0f;
+    camera.zoom = 1.0f;
 
     while (!WindowShouldClose() && !shouldExit)
     {
@@ -79,22 +81,13 @@ int main()
             Player::Idle(world, player);
         }
 
-        BeginTextureMode(target);
-
         game.Update(dt);
-        game.Render();
-
-        EndTextureMode();
-
-        float scale = fminf((float)GetScreenWidth() / virtualWidth, (float)GetScreenHeight() / virtualHeight);
+        camera.target = Player::GetPosition(world, player);
 
         BeginDrawing();
-        Rectangle sourceRect = {0.0f, 0.0f, (float)target.texture.width, -(float)target.texture.height};
-        Rectangle destRect = {(GetScreenWidth() - ((float)virtualWidth * scale)) * 0.5f,
-                              (GetScreenHeight() - ((float)virtualHeight * scale)) * 0.5f, (float)virtualWidth * scale,
-                              (float)virtualHeight * scale};
-
-        DrawTexturePro(target.texture, sourceRect, destRect, {0, 0}, 0.0f, WHITE);
+        BeginMode2D(camera);
+        game.Render();
+        EndMode2D();
         EndDrawing();
     }
 
