@@ -1,12 +1,12 @@
-#include <gaia.h>
-#include <cmath>
-#include "raylib.h"
-
 #include "Animation.h"
+#include "Components/VelocityComponent.h"
 #include "Game.h"
 #include "Hash.h"
 #include "Player.h"
-#include "Components/VelocityComponent.h"
+#include "raylib.h"
+
+#include <cmath>
+#include <gaia.h>
 
 const int screenWidth = 1280;
 const int screenHeight = 960;
@@ -14,14 +14,13 @@ const int screenHeight = 960;
 const int virtualWidth = 320;
 const int virtualHeight = 240;
 
-int main() 
+int main()
 {
     gaia::ecs::World world;
     Game game(world);
     float dt = 0.0f;
 
-
-    InitWindow(screenWidth, screenHeight,"Quest");
+    InitWindow(screenWidth, screenHeight, "Quest");
     SetTargetFPS(60);
 
     gaia::ecs::Entity player = Player::Create(world);
@@ -61,12 +60,12 @@ int main()
 
         if (IsKeyDown(KEY_DOWN))
         {
-           Player::Movement(world, player, {0.0f, 1.0f}, Animation::MOVE_DOWN);
+            Player::Movement(world, player, {0.0f, 1.0f}, Animation::MOVE_DOWN);
         }
-        
+
         if (IsKeyDown(KEY_UP))
         {
-           Player::Movement(world, player, {0.0f, -1.0f}, Animation::MOVE_UP);
+            Player::Movement(world, player, {0.0f, -1.0f}, Animation::MOVE_UP);
         }
 
         if (IsKeyDown(KEY_SPACE))
@@ -74,34 +73,28 @@ int main()
             Player::Attack(world, player);
         }
 
-        if (IsKeyReleased(KEY_RIGHT) || 
-            IsKeyReleased(KEY_LEFT) ||
-            IsKeyReleased(KEY_DOWN) ||
-            IsKeyReleased(KEY_UP) ||
+        if (IsKeyReleased(KEY_RIGHT) || IsKeyReleased(KEY_LEFT) || IsKeyReleased(KEY_DOWN) || IsKeyReleased(KEY_UP) ||
             IsKeyReleased(KEY_SPACE))
-            {
-                Player::Idle(world, player);
-            }
+        {
+            Player::Idle(world, player);
+        }
 
-    
         BeginTextureMode(target);
-    
-        world.update();
+
+        game.Update(dt);
+        game.Render();
 
         EndTextureMode();
 
-        float scale = fminf((float)GetScreenWidth()/virtualWidth, (float)GetScreenHeight()/virtualHeight);
-    
-        BeginDrawing();
-        Rectangle sourceRect = { 0.0f, 0.0f, (float)target.texture.width, -(float)target.texture.height};
-        Rectangle destRect = {
-            (GetScreenWidth() - ((float) virtualWidth * scale)) * 0.5f,
-            (GetScreenHeight() - ((float) virtualHeight * scale)) * 0.5f,
-            (float)virtualWidth * scale,
-            (float)virtualHeight * scale
-        };
+        float scale = fminf((float)GetScreenWidth() / virtualWidth, (float)GetScreenHeight() / virtualHeight);
 
-        DrawTexturePro(target.texture, sourceRect, destRect, {0,0}, 0.0f, WHITE);
+        BeginDrawing();
+        Rectangle sourceRect = {0.0f, 0.0f, (float)target.texture.width, -(float)target.texture.height};
+        Rectangle destRect = {(GetScreenWidth() - ((float)virtualWidth * scale)) * 0.5f,
+                              (GetScreenHeight() - ((float)virtualHeight * scale)) * 0.5f, (float)virtualWidth * scale,
+                              (float)virtualHeight * scale};
+
+        DrawTexturePro(target.texture, sourceRect, destRect, {0, 0}, 0.0f, WHITE);
         EndDrawing();
     }
 

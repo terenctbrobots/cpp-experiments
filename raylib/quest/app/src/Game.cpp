@@ -28,6 +28,8 @@ void Game::RegisterSystems(float& dt)
 
 void Game::Update(float& dt)
 {
+    // TODO: Swap this with explicit system updates
+    m_World.update();
 }
 
 void Game::Render()
