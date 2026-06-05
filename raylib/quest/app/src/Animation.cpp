@@ -28,6 +28,7 @@ void Animation::SetAnimation(gaia::ecs::World& world, gaia::ecs::Entity entity, 
 
     auto& sprite = world.set<ImageComponent>(entity);
     sprite.m_SrcRect = animationFrame.m_FrameList[0];
+    sprite.m_Offset = animationData.m_Offset;
 
     if (!world.has<AnimationComponent>(entity))
         return;
@@ -62,6 +63,16 @@ bool Animation::Load(const std::string& fileName, AnimationDataComponent& animat
         spdlog::error("Mandatory height field not found");
     }
     animation.m_Height = jsonData["height"];
+
+    if (jsonData["origin"] != nullptr)
+    {
+        std::string origin = jsonData["origin"];
+
+        if (origin == "center")
+        {
+            animation.m_Offset = {-(animation.m_Width / 2), -(animation.m_Height / 2)};
+        }
+    }
 
     if (jsonData["defaultAnimation"] == nullptr)
     {

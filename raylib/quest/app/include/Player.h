@@ -10,4 +10,5 @@ namespace Player
     void Idle(gaia::ecs::World& world, gaia::ecs::Entity& player);
     void Attack(gaia::ecs::World& world, gaia::ecs::Entity& player);
     Vector2 GetPosition(gaia::ecs::World& world, gaia::ecs::Entity& player);
+    void SetPosition(gaia::ecs::World& world, gaia::ecs::Entity& player, const Vector2& position);
 } // namespace Player

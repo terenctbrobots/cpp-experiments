@@ -1,11 +1,12 @@
 #pragma once
 
 #include "raylib.h"
-#include <memory>
-#include <vector>
-#include <unordered_map>
-#include <string>
+
 #include <cstdint>
+#include <memory>
+#include <string>
+#include <unordered_map>
+#include <vector>
 
 struct AnimationFrame
 {
@@ -19,6 +20,8 @@ struct AnimationDataComponent
 {
     float m_Width;
     float m_Height;
+
+    Vector2 m_Offset;
 
     uint32_t m_DefaultAnimation;
 

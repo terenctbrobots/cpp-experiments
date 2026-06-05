@@ -11,9 +11,6 @@
 const int screenWidth = 1280;
 const int screenHeight = 960;
 
-const int virtualWidth = 320;
-const int virtualHeight = 240;
-
 int main()
 {
     gaia::ecs::World world;
@@ -38,10 +35,11 @@ int main()
     bool shouldExit = false;
 
     Camera2D camera = {0};
-    camera.offset = (Vector2){(float)screenWidth / 2.0f, (float)screenHeight / 2.0f};
+    camera.offset = (Vector2){(float)screenWidth / 2.0f, (float)screenHeight / 2.0f}; // Pivot
     camera.rotation = 0.0f;
-    camera.zoom = 1.0f;
+    camera.zoom = 4.0f;
 
+    Player::SetPosition(world, player, camera.offset);
     while (!WindowShouldClose() && !shouldExit)
     {
         dt = GetFrameTime();

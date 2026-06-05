@@ -121,5 +121,11 @@ void Player::Attack(gaia::ecs::World& world, gaia::ecs::Entity& player)
 
 Vector2 Player::GetPosition(gaia::ecs::World& world, gaia::ecs::Entity& player)
 {
-    return world.get<Transform2D>(player);
+    return world.get<Transform2D>(player).m_Pos;
+}
+
+void Player::SetPosition(gaia::ecs::World& world, gaia::ecs::Entity& player, const Vector2& position)
+{
+    auto& transform = world.set<Transform2D>(player);
+    transform.m_Pos = position;
 }

@@ -13,13 +13,17 @@ void RenderSystem::Init(gaia::ecs::World& world)
 
 void RenderSystem::Update()
 {
+    ClearBackground(BLACK);
+
     m_QueryLayerOne.each(
         [](const Transform2D& pos, const ImageComponent& sprite)
         {
             Rectangle drawRect = sprite.m_SrcRect;
             if (sprite.m_Flip)
                 drawRect.width *= -1.0f;
-            DrawTextureRec(sprite.m_Texture, drawRect, pos, WHITE);
+
+            Vector2 drawPos = Vector2Add(pos.m_Pos, sprite.m_Offset);
+            DrawTextureRec(sprite.m_Texture, drawRect, drawPos, WHITE);
         });
 
     m_QueryLayerTwo.each(
@@ -28,7 +32,9 @@ void RenderSystem::Update()
             Rectangle drawRect = sprite.m_SrcRect;
             if (sprite.m_Flip)
                 drawRect.width *= -1.0f;
-            DrawTextureRec(sprite.m_Texture, drawRect, pos, WHITE);
+
+            Vector2 drawPos = Vector2Add(pos.m_Pos, sprite.m_Offset);
+            DrawTextureRec(sprite.m_Texture, drawRect, drawPos, WHITE);
         });
 
     m_QueryLayerThree.each(
@@ -37,6 +43,8 @@ void RenderSystem::Update()
             Rectangle drawRect = sprite.m_SrcRect;
             if (sprite.m_Flip)
                 drawRect.width *= -1.0f;
-            DrawTextureRec(sprite.m_Texture, drawRect, pos, WHITE);
+
+            Vector2 drawPos = Vector2Add(pos.m_Pos, sprite.m_Offset);
+            DrawTextureRec(sprite.m_Texture, drawRect, drawPos, WHITE);
         });
 }
