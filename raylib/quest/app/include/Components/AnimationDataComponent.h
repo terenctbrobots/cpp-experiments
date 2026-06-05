@@ -21,7 +21,7 @@ struct AnimationDataComponent
     float m_Width;
     float m_Height;
 
-    Vector2 m_Offset;
+    Vector2 m_Offset = Vector2{0, 0};
 
     uint32_t m_DefaultAnimation;
 

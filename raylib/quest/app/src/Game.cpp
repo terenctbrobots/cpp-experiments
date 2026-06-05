@@ -8,7 +8,7 @@
 void Game::SetupTileMap()
 {
     TileList::LoadTileList();
-    TileMapConfig defaultConfig = {"default", 10, 10, 16, 16};
+    TileMapConfig defaultConfig = {"default", 60, 60, 16, 16};
 
     TileMap::Create(m_World, defaultConfig);
 }
