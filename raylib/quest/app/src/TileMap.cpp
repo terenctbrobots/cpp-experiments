@@ -8,6 +8,9 @@
 #include "TileList.h"
 #include "spdlog/spdlog.h"
 
+#include <fstream>
+#include <nlohmann/json.hpp>
+
 TileMap TileMap::Create(gaia::ecs::World& world, const TileMapConfig& config)
 {
     gaia::ecs::Entity rootEntity = world.add();
@@ -31,7 +34,7 @@ TileMap TileMap::Create(gaia::ecs::World& world, const TileMapConfig& config)
     for (int i = 0; i < total; i++)
     {
         const uint32_t col = i % config.m_Column;
-        const uint32_t  row = i / config.m_Column;
+        const uint32_t row = i / config.m_Column;
 
         gaia::ecs::Entity tileEntity = world.add();
 
@@ -51,4 +54,45 @@ TileMap TileMap::Create(gaia::ecs::World& world, const TileMapConfig& config)
     world.add<MapDataComponent>(rootEntity, std::move(mapData));
 
     return TileMap{rootEntity};
+}
+
+bool TileMap::Save(gaia::ecs::World& world, const std::string& fileName)
+{
+    if (!world.has<MapDataComponent>(m_Root))
+    {
+        spdlog::error("No root MapDataComponent");
+        return false;
+    }
+
+    auto& mapDataComponent = world.get<MapDataComponent>(m_Root);
+
+    nlohmann::json toJson;
+
+    toJson = {{"column", mapDataComponent.m_Column}, {"row", mapDataComponent.m_Row}};
+
+    std::ofstream file(fileName);
+    if (!file)
+    {
+        spdlog::error("Cannot open {} file to write", fileName);
+        return false;
+    }
+
+    file << toJson.dump(4); // Indent by 4
+    return true;
+}
+
+bool TileMap::Load(gaia::ecs::World& world, const std::string& fileName)
+{
+    std::ifstream file(fileName);
+
+    if (!file)
+    {
+        spdlog::error("Cannot read {} file", fileName);
+        return false;
+    }
+
+    nlohmann::json fromJson;
+    file >> fromJson;
+
+    return true;
 }

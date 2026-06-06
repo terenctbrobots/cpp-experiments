@@ -20,8 +20,13 @@ const u_int32_t DEFAULT_TILE = HS("ground");
 class TileMap
 {
     public:
-    TileMap(gaia::ecs::Entity root) : m_Root(root) {}
+    TileMap(gaia::ecs::Entity root) : m_Root(root)
+    {
+    }
     static TileMap Create(gaia::ecs::World& world, const TileMapConfig& config);
+
+    bool Save(gaia::ecs::World& world, const std::string& fileName);
+    bool Load(gaia::ecs::World& world, const std::string& fileName);
 
     private:
     gaia::ecs::Entity m_Root;
