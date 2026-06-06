@@ -28,7 +28,7 @@ bool TileList::LoadTileSet(const std::string& tileSetFilename, const std::string
         return false;
     }
 
-    TextureManager::Add(tilesetTexture);
+    TextureManager::Add(tileSetFilename, tilesetTexture);
 
     std::ifstream file(tileSetFilename);
 

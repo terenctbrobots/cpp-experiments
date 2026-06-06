@@ -13,6 +13,7 @@
 #include "spdlog/spdlog.h"
 
 const float speed = 100.0f;
+const std::string playerTexturePath = "./assets/characters/player.png";
 
 gaia::ecs::Entity Player::Create(gaia::ecs::World& world)
 {
@@ -23,7 +24,7 @@ gaia::ecs::Entity Player::Create(gaia::ecs::World& world)
     world.add<LayerTwoComponent>(entity);
 
     world.add<Transform2D>(entity, {0.0f, 0.0f});
-    Texture2D playerTexture = LoadTexture("./assets/characters/player.png");
+    Texture2D playerTexture = LoadTexture(playerTexturePath.c_str());
 
     if (playerTexture.id <= 0)
     {
@@ -31,7 +32,7 @@ gaia::ecs::Entity Player::Create(gaia::ecs::World& world)
         return gaia::ecs::EntityBad;
     }
 
-    TextureManager::Add(playerTexture);
+    TextureManager::Add(playerTexturePath, playerTexture);
 
     world.add<ImageComponent>(entity, {std::move(playerTexture), {0, 0, 64, 64}});
 

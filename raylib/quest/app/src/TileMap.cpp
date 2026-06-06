@@ -68,7 +68,20 @@ bool TileMap::Save(gaia::ecs::World& world, const std::string& fileName)
 
     nlohmann::json toJson;
 
-    toJson = {{"column", mapDataComponent.m_Column}, {"row", mapDataComponent.m_Row}};
+    toJson["column"] = mapDataComponent.m_Column;
+    toJson["row"] = mapDataComponent.m_Row;
+
+    toJson["tiles"] = nlohmann::json::array();
+
+    for (std::vector<gaia::ecs::Entity> tileEntityList : mapDataComponent.m_Tiles)
+    {
+        nlohmann::json tile;
+        tile["entities"] = nlohmann::json::array();
+        for (gaia::ecs::Entity tileEntity : tileEntityList)
+        {
+            auto& imageComponent = world.get<ImageComponent>(tileEntity);
+        }
+    }
 
     std::ofstream file(fileName);
     if (!file)
@@ -93,6 +106,14 @@ bool TileMap::Load(gaia::ecs::World& world, const std::string& fileName)
 
     nlohmann::json fromJson;
     file >> fromJson;
+
+    m_Root = world.add();
+    MapDataComponent mapDataComponent;
+
+    fromJson.at("column").get_to(mapDataComponent.m_Column);
+    fromJson.at("row").get_to(mapDataComponent.m_Row);
+
+    world.add<MapDataComponent>(m_Root, std::move(mapDataComponent));
 
     return true;
 }
