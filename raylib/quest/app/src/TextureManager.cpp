@@ -4,15 +4,21 @@
 
 #include <unordered_map>
 
-static std::unordered_map<u_int32_t, Texture2D> s_TextureList;
+static std::unordered_map<u_int32_t, TextureManager::Texture> s_TextureList;
 
-u_int32_t TextureManager::Add(const std::string& texturePath, const Texture2D& newTexture)
+u_int32_t TextureManager::Add(const std::string& texturePath, const Texture2D& newTexture2D,
+                              TextureManager::TextureType textureType)
 {
     u_int32_t hash = HS(texturePath);
 
     if (s_TextureList.count(hash) == 0)
     {
-        s_TextureList.emplace(hash, newTexture);
+        Texture newTexture;
+        newTexture.m_Path = texturePath;
+        newTexture.m_Texture = newTexture2D;
+        newTexture.m_TextureType = textureType;
+
+        s_TextureList.emplace(hash, std::move(newTexture));
         return hash;
     }
 
@@ -26,18 +32,17 @@ const Texture2D* TextureManager::GetTexture(u_int32_t hash)
         return nullptr;
     }
 
-    return &s_TextureList[hash];
+    return &s_TextureList[hash].m_Texture;
 }
 
 const u_int32_t TextureManager::GetHash(const Texture2D& checkTexture)
 {
     for (const auto& [key, texture] : s_TextureList)
     {
-        if (texture.id == checkTexture.id)
+        if (texture.m_Texture.id == checkTexture.id)
         {
             return key;
         }
-        UnloadTexture(texture);
     }
 
     return 0;
@@ -47,7 +52,27 @@ void TextureManager::Clear()
 {
     for (const auto& [key, texture] : s_TextureList)
     {
-        UnloadTexture(texture);
+        UnloadTexture(texture.m_Texture);
     }
     s_TextureList.clear();
+}
+
+void TextureManager::Clear(TextureManager::TextureType textureType)
+{
+    std::unordered_map<u_int32_t, TextureManager::Texture> newTextureList;
+
+    for (const auto& [key, texture] : s_TextureList)
+    {
+        if (texture.m_TextureType == textureType)
+        {
+            UnloadTexture(texture.m_Texture);
+        }
+        else
+        {
+            newTextureList.emplace(key, texture);
+        }
+    }
+
+    s_TextureList.clear();
+    s_TextureList = std::move(newTextureList);
 }

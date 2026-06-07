@@ -32,7 +32,8 @@ gaia::ecs::Entity Player::Create(gaia::ecs::World& world)
         return gaia::ecs::EntityBad;
     }
 
-    u_int32_t textureHash = TextureManager::Add(playerTexturePath, playerTexture);
+    u_int32_t textureHash =
+        TextureManager::Add(playerTexturePath, playerTexture, TextureManager::TextureType::Character);
 
     ImageComponent imageComponent;
     imageComponent.m_Texture = playerTexture;

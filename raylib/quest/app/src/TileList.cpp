@@ -28,7 +28,7 @@ bool TileList::LoadTileSet(const std::string& tileSetFilename, const std::string
         return false;
     }
 
-    u_int32_t textureHash = TextureManager::Add(tileSetFilename, tilesetTexture);
+    u_int32_t textureHash = TextureManager::Add(tileSetFilename, tilesetTexture, TextureManager::TextureType::TileList);
 
     if (textureHash == 0)
     {

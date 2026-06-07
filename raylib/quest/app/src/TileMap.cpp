@@ -107,6 +107,12 @@ bool TileMap::Save(gaia::ecs::World& world, const std::string& fileName)
 
 bool TileMap::Load(gaia::ecs::World& world, const std::string& fileName)
 {
+    if (m_Root != gaia::ecs::EntityBad)
+    {
+        spdlog::error("Use and empty Tilemap or call Destroy before Loading");
+        return false;
+    }
+
     std::ifstream file(fileName);
 
     if (!file)
