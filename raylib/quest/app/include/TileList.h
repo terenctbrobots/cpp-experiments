@@ -9,6 +9,7 @@ namespace TileList
     struct Tile
     {
         std::string m_Name;
+        u_int32_t m_TextureHash;
         Texture2D m_Texture;
         Rectangle m_SrcRect;
     };

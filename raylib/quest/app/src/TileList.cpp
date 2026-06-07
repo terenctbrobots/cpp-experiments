@@ -28,7 +28,13 @@ bool TileList::LoadTileSet(const std::string& tileSetFilename, const std::string
         return false;
     }
 
-    TextureManager::Add(tileSetFilename, tilesetTexture);
+    u_int32_t textureHash = TextureManager::Add(tileSetFilename, tilesetTexture);
+
+    if (textureHash == 0)
+    {
+        spdlog::error("Could not load texture, duplicate exists");
+        return false;
+    }
 
     std::ifstream file(tileSetFilename);
 
@@ -91,6 +97,7 @@ bool TileList::LoadTileSet(const std::string& tileSetFilename, const std::string
 
             Tile newTile;
             newTile.m_Name = baseName;
+            newTile.m_TextureHash = textureHash;
             newTile.m_Texture = tilesetTexture;
             newTile.m_SrcRect = {x * tileWidth, y * tileHeight, tileWidth, tileHeight};
 

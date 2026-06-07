@@ -6,17 +6,17 @@
 
 static std::unordered_map<u_int32_t, Texture2D> s_TextureList;
 
-bool TextureManager::Add(const std::string& texturePath, const Texture2D& newTexture)
+u_int32_t TextureManager::Add(const std::string& texturePath, const Texture2D& newTexture)
 {
     u_int32_t hash = HS(texturePath);
 
     if (s_TextureList.count(hash) == 0)
     {
         s_TextureList.emplace(hash, newTexture);
-        return true;
+        return hash;
     }
 
-    return false;
+    return 0;
 }
 
 const Texture2D* TextureManager::GetTexture(u_int32_t hash)
