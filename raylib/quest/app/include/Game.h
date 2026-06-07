@@ -3,6 +3,7 @@
 #include "Systems/AnimationSystem.h"
 #include "Systems/MovementSystem.h"
 #include "Systems/RenderSystem.h"
+#include "TileMap.h"
 
 #include <gaia.h>
 
@@ -23,6 +24,8 @@ class Game
 
     private:
     gaia::ecs::World& m_World;
+
+    TileMap m_TileMap;
 
     RenderSystem m_RenderSystem;
     MovementSystem m_MovementSystem;

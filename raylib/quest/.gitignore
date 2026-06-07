@@ -6,3 +6,4 @@ CMakeCache.txt
 app/quest
 app/app
 compile_commands.json
+test.json

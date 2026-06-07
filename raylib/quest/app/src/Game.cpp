@@ -10,7 +10,8 @@ void Game::SetupTileMap()
     TileList::LoadTileList();
     TileMapConfig defaultConfig = {"default", 60, 60, 16, 16};
 
-    TileMap::Create(m_World, defaultConfig);
+    m_TileMap = TileMap::Create(m_World, defaultConfig);
+    m_TileMap.Save(m_World, "./test.json");
 }
 
 void Game::RegisterSystems(float& dt)

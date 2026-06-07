@@ -40,6 +40,7 @@ TileMap TileMap::Create(gaia::ecs::World& world, const TileMapConfig& config)
 
         ImageComponent imageComponent;
         imageComponent.m_Texture = defaultTile->m_Texture;
+        imageComponent.m_TextureHash = defaultTile->m_TextureHash;
         imageComponent.m_SrcRect = defaultTile->m_SrcRect;
 
         world.add<ImageComponent>(tileEntity, std::move(imageComponent));
@@ -54,6 +55,11 @@ TileMap TileMap::Create(gaia::ecs::World& world, const TileMapConfig& config)
     world.add<MapDataComponent>(rootEntity, std::move(mapData));
 
     return TileMap{rootEntity};
+}
+
+bool TileMap::IsValid()
+{
+    return (m_Root != gaia::ecs::EntityBad);
 }
 
 bool TileMap::Save(gaia::ecs::World& world, const std::string& fileName)
@@ -75,12 +81,17 @@ bool TileMap::Save(gaia::ecs::World& world, const std::string& fileName)
 
     for (std::vector<gaia::ecs::Entity> tileEntityList : mapDataComponent.m_Tiles)
     {
-        nlohmann::json tile;
-        tile["entities"] = nlohmann::json::array();
+        nlohmann::json tileArray = nlohmann::json::array();
         for (gaia::ecs::Entity tileEntity : tileEntityList)
         {
+            nlohmann::json tile;
             auto& imageComponent = world.get<ImageComponent>(tileEntity);
+
+            tile["texture_hash"] = imageComponent.m_TextureHash;
+
+            tileArray.push_back(tile);
         }
+        toJson["tiles"].push_back(tileArray);
     }
 
     std::ofstream file(fileName);

@@ -32,9 +32,14 @@ gaia::ecs::Entity Player::Create(gaia::ecs::World& world)
         return gaia::ecs::EntityBad;
     }
 
-    TextureManager::Add(playerTexturePath, playerTexture);
+    u_int32_t textureHash = TextureManager::Add(playerTexturePath, playerTexture);
 
-    world.add<ImageComponent>(entity, {std::move(playerTexture), {0, 0, 64, 64}});
+    ImageComponent imageComponent;
+    imageComponent.m_Texture = playerTexture;
+    imageComponent.m_SrcRect = {0, 0, 64, 64};
+    imageComponent.m_TextureHash = textureHash;
+
+    world.add<ImageComponent>(entity, std::move(imageComponent));
 
     AnimationDataComponent animationData;
 
