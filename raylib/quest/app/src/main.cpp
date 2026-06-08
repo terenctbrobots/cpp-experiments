@@ -79,6 +79,11 @@ int main()
             Player::Idle(world, player);
         }
 
+        if (IsKeyReleased(KEY_L))
+        {
+            game.LoadTileMap();
+        }
+
         game.Update(dt);
         camera.target = Player::GetPosition(world, player);
 

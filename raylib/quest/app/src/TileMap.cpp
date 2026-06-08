@@ -134,3 +134,15 @@ bool TileMap::Load(gaia::ecs::World& world, const std::string& fileName)
 
     return true;
 }
+
+void TileMap::Destroy(gaia::ecs::World& world)
+{
+    if (m_Root == gaia::ecs::EntityBad)
+    {
+        spdlog::error("Nothing to destroy, root entity is already invalid");
+        return;
+    }
+
+    world.del(m_Root);
+    m_Root = gaia::ecs::EntityBad;
+}

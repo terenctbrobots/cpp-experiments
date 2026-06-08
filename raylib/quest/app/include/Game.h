@@ -20,6 +20,9 @@ class Game
     void Update(float& dt);
     void Render();
 
+    // Temporary function to test loading tilemaps
+    void LoadTileMap();
+
     void Cleanup();
 
     private:

@@ -4,6 +4,7 @@
 #include "TextureManager.h"
 #include "TileList.h"
 #include "TileMap.h"
+#include "spdlog/spdlog.h"
 
 void Game::SetupTileMap()
 {
@@ -31,6 +32,11 @@ void Game::Update(float& dt)
 void Game::Render()
 {
     m_RenderSystem.Update();
+}
+
+void Game::LoadTileMap()
+{
+    spdlog::info("Loading TileMap");
 }
 
 void Game::Cleanup()

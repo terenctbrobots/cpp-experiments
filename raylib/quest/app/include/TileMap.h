@@ -31,6 +31,7 @@ class TileMap
     bool Save(gaia::ecs::World& world, const std::string& fileName);
     bool Load(gaia::ecs::World& world, const std::string& fileName);
     bool IsValid();
+    void Destroy(gaia::ecs::World& world);
 
     private:
     gaia::ecs::Entity m_Root;
