@@ -88,6 +88,10 @@ bool TileMap::Save(gaia::ecs::World& world, const std::string& fileName)
             auto& imageComponent = world.get<ImageComponent>(tileEntity);
 
             tile["texture_hash"] = imageComponent.m_TextureHash;
+            tile["x"] = imageComponent.m_SrcRect.x;
+            tile["y"] = imageComponent.m_SrcRect.y;
+            tile["width"] = imageComponent.m_SrcRect.width;
+            tile["height"] = imageComponent.m_SrcRect.height;
 
             tileArray.push_back(tile);
         }
@@ -127,10 +131,39 @@ bool TileMap::Load(gaia::ecs::World& world, const std::string& fileName)
     m_Root = world.add();
     MapDataComponent mapDataComponent;
 
-    fromJson.at("column").get_to(mapDataComponent.m_Column);
-    fromJson.at("row").get_to(mapDataComponent.m_Row);
+    mapDataComponent.m_Column = fromJson.value("column", 0);
+
+    if (mapDataComponent.m_Column == 0)
+    {
+        spdlog::error("Mandatory column field not found or invalid");
+        return false;
+    }
+
+    mapDataComponent.m_Row = fromJson.value("row", 0);
+
+    if (mapDataComponent.m_Row == 0)
+    {
+        spdlog::error("Mandatory row field not found or invalid");
+        return false;
+    }
 
     world.add<MapDataComponent>(m_Root, std::move(mapDataComponent));
+
+    const auto& tileList = fromJson.value("tilelist", nlohmann::json::array());
+
+    if (tileList.size() == 0)
+    {
+        spdlog::error("Tile list size of 0");
+        return false;
+    }
+
+    for (const auto& tiles : tileList)
+    {
+        for (const auto& tile : tiles)
+        {
+            gaia::ecs::Entity entity = world.add();
+        }
+    }
 
     return true;
 }

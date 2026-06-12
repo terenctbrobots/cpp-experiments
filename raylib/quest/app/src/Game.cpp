@@ -37,6 +37,8 @@ void Game::Render()
 void Game::LoadTileMap()
 {
     spdlog::info("Loading TileMap");
+    m_TileMap.Destroy(m_World);
+    m_TileMap.Load(m_World, "./test.json");
 }
 
 void Game::Cleanup()

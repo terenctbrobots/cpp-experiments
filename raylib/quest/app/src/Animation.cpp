@@ -12,7 +12,9 @@
 void Animation::SetAnimation(gaia::ecs::World& world, gaia::ecs::Entity entity, const uint32_t animationName)
 {
     if (!world.has<AnimationDataComponent>(entity))
+    {
         return;
+    }
 
     const AnimationDataComponent& animationData = world.get<AnimationDataComponent>(entity);
 
@@ -51,22 +53,22 @@ bool Animation::Load(const std::string& fileName, AnimationDataComponent& animat
 
     nlohmann::json jsonData = nlohmann::json::parse(file);
 
-    if (jsonData["width"] == nullptr)
+    if (!jsonData.contains("width"))
     {
         spdlog::error("Mandatory width field not found");
         return false;
     }
-    animation.m_Width = jsonData["width"];
+    animation.m_Width = jsonData.value("width", 64);
 
-    if (jsonData["height"] == nullptr)
+    if (!jsonData.contains("height"))
     {
         spdlog::error("Mandatory height field not found");
     }
-    animation.m_Height = jsonData["height"];
+    animation.m_Height = jsonData.value("height", 64);
 
-    if (jsonData["origin"] != nullptr)
+    if (jsonData.contains("origin"))
     {
-        std::string origin = jsonData["origin"];
+        std::string origin = jsonData.value("origin", "center");
 
         if (origin == "center")
         {
@@ -74,7 +76,7 @@ bool Animation::Load(const std::string& fileName, AnimationDataComponent& animat
         }
     }
 
-    if (jsonData["defaultAnimation"] == nullptr)
+    if (!jsonData.contains("defaultAnimation"))
     {
         spdlog::error("Mandatory defaultAnimation field not found");
     }
@@ -89,25 +91,25 @@ bool Animation::Load(const std::string& fileName, AnimationDataComponent& animat
         nlohmann::json frameJson = animationJson.value();
 
         AnimationFrame frameData;
-        if (frameJson["frameRate"] == nullptr || frameJson["frameRate"] == 0)
+        if (!frameJson.contains("frameRate") || frameJson.value("frameRate", 0) == 0)
         {
             spdlog::error("Mandatory frameRate field not found or zero");
             return false;
         }
 
-        frameData.m_FrameDuration = 1.0f / (float)frameJson["frameRate"];
+        frameData.m_FrameDuration = 1.0f / (float)frameJson.value("frameRate", 200);
 
-        if (frameJson["frames"] == nullptr)
+        if (!frameJson.contains("frames"))
         {
             spdlog::error("Mandatory frames field not found");
             return false;
         }
 
-        frameData.m_Frames = frameJson["frames"];
+        frameData.m_Frames = frameJson.value("frames", 1);
 
-        if (frameJson["flip"] != nullptr)
+        if (frameJson.contains("flip"))
         {
-            frameData.m_Flip = frameJson["flip"];
+            frameData.m_Flip = frameJson.value("flip", false);
         }
         else
         {
@@ -117,14 +119,14 @@ bool Animation::Load(const std::string& fileName, AnimationDataComponent& animat
         float x = 0;
         float y = 0;
 
-        if (frameJson["x"] != nullptr)
+        if (frameJson.contains("x"))
         {
-            x = frameJson["x"];
+            x = frameJson.value("x", 0);
         }
 
-        if (frameJson["y"] != nullptr)
+        if (frameJson.contains("y"))
         {
-            y = frameJson["y"];
+            y = frameJson.value("y", 0);
         }
 
         for (int xCount = 0; xCount < frameData.m_Frames; xCount++)

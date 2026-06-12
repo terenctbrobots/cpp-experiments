@@ -12,7 +12,7 @@ set(CMAKE_CXX_STANDARD 17)
 #     add_compile_definitions(PLATFORM_UNIX)
 # endif()
 
-#set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 
 #find_package(Catch2 REQUIRED)
