@@ -95,6 +95,16 @@ bool TileMap::Save(gaia::ecs::World& world, const std::string& fileName)
             tile["src_width"] = imageComponent.m_SrcRect.width;
             tile["src_height"] = imageComponent.m_SrcRect.height;
 
+            auto &transform2D = world.get<Transform2D>(tileEntity);
+
+            tile["x"] = transform2D.m_Pos.x;
+            tile["y"] = transform2D.m_Pos.y;
+
+            if (world.has<LayerOneComponent>(tileEntity))
+            {
+                tile["layer"] = 1;
+            }
+
             tileArray.push_back(tile);
         }
         toJson["tiles"].push_back(tileArray);
@@ -191,6 +201,23 @@ bool TileMap::Load(gaia::ecs::World& world, const std::string& fileName)
 
             world.add<ImageComponent>(entity, std::move(imageComponent));
             world.add<GridCellComponent>(entity, {col, row});
+
+            Transform2D transform2D;
+            transform2D.m_Pos = {
+                (float) tile.value("x", 0),
+                (float) tile.value("y", 0)
+            };
+            world.add<Transform2D>(entity, std::move(transform2D));
+
+            int layer = tile.value("layer", 1);
+
+            switch(layer)
+            {
+                case 1:
+                    world.add<LayerOneComponent>(entity);
+                    break;
+            }
+
             mapDataComponent.m_Tiles[(size_t)i].push_back(entity);
         }
 
