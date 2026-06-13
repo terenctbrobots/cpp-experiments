@@ -216,6 +216,10 @@ bool TileMap::Load(gaia::ecs::World& world, const std::string& fileName)
                 case 1:
                     world.add<LayerOneComponent>(entity);
                     break;
+                default:
+                    spdlog::warn("Unknown layer detected, defaulting to Layer 1");
+                    world.add<LayerOneComponent>(entity);
+                    break;
             }
 
             mapDataComponent.m_Tiles[(size_t)i].push_back(entity);
