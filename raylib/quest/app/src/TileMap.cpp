@@ -90,10 +90,10 @@ bool TileMap::Save(gaia::ecs::World& world, const std::string& fileName)
             auto& imageComponent = world.get<ImageComponent>(tileEntity);
 
             tile["texture_hash"] = imageComponent.m_TextureHash;
-            tile["x"] = imageComponent.m_SrcRect.x;
-            tile["y"] = imageComponent.m_SrcRect.y;
-            tile["width"] = imageComponent.m_SrcRect.width;
-            tile["height"] = imageComponent.m_SrcRect.height;
+            tile["src_x"] = imageComponent.m_SrcRect.x;
+            tile["src_y"] = imageComponent.m_SrcRect.y;
+            tile["src_width"] = imageComponent.m_SrcRect.width;
+            tile["src_height"] = imageComponent.m_SrcRect.height;
 
             tileArray.push_back(tile);
         }
@@ -149,7 +149,7 @@ bool TileMap::Load(gaia::ecs::World& world, const std::string& fileName)
         return false;
     }
 
-    world.add<MapDataComponent>(m_Root, std::move(mapDataComponent));
+    mapDataComponent.m_Tiles.resize((size_t)mapDataComponent.m_Column * mapDataComponent.m_Row);
 
     const auto& tileList = fromJson.value("tilelist", nlohmann::json::array());
 
@@ -159,8 +159,13 @@ bool TileMap::Load(gaia::ecs::World& world, const std::string& fileName)
         return false;
     }
 
+    int i=0;
+
     for (const auto& tiles : tileList)
     {
+        const uint32_t col = i % mapDataComponent.m_Column;
+        const uint32_t row = i / mapDataComponent.m_Column;
+
         for (const auto& tile : tiles)
         {
             gaia::ecs::Entity entity = world.add();
@@ -178,15 +183,21 @@ bool TileMap::Load(gaia::ecs::World& world, const std::string& fileName)
             imageComponent.m_TextureHash = textureHash;
             imageComponent.m_Texture = *texture;
             imageComponent.m_SrcRect = {
-                (float) tile.value("x",0),
-                (float) tile.value("y",0),
-                (float) tile.value("width",0),
-                (float) tile.value("height",0)
+                (float) tile.value("src_x",0),
+                (float) tile.value("src_y",0),
+                (float) tile.value("src_width",0),
+                (float) tile.value("src_height",0)
             };
 
             world.add<ImageComponent>(entity, std::move(imageComponent));
+            world.add<GridCellComponent>(entity, {col, row});
+            mapDataComponent.m_Tiles[(size_t)i].push_back(entity);
         }
+
+        i++;
     }
+
+    world.add<MapDataComponent>(m_Root, std::move(mapDataComponent));
 
     return true;
 }
