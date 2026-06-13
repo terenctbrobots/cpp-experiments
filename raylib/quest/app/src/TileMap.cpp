@@ -7,9 +7,11 @@
 #include "Components/Transform2D.h"
 #include "TileList.h"
 #include "spdlog/spdlog.h"
+#include "TextureManager.h"
 
 #include <fstream>
 #include <nlohmann/json.hpp>
+#include <sys/types.h>
 
 TileMap TileMap::Create(gaia::ecs::World& world, const TileMapConfig& config)
 {
@@ -162,6 +164,27 @@ bool TileMap::Load(gaia::ecs::World& world, const std::string& fileName)
         for (const auto& tile : tiles)
         {
             gaia::ecs::Entity entity = world.add();
+            u_int32_t textureHash = tile["texture_hash"];
+
+            const Texture2D* texture = TextureManager::GetTexture(textureHash);
+
+            if (texture == nullptr)
+            {
+                spdlog::error("Got texture hash {} but could not find it in TextureManager",textureHash);
+                return false;
+            }
+
+            ImageComponent imageComponent;
+            imageComponent.m_TextureHash = textureHash;
+            imageComponent.m_Texture = *texture;
+            imageComponent.m_SrcRect = {
+                (float) tile.value("x",0),
+                (float) tile.value("y",0),
+                (float) tile.value("width",0),
+                (float) tile.value("height",0)
+            };
+
+            world.add<ImageComponent>(entity, std::move(imageComponent));
         }
     }
 
