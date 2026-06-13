@@ -161,7 +161,7 @@ bool TileMap::Load(gaia::ecs::World& world, const std::string& fileName)
 
     mapDataComponent.m_Tiles.resize((size_t)mapDataComponent.m_Column * mapDataComponent.m_Row);
 
-    const auto& tileList = fromJson.value("tilelist", nlohmann::json::array());
+    const auto& tileList = fromJson.value("tiles", nlohmann::json::array());
 
     if (tileList.size() == 0)
     {

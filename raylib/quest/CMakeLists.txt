@@ -12,6 +12,5 @@ find_package(gaia REQUIRED)
 
 #enable_testing() # Required to run 'ctest'
 
-# add_subdirectory(lib)
 add_subdirectory(app)
 #add_subdirectory(tests)
