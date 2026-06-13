@@ -5,12 +5,13 @@
 #include "Components/LayerComponent.h"
 #include "Components/MapDataComponent.h"
 #include "Components/Transform2D.h"
+#include "TextureManager.h"
 #include "TileList.h"
 #include "spdlog/spdlog.h"
-#include "TextureManager.h"
 
 #include <fstream>
 #include <nlohmann/json.hpp>
+#include <string>
 #include <sys/types.h>
 
 TileMap TileMap::Create(gaia::ecs::World& world, const TileMapConfig& config)
@@ -89,13 +90,13 @@ bool TileMap::Save(gaia::ecs::World& world, const std::string& fileName)
             nlohmann::json tile;
             auto& imageComponent = world.get<ImageComponent>(tileEntity);
 
-            tile["texture_hash"] = imageComponent.m_TextureHash;
+            tile["texture_hash"] = std::to_string(imageComponent.m_TextureHash);
             tile["src_x"] = imageComponent.m_SrcRect.x;
             tile["src_y"] = imageComponent.m_SrcRect.y;
             tile["src_width"] = imageComponent.m_SrcRect.width;
             tile["src_height"] = imageComponent.m_SrcRect.height;
 
-            auto &transform2D = world.get<Transform2D>(tileEntity);
+            auto& transform2D = world.get<Transform2D>(tileEntity);
 
             tile["x"] = transform2D.m_Pos.x;
             tile["y"] = transform2D.m_Pos.y;
@@ -169,7 +170,7 @@ bool TileMap::Load(gaia::ecs::World& world, const std::string& fileName)
         return false;
     }
 
-    int i=0;
+    int i = 0;
 
     for (const auto& tiles : tileList)
     {
@@ -179,47 +180,41 @@ bool TileMap::Load(gaia::ecs::World& world, const std::string& fileName)
         for (const auto& tile : tiles)
         {
             gaia::ecs::Entity entity = world.add();
-            u_int32_t textureHash = tile["texture_hash"];
+            std::string textureHashString = tile["texture_hash"];
+            u_int32_t textureHash = static_cast<u_int32_t>(std::stoul(textureHashString));
 
             const Texture2D* texture = TextureManager::GetTexture(textureHash);
 
             if (texture == nullptr)
             {
-                spdlog::error("Got texture hash {} but could not find it in TextureManager",textureHash);
+                spdlog::error("Got texture hash {} but could not find it in TextureManager", textureHash);
                 return false;
             }
 
             ImageComponent imageComponent;
             imageComponent.m_TextureHash = textureHash;
             imageComponent.m_Texture = *texture;
-            imageComponent.m_SrcRect = {
-                (float) tile.value("src_x",0),
-                (float) tile.value("src_y",0),
-                (float) tile.value("src_width",0),
-                (float) tile.value("src_height",0)
-            };
+            imageComponent.m_SrcRect = {tile.value("src_x", 0.0f), tile.value("src_y", 0.0f),
+                                        tile.value("src_width", 0.0f), tile.value("src_height", 0.0f)};
 
             world.add<ImageComponent>(entity, std::move(imageComponent));
             world.add<GridCellComponent>(entity, {col, row});
 
             Transform2D transform2D;
-            transform2D.m_Pos = {
-                (float) tile.value("x", 0),
-                (float) tile.value("y", 0)
-            };
+            transform2D.m_Pos = {tile.value("x", 0.0f), tile.value("y", 0.0f)};
             world.add<Transform2D>(entity, std::move(transform2D));
 
             int layer = tile.value("layer", 1);
 
-            switch(layer)
+            switch (layer)
             {
-                case 1:
-                    world.add<LayerOneComponent>(entity);
-                    break;
-                default:
-                    spdlog::warn("Unknown layer detected, defaulting to Layer 1");
-                    world.add<LayerOneComponent>(entity);
-                    break;
+            case 1:
+                world.add<LayerOneComponent>(entity);
+                break;
+            default:
+                spdlog::warn("Unknown layer detected, defaulting to Layer 1");
+                world.add<LayerOneComponent>(entity);
+                break;
             }
 
             mapDataComponent.m_Tiles[(size_t)i].push_back(entity);
@@ -233,6 +228,7 @@ bool TileMap::Load(gaia::ecs::World& world, const std::string& fileName)
     return true;
 }
 
+// Does not clear textures, so you have to manually do it
 void TileMap::Destroy(gaia::ecs::World& world)
 {
     if (m_Root == gaia::ecs::EntityBad)

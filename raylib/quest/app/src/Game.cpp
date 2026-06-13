@@ -1,6 +1,5 @@
 #include "Game.h"
 
-#include "Components/ImageComponent.h"
 #include "TextureManager.h"
 #include "TileList.h"
 #include "TileMap.h"
@@ -39,6 +38,7 @@ void Game::LoadTileMap()
     spdlog::info("Loading TileMap");
     m_TileMap.Destroy(m_World);
     m_TileMap.Load(m_World, "./test.json");
+    spdlog::info("Loading complete");
 }
 
 void Game::Cleanup()

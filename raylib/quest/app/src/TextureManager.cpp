@@ -1,6 +1,7 @@
 #include "TextureManager.h"
 
 #include "Hash.h"
+#include "spdlog/spdlog.h"
 
 #include <unordered_map>
 
@@ -19,6 +20,7 @@ u_int32_t TextureManager::Add(const std::string& texturePath, const Texture2D& n
         newTexture.m_TextureType = textureType;
 
         s_TextureList.emplace(hash, std::move(newTexture));
+        spdlog::info("TExture hash {}", hash);
         return hash;
     }
 
