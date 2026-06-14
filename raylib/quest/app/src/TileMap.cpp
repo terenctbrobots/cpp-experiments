@@ -11,6 +11,7 @@
 
 #include <fstream>
 #include <nlohmann/json.hpp>
+#include <raylib.h>
 #include <string>
 #include <sys/types.h>
 
@@ -180,24 +181,29 @@ bool TileMap::Load(gaia::ecs::World& world, const std::string& fileName)
         for (const auto& tile : tiles)
         {
             gaia::ecs::Entity entity = world.add();
-            // std::string textureHashString = tile["texture_hash"];
-            // u_int32_t textureHash = static_cast<u_int32_t>(std::stoul(textureHashString));
 
-            // const Texture2D* texture = TextureManager::GetTexture(textureHash);
+            std::string textureKey = tile.value("texture_key", "");
 
-            // if (texture == nullptr)
-            // {
-            //     spdlog::error("Got texture hash {} but could not find it in TextureManager", textureHash);
-            //     return false;
-            // }
+            if (textureKey.empty())
+            {
+                spdlog::error("Could not find texture key");
+                return false;
+            }
 
-            // ImageComponent imageComponent;
-            // imageComponent.m_TextureHash = textureHash;
-            // imageComponent.m_Texture = *texture;
-            // imageComponent.m_SrcRect = {tile.value("src_x", 0.0f), tile.value("src_y", 0.0f),
-            //                             tile.value("src_width", 0.0f), tile.value("src_height", 0.0f)};
+            ImageComponent imageComponent;
+            imageComponent.m_TextureKey = textureKey;
+            imageComponent.m_Texture = TextureManager::Get(textureKey);
 
-            // world.add<ImageComponent>(entity, std::move(imageComponent));
+            if (!IsTextureValid(imageComponent.m_Texture))
+            {
+                spdlog::error("Invalid texture");
+                return false;
+            }
+
+            imageComponent.m_SrcRect = {tile.value("src_x", 0.0f), tile.value("src_y", 0.0f),
+                                        tile.value("src_width", 0.0f), tile.value("src_height", 0.0f)};
+
+            world.add<ImageComponent>(entity, std::move(imageComponent));
             world.add<GridCellComponent>(entity, {col, row});
 
             Transform2D transform2D;

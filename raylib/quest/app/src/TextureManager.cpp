@@ -1,6 +1,5 @@
 #include "TextureManager.h"
 
-#include "Hash.h"
 #include "spdlog/spdlog.h"
 
 #include <fstream>
@@ -92,48 +91,17 @@ const TextureManager::Texture& TextureManager::Load(const std::string& key)
     return s_EmptyTexture;
 }
 
-// u_int32_t TextureManager::Add(const std::string& texturePath, const Texture2D& newTexture2D,
-//                               TextureManager::TextureType textureType)
-// {
-//     u_int32_t hash = HS(texturePath);
+const Texture2D& TextureManager::Get(const std::string& key)
+{
+    auto it = s_TextureList.find(key);
 
-//     if (s_TextureList.count(hash) == 0)
-//     {
-//         Texture newTexture;
-//         newTexture.m_Path = texturePath;
-//         newTexture.m_Texture = newTexture2D;
-//         newTexture.m_TextureType = textureType;
+    if (it != s_TextureList.end())
+    {
+        return it->second.m_Texture;
+    }
 
-//         s_TextureList.emplace(hash, std::move(newTexture));
-//         spdlog::info("TExture hash {}", hash);
-//         return hash;
-//     }
-
-//     return 0;
-// }
-
-// const Texture2D* TextureManager::GetTexture(u_int32_t hash)
-// {
-//     if (s_TextureList.count(hash) == 0)
-//     {
-//         return nullptr;
-//     }
-
-//     return &s_TextureList[hash].m_Texture;
-// }
-
-// const u_int32_t TextureManager::GetHash(const Texture2D& checkTexture)
-// {
-//     for (const auto& [key, texture] : s_TextureList)
-//     {
-//         if (texture.m_Texture.id == checkTexture.id)
-//         {
-//             return key;
-//         }
-//     }
-
-//     return 0;
-// }
+    return s_EmptyTexture.m_Texture;
+}
 
 void TextureManager::Clear()
 {
@@ -146,20 +114,20 @@ void TextureManager::Clear()
 
 void TextureManager::Clear(TextureManager::TextureType textureType)
 {
-    // std::unordered_map<u_int32_t, TextureManager::Texture> newTextureList;
+    std::unordered_map<std::string, TextureManager::Texture> newTextureList;
 
-    // for (const auto& [key, texture] : s_TextureList)
-    // {
-    //     if (texture.m_TextureType == textureType)
-    //     {
-    //         UnloadTexture(texture.m_Texture);
-    //     }
-    //     else
-    //     {
-    //         newTextureList.emplace(key, texture);
-    //     }
-    // }
+    for (const auto& [key, texture] : s_TextureList)
+    {
+        if (texture.m_TextureType == textureType)
+        {
+            UnloadTexture(texture.m_Texture);
+        }
+        else
+        {
+            newTextureList.emplace(key, texture);
+        }
+    }
 
-    // s_TextureList.clear();
-    // s_TextureList = std::move(newTextureList);
+    s_TextureList.clear();
+    s_TextureList = std::move(newTextureList);
 }

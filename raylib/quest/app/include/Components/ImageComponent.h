@@ -2,6 +2,8 @@
 
 #include "raylib.h"
 
+#include <string>
+
 struct ImageComponent
 {
     Texture2D m_Texture;
