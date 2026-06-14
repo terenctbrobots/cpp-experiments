@@ -14,7 +14,7 @@ class Game
     {
     }
 
-    void SetupTileMap();
+    void Initialize();
     void RegisterSystems(float& dt);
 
     void Update(float& dt);

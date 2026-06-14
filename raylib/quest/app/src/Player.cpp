@@ -8,37 +8,36 @@
 #include "Components/LayerComponent.h"
 #include "Components/Transform2D.h"
 #include "Components/VelocityComponent.h"
-#include "Hash.h"
 #include "TextureManager.h"
 #include "spdlog/spdlog.h"
 
-const float speed = 100.0f;
-const std::string playerTexturePath = "./assets/characters/player.png";
+#include <raylib.h>
+
+constexpr float s_Speed = 100.0f;
+const std::string s_PlayerTexture = "player";
 
 gaia::ecs::Entity Player::Create(gaia::ecs::World& world)
 {
     gaia::ecs::Entity entity = world.add();
 
-    world.add<VelocityComponent>(entity, {speed, {0.0f, 0.0f}});
+    world.add<VelocityComponent>(entity, {s_Speed, {0.0f, 0.0f}});
 
     world.add<LayerTwoComponent>(entity);
 
     world.add<Transform2D>(entity, {0.0f, 0.0f});
-    Texture2D playerTexture = LoadTexture(playerTexturePath.c_str());
 
-    if (playerTexture.id <= 0)
+    auto& texture = TextureManager::Load(s_PlayerTexture);
+
+    if (!IsTextureValid(texture.m_Texture))
     {
         spdlog::error("Could not load Player Texture");
         return gaia::ecs::EntityBad;
     }
 
-    u_int32_t textureHash =
-        TextureManager::Add(playerTexturePath, playerTexture, TextureManager::TextureType::Character);
-
     ImageComponent imageComponent;
-    imageComponent.m_Texture = playerTexture;
+    imageComponent.m_Texture = texture.m_Texture;
     imageComponent.m_SrcRect = {0, 0, 64, 64};
-    imageComponent.m_TextureHash = textureHash;
+    imageComponent.m_TextureKey = s_PlayerTexture;
 
     world.add<ImageComponent>(entity, std::move(imageComponent));
 

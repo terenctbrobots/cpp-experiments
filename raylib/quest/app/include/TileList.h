@@ -4,18 +4,23 @@
 
 #include <gaia.h>
 
+namespace TextureManager
+{
+    struct Texture;
+};
+
 namespace TileList
 {
     struct Tile
     {
         std::string m_Name;
-        u_int32_t m_TextureHash;
         Texture2D m_Texture;
+        std::string m_TextureKey;
         Rectangle m_SrcRect;
     };
 
     bool LoadTileList();
-    bool LoadTileSet(const std::string& tileSetFilename, const std::string& textureFilename);
+    bool LoadTileSet(const std::string& textureKey, const TextureManager::Texture& texture);
 
     const Tile* Get(const u_int32_t tileId);
 } // namespace TileList

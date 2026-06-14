@@ -5,8 +5,10 @@
 #include "TileMap.h"
 #include "spdlog/spdlog.h"
 
-void Game::SetupTileMap()
+void Game::Initialize()
 {
+    TextureManager::Initialize();
+
     TileList::LoadTileList();
     TileMapConfig defaultConfig = {"default", 60, 60, 16, 16};
 

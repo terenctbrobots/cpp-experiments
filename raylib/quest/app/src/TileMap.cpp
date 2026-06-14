@@ -43,7 +43,7 @@ TileMap TileMap::Create(gaia::ecs::World& world, const TileMapConfig& config)
 
         ImageComponent imageComponent;
         imageComponent.m_Texture = defaultTile->m_Texture;
-        imageComponent.m_TextureHash = defaultTile->m_TextureHash;
+        imageComponent.m_TextureKey = defaultTile->m_TextureKey;
         imageComponent.m_SrcRect = defaultTile->m_SrcRect;
 
         world.add<ImageComponent>(tileEntity, std::move(imageComponent));
@@ -90,7 +90,7 @@ bool TileMap::Save(gaia::ecs::World& world, const std::string& fileName)
             nlohmann::json tile;
             auto& imageComponent = world.get<ImageComponent>(tileEntity);
 
-            tile["texture_hash"] = std::to_string(imageComponent.m_TextureHash);
+            tile["texture_key"] = imageComponent.m_TextureKey;
             tile["src_x"] = imageComponent.m_SrcRect.x;
             tile["src_y"] = imageComponent.m_SrcRect.y;
             tile["src_width"] = imageComponent.m_SrcRect.width;
@@ -180,24 +180,24 @@ bool TileMap::Load(gaia::ecs::World& world, const std::string& fileName)
         for (const auto& tile : tiles)
         {
             gaia::ecs::Entity entity = world.add();
-            std::string textureHashString = tile["texture_hash"];
-            u_int32_t textureHash = static_cast<u_int32_t>(std::stoul(textureHashString));
+            // std::string textureHashString = tile["texture_hash"];
+            // u_int32_t textureHash = static_cast<u_int32_t>(std::stoul(textureHashString));
 
-            const Texture2D* texture = TextureManager::GetTexture(textureHash);
+            // const Texture2D* texture = TextureManager::GetTexture(textureHash);
 
-            if (texture == nullptr)
-            {
-                spdlog::error("Got texture hash {} but could not find it in TextureManager", textureHash);
-                return false;
-            }
+            // if (texture == nullptr)
+            // {
+            //     spdlog::error("Got texture hash {} but could not find it in TextureManager", textureHash);
+            //     return false;
+            // }
 
-            ImageComponent imageComponent;
-            imageComponent.m_TextureHash = textureHash;
-            imageComponent.m_Texture = *texture;
-            imageComponent.m_SrcRect = {tile.value("src_x", 0.0f), tile.value("src_y", 0.0f),
-                                        tile.value("src_width", 0.0f), tile.value("src_height", 0.0f)};
+            // ImageComponent imageComponent;
+            // imageComponent.m_TextureHash = textureHash;
+            // imageComponent.m_Texture = *texture;
+            // imageComponent.m_SrcRect = {tile.value("src_x", 0.0f), tile.value("src_y", 0.0f),
+            //                             tile.value("src_width", 0.0f), tile.value("src_height", 0.0f)};
 
-            world.add<ImageComponent>(entity, std::move(imageComponent));
+            // world.add<ImageComponent>(entity, std::move(imageComponent));
             world.add<GridCellComponent>(entity, {col, row});
 
             Transform2D transform2D;

@@ -3,7 +3,6 @@
 #include "Player.h"
 #include "raylib.h"
 
-#include <cmath>
 #include <gaia.h>
 
 const int screenWidth = 1280;
@@ -26,7 +25,7 @@ int main()
         return 0;
     }
 
-    game.SetupTileMap();
+    game.Initialize();
 
     game.RegisterSystems(dt);
 

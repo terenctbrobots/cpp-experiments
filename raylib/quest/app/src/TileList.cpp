@@ -10,37 +10,31 @@
 
 static std::unordered_map<u_int32_t, TileList::Tile> s_TileList;
 
+const std::string s_PlainsTexture = "plains";
+
 bool TileList::LoadTileList()
 {
     bool returnResult = false;
 
-    returnResult = LoadTileSet("./assets/tilesets/plains.json", "./assets/tilesets/plains.png");
-    return returnResult;
+    auto& plainsTexture = TextureManager::Load(s_PlainsTexture);
+
+    if (!IsTextureValid(plainsTexture.m_Texture))
+    {
+        spdlog::error("Could not load texture");
+        return false;
+    }
+
+    returnResult = LoadTileSet(s_PlainsTexture, plainsTexture);
+    return true;
 }
 
-bool TileList::LoadTileSet(const std::string& tileSetFilename, const std::string& textureFilename)
+bool TileList::LoadTileSet(const std::string& textureKey, const TextureManager::Texture& texture)
 {
-    Texture2D tilesetTexture = LoadTexture(textureFilename.c_str());
-
-    if (tilesetTexture.id <= 0)
-    {
-        spdlog::error("Could not load Tileset Texture {}", textureFilename);
-        return false;
-    }
-
-    u_int32_t textureHash = TextureManager::Add(tileSetFilename, tilesetTexture, TextureManager::TextureType::TileList);
-
-    if (textureHash == 0)
-    {
-        spdlog::error("Could not load texture, duplicate exists");
-        return false;
-    }
-
-    std::ifstream file(tileSetFilename);
+    std::ifstream file(texture.m_DataPath);
 
     if (!file.is_open())
     {
-        spdlog::error("Could not open {} json file", tileSetFilename);
+        spdlog::error("Could not open {} json file", texture.m_DataPath);
         return false;
     }
 
@@ -97,8 +91,8 @@ bool TileList::LoadTileSet(const std::string& tileSetFilename, const std::string
 
             Tile newTile;
             newTile.m_Name = baseName;
-            newTile.m_TextureHash = textureHash;
-            newTile.m_Texture = tilesetTexture;
+            newTile.m_TextureKey = textureKey;
+            newTile.m_Texture = texture.m_Texture;
             newTile.m_SrcRect = {x * tileWidth, y * tileHeight, tileWidth, tileHeight};
 
             u_int32_t key = HS(baseName);
@@ -122,7 +116,7 @@ bool TileList::LoadTileSet(const std::string& tileSetFilename, const std::string
 
             Tile newTile;
             newTile.m_Name = uniqueJson.key();
-            newTile.m_Texture = tilesetTexture;
+            newTile.m_Texture = texture.m_Texture;
 
             if (tileJson["x"] == nullptr)
             {
