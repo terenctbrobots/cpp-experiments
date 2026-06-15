@@ -64,6 +64,7 @@ bool TextureManager::Initialize()
 
         newTexture.m_Path = texture.value("path", "");
         newTexture.m_DataPath = texture.value("data", "");
+        newTexture.m_Texture.id = 0;
 
         if (newTexture.m_Path.empty() || newTexture.m_DataPath.empty())
         {
@@ -82,10 +83,11 @@ const TextureManager::Texture& TextureManager::Load(const std::string& key)
     auto it = s_TextureList.find(key);
     if (it != s_TextureList.end())
     {
-        Texture& texture = it->second;
-
-        texture.m_Texture = LoadTexture(texture.m_Path.c_str());
-        return texture;
+        if (!IsTextureValid(it->second.m_Texture))
+        {
+            it->second.m_Texture = LoadTexture(it->second.m_Path.c_str());
+        }
+        return it->second;
     }
 
     return s_EmptyTexture;

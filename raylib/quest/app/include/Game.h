@@ -14,7 +14,7 @@ class Game
     {
     }
 
-    void Initialize();
+    bool Initialize();
     void RegisterSystems(float& dt);
 
     void Update(float& dt);

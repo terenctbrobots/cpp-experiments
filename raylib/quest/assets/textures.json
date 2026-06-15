@@ -3,14 +3,14 @@
     {
       "key": "player",
       "type": "sprite",
-      "path": "/assets/characters/player.png",
-      "data": "/assets/characters/player.json"
+      "path": "./assets/characters/player.png",
+      "data": "./assets/characters/player.json"
     },
     {
       "key": "plains",
       "type": "tileset",
-      "path": "/assets/tilesets/plains.png",
-      "data": "/assets/tilesets/plains.json"
+      "path": "./assets/tilesets/plains.png",
+      "data": "./assets/tilesets/plains.json"
     }
   ]
 }

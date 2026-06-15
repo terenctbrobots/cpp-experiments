@@ -17,6 +17,11 @@ int main()
     InitWindow(screenWidth, screenHeight, "Quest");
     SetTargetFPS(60);
 
+    if (!game.Initialize())
+    {
+        return -1;
+    }
+
     gaia::ecs::Entity player = Player::Create(world);
 
     if (player == gaia::ecs::EntityBad)
@@ -24,8 +29,6 @@ int main()
         CloseWindow();
         return 0;
     }
-
-    game.Initialize();
 
     game.RegisterSystems(dt);
 

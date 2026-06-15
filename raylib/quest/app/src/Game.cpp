@@ -5,15 +5,22 @@
 #include "TileMap.h"
 #include "spdlog/spdlog.h"
 
-void Game::Initialize()
+bool Game::Initialize()
 {
-    TextureManager::Initialize();
+    bool result = TextureManager::Initialize();
+
+    if (!result)
+    {
+        return false;
+    }
 
     TileList::LoadTileList();
     TileMapConfig defaultConfig = {"default", 60, 60, 16, 16};
 
     m_TileMap = TileMap::Create(m_World, defaultConfig);
     m_TileMap.Save(m_World, "./test.json");
+
+    return true;
 }
 
 void Game::RegisterSystems(float& dt)
