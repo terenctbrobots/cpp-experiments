@@ -117,6 +117,7 @@ bool TileList::LoadTileSet(const std::string& textureKey, const TextureManager::
             Tile newTile;
             newTile.m_Name = uniqueJson.key();
             newTile.m_Texture = texture.m_Texture;
+            newTile.m_TextureKey = textureKey;
 
             if (tileJson["x"] == nullptr)
             {
