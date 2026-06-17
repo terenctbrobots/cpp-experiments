@@ -6,23 +6,23 @@
   "animation": {
     "idle_down": {
       "frameRate": 5,
-      "frames": 6,
+      "frames": 4,
       "y": 0
     },
     "idle_right": {
       "frameRate": 5,
-      "frames": 6,
+      "frames": 4,
       "y": 48
     },
     "idle_left": {
       "frameRate": 5,
-      "frames": 6,
+      "frames": 4,
       "y": 48,
       "flip": true
     },
     "idle_up": {
       "frameRate": 5,
-      "frames": 6,
+      "frames": 4,
       "y": 96
     },
     "move_down": {
@@ -48,29 +48,49 @@
     },
     "attack_down": {
       "frameRate": 5,
-      "frames": 4,
+      "frames": 7,
       "y": 288
     },
     "attack_left": {
       "frameRate": 5,
-      "frames": 4,
+      "frames": 7,
       "y": 336,
       "flip": true
     },
     "attack_right": {
       "frameRate": 5,
-      "frames": 4,
+      "frames": 7,
       "y": 336
     },
     "attack_up": {
       "frameRate": 5,
-      "frames": 4,
+      "frames": 7,
       "y": 384
+    },
+    "damage_down": {
+      "frameRate": 5,
+      "frames": 3,
+      "y": 432
+    },
+    "damage_left": {
+      "frameRate": 5,
+      "frames": 3,
+      "y": 480
+    },
+    "damage_right": {
+      "frameRate": 5,
+      "frames": 3,
+      "y": 480
+    },
+    "damage_up": {
+      "frameRate": 5,
+      "frames": 3,
+      "y": 528
     },
     "death": {
       "frameRate": 5,
-      "frames": 4,
-      "y": 432
+      "frames": 5,
+      "y": 576
     }
   }
 }
