@@ -5,7 +5,7 @@
   "defaultAnimation": "idle_down",
   "animation": {
     "idle_down": {
-      "frameRate": 2,
+      "frameRate": 5,
       "frames": 4,
       "y": 0
     },

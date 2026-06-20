@@ -129,12 +129,11 @@ bool Animation::Load(const std::string& fileName, AnimationDataComponent& animat
             y = frameJson.value("y", 0);
         }
 
-        for (int xCount = 0; xCount < frameData.m_Frames; xCount++)
+        for (int i = 0; i < frameData.m_Frames; i++)
         {
-            x += xCount * animation.m_Width;
             frameData.m_FrameList.push_back({x, y, animation.m_Width, animation.m_Height});
+            x += animation.m_Width;
         }
-
         const uint32_t key = HS(animationJson.key());
 
         auto [it, inserted] = animation.m_AnimationList.try_emplace(key, frameData);
