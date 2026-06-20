@@ -1,4 +1,5 @@
 #include "Animation.h"
+#include "Enemy.h"
 #include "Game.h"
 #include "Player.h"
 #include "raylib.h"
@@ -38,6 +39,8 @@ int main()
     camera.offset = (Vector2){(float)screenWidth / 2.0f, (float)screenHeight / 2.0f}; // Pivot
     camera.rotation = 0.0f;
     camera.zoom = 4.0f;
+
+    gaia::ecs::Entity enemy = Enemy::Create(world, {camera.offset.x - 100, camera.offset.y});
 
     Player::SetPosition(world, player, camera.offset);
     while (!WindowShouldClose() && !shouldExit)

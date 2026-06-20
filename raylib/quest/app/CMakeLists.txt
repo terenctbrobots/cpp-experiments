@@ -2,6 +2,7 @@
 # Create the executable
 add_executable(quest
     src/main.cpp
+    src/Enemy.cpp
     src/Player.cpp
     src/Game.cpp
     src/Hash.cpp

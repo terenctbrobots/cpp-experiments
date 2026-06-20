@@ -43,7 +43,7 @@ gaia::ecs::Entity Player::Create(gaia::ecs::World& world)
 
     AnimationDataComponent animationData;
 
-    if (!Animation::Load("./assets/characters/player.json", animationData))
+    if (!Animation::Load(texture.m_DataPath, animationData))
     {
         return gaia::ecs::EntityBad;
     }

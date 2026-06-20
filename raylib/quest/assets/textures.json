@@ -7,6 +7,12 @@
       "data": "./assets/characters/player.json"
     },
     {
+      "key": "slime",
+      "type": "sprite",
+      "path": "./assets/characters/slime.png",
+      "data": "./assets/characters/slime.json"
+    },
+    {
       "key": "plains",
       "type": "tileset",
       "path": "./assets/tilesets/plains.png",

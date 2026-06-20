@@ -21,16 +21,15 @@ void AnimationSystem::Update(float& dt)
             if (animation.m_Timer >= frame.m_FrameDuration)
             {
                 animation.m_CurrentFrame += 1;
+                animation.m_Timer -= frame.m_FrameDuration;
 
-                if (animation.m_CurrentFrame == frame.m_Frames)
+                if (animation.m_CurrentFrame >= frame.m_Frames)
                 {
                     animation.m_CurrentFrame = 0;
                 }
 
                 sprite.m_SrcRect = frame.m_FrameList[animation.m_CurrentFrame];
                 sprite.m_Flip = frame.m_Flip;
-
-                animation.m_Timer -= frame.m_FrameDuration;
             }
         });
 }
