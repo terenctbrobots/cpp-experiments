@@ -3,6 +3,7 @@
 #include "Animation.h"
 #include "Components/AnimationComponent.h"
 #include "Components/AnimationDataComponent.h"
+#include "Components/BoundingBoxComponent.h"
 #include "Components/ImageComponent.h"
 #include "Components/LayerComponent.h"
 #include "Components/Transform2D.h"
@@ -33,7 +34,7 @@ gaia::ecs::Entity Enemy::Create(gaia::ecs::World& world, const Vector2& startPos
 
     ImageComponent imageComponent;
     imageComponent.m_Texture = texture.m_Texture;
-    imageComponent.m_SrcRect = {0, 0, 64, 64};
+    imageComponent.m_SrcRect = {0, 0, 32, 32};
     imageComponent.m_TextureKey = s_EnemyTexture;
 
     world.add<ImageComponent>(entity, std::move(imageComponent));
@@ -49,6 +50,8 @@ gaia::ecs::Entity Enemy::Create(gaia::ecs::World& world, const Vector2& startPos
 
     world.add<AnimationComponent>(entity);
     world.add<AnimationDataComponent>(entity, std::move(animationData));
+
+    world.add<BoundingBoxComponent>(entity);
 
     Animation::SetAnimation(world, entity, defaultAnimation);
 

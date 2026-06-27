@@ -70,6 +70,7 @@ bool Animation::Load(const std::string& fileName, AnimationDataComponent& animat
     {
         std::string origin = jsonData.value("origin", "center");
 
+        // If origin center draw sprite half the width left and half the height up
         if (origin == "center")
         {
             animation.m_Offset = {-(animation.m_Width / 2), -(animation.m_Height / 2)};

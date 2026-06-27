@@ -4,6 +4,7 @@
 #include "Animation.h"
 #include "Components/AnimationComponent.h"
 #include "Components/AnimationDataComponent.h"
+#include "Components/BoundingBoxComponent.h"
 #include "Components/ImageComponent.h"
 #include "Components/LayerComponent.h"
 #include "Components/Transform2D.h"
@@ -54,6 +55,8 @@ gaia::ecs::Entity Player::Create(gaia::ecs::World& world)
     world.add<AnimationDataComponent>(entity, std::move(animationData));
 
     Animation::SetAnimation(world, entity, defaultAnimation);
+
+    world.add<BoundingBoxComponent>(entity);
 
     return entity;
 }
