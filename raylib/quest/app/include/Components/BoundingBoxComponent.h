@@ -6,5 +6,5 @@ struct BoundingBoxComponent
 {
     Rectangle m_Collision;
     bool m_Static = false;
-    bool m_Show = false;
+    bool m_Show = true;
 };

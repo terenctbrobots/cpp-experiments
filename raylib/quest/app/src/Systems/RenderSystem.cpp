@@ -5,6 +5,8 @@
 #include "Components/LayerComponent.h"
 #include "Components/Transform2D.h"
 
+#include <raylib.h>
+
 void RenderSystem::Init(gaia::ecs::World& world)
 {
     if (m_Debug)
@@ -42,6 +44,11 @@ void RenderSystem::Update()
 
                 Vector2 drawPos = Vector2Add(pos.m_Pos, sprite.m_Offset);
                 DrawTextureRec(sprite.m_Texture, drawRect, drawPos, WHITE);
+
+                if (boundBox.m_Show)
+                {
+                    DrawRectangleLinesEx(boundBox.m_Collision, 1.0f, RED);
+                }
             });
 
         m_QueryLayerTwo.each(
@@ -53,6 +60,11 @@ void RenderSystem::Update()
 
                 Vector2 drawPos = Vector2Add(pos.m_Pos, sprite.m_Offset);
                 DrawTextureRec(sprite.m_Texture, drawRect, drawPos, WHITE);
+
+                if (boundBox.m_Show)
+                {
+                    DrawRectangleLinesEx(boundBox.m_Collision, 1.0f, RED);
+                }
             });
 
         m_QueryLayerThree.each(
@@ -64,6 +76,11 @@ void RenderSystem::Update()
 
                 Vector2 drawPos = Vector2Add(pos.m_Pos, sprite.m_Offset);
                 DrawTextureRec(sprite.m_Texture, drawRect, drawPos, WHITE);
+
+                if (boundBox.m_Show)
+                {
+                    DrawRectangleLinesEx(boundBox.m_Collision, 1.0f, RED);
+                }
             });
 
         return;

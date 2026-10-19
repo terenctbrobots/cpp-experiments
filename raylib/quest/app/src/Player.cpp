@@ -56,7 +56,10 @@ gaia::ecs::Entity Player::Create(gaia::ecs::World& world)
 
     Animation::SetAnimation(world, entity, defaultAnimation);
 
-    world.add<BoundingBoxComponent>(entity);
+    BoundingBoxComponent boundingBoxComponent;
+    boundingBoxComponent.m_Collision = {0, 0, 17, 20};
+
+    world.add<BoundingBoxComponent>(entity, std::move(boundingBoxComponent));
 
     return entity;
 }
@@ -137,4 +140,8 @@ void Player::SetPosition(gaia::ecs::World& world, gaia::ecs::Entity& player, con
 {
     auto& transform = world.set<Transform2D>(player);
     transform.m_Pos = position;
+
+    auto& bounds = world.set<BoundingBoxComponent>(player);
+    bounds.m_Collision.x = position.x - 8;
+    bounds.m_Collision.y = position.y;
 }
