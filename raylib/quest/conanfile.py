@@ -9,7 +9,8 @@ class QuestRecipe(ConanFile):
         self.requires("raylib/5.5")
         self.requires("spdlog/1.16.0")
         self.requires("nlohmann_json/3.12.0")
-        self.requires("gaia-ecs/0.9.2")
+        self.requires("gaia-ecs/1.0.0")
+        self.requires("tsl-robin-map/1.4.0")
 
     def layout(self):
         cmake_layout(self)

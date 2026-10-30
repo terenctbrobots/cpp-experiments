@@ -1,15 +1,13 @@
 #include "Game.h"
 
-#include "TextureManager.h"
+#include "AssetManager.h"
 #include "TileList.h"
 #include "TileMap.h"
 #include "spdlog/spdlog.h"
 
 bool Game::Initialize()
 {
-    bool result = TextureManager::Initialize();
-
-    if (!result)
+    if (!AssetManager::Initialize())
     {
         return false;
     }
@@ -52,5 +50,5 @@ void Game::LoadTileMap()
 
 void Game::Cleanup()
 {
-    TextureManager::Clear();
+    AssetManager::Clear();
 }

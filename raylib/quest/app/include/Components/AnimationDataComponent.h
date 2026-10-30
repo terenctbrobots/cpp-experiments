@@ -1,12 +1,9 @@
 #pragma once
 
+#include "parallel_hashmap/phmap.h"
 #include "raylib.h"
 
 #include <cstdint>
-#include <memory>
-#include <string>
-#include <unordered_map>
-#include <vector>
 
 struct AnimationFrame
 {
@@ -25,5 +22,5 @@ struct AnimationDataComponent
 
     uint32_t m_DefaultAnimation;
 
-    std::unordered_map<uint32_t, AnimationFrame> m_AnimationList;
+    phmap::flat_hash_map<uint32_t, AnimationFrame> m_AnimationList;
 };

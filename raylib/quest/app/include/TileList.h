@@ -4,7 +4,7 @@
 
 #include <gaia.h>
 
-namespace TextureManager
+namespace AssertManager
 {
     struct Texture;
 };
@@ -20,7 +20,7 @@ namespace TileList
     };
 
     bool LoadTileList();
-    bool LoadTileSet(const std::string& textureKey, const TextureManager::Texture& texture);
+    bool LoadTileSet(const std::string& textureKey, const AssertManager::Texture& texture);
 
     const Tile* Get(const u_int32_t tileId);
 } // namespace TileList

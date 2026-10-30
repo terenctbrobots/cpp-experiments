@@ -1,17 +1,16 @@
 #include "Enemy.h"
 
 #include "Animation.h"
+#include "AssetManager.h"
 #include "Components/AnimationComponent.h"
 #include "Components/AnimationDataComponent.h"
 #include "Components/BoundingBoxComponent.h"
+#include "Components/EnemyComponent.h"
 #include "Components/ImageComponent.h"
 #include "Components/LayerComponent.h"
 #include "Components/Transform2D.h"
 #include "Components/VelocityComponent.h"
-#include "TextureManager.h"
 #include "spdlog/spdlog.h"
-
-#include <gaia/ecs/id.h>
 
 constexpr float s_Speed = 100.0f;
 const std::string s_EnemyTexture = "slime";
@@ -20,9 +19,11 @@ gaia::ecs::Entity Enemy::Create(gaia::ecs::World& world, const Vector2& startPos
 {
     gaia::ecs::Entity entity = world.add();
 
+    world.add<EnemyComponent>(entity);
     world.add<VelocityComponent>(entity, {s_Speed, {0.0f, 0.0f}});
     world.add<LayerTwoComponent>(entity);
     world.add<Transform2D>(entity, {startPosition.x, startPosition.y});
+    /*
 
     auto& texture = TextureManager::Load(s_EnemyTexture);
 
@@ -41,15 +42,18 @@ gaia::ecs::Entity Enemy::Create(gaia::ecs::World& world, const Vector2& startPos
 
     AnimationDataComponent animationData;
 
-    if (!Animation::Load(texture.m_DataPath, animationData))
-    {
-        return gaia::ecs::EntityBad;
-    }
+    // if (!Animation::Load(texture.m_DataPath, animationData))
+    // {
+    //     return gaia::ecs::EntityBad;
+    // }
 
-    uint32_t defaultAnimation = animationData.m_DefaultAnimation;
+    // uint32_t defaultAnimation = animationData.m_DefaultAnimation;
 
     world.add<AnimationComponent>(entity);
     world.add<AnimationDataComponent>(entity, std::move(animationData));
+
+
+
 
     BoundingBoxComponent boundingBoxComponent;
     boundingBoxComponent.m_Collision = {startPosition.x - 8, startPosition.y - 8, 16, 16};
@@ -57,6 +61,6 @@ gaia::ecs::Entity Enemy::Create(gaia::ecs::World& world, const Vector2& startPos
     world.add<BoundingBoxComponent>(entity, std::move(boundingBoxComponent));
 
     Animation::SetAnimation(world, entity, defaultAnimation);
-
+*/
     return entity;
 }

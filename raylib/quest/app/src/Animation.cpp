@@ -28,14 +28,14 @@ void Animation::SetAnimation(gaia::ecs::World& world, gaia::ecs::Entity entity, 
     if (!world.has<ImageComponent>(entity))
         return;
 
-    auto& sprite = world.set<ImageComponent>(entity);
+    auto sprite = world.get<ImageComponent>(entity);
     sprite.m_SrcRect = animationFrame.m_FrameList[0];
     sprite.m_Offset = animationData.m_Offset;
 
     if (!world.has<AnimationComponent>(entity))
         return;
 
-    auto& animation = world.set<AnimationComponent>(entity);
+    auto animation = world.get<AnimationComponent>(entity);
     animation.m_CurrentAnimation = animationName;
     animation.m_CurrentFrame = 0;
     animation.m_Timer = animationFrame.m_FrameDuration;

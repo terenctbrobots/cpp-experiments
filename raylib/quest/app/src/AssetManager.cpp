@@ -1,4 +1,4 @@
-#include "TextureManager.h"
+#include "AssetManager.h"
 
 #include "spdlog/spdlog.h"
 
@@ -7,10 +7,10 @@
 #include <raylib.h>
 #include <unordered_map>
 
-static std::unordered_map<std::string, TextureManager::Texture> s_TextureList;
-static TextureManager::Texture s_EmptyTexture = {TextureManager::TextureType::Invalid, "", "", {}};
+static std::unordered_map<std::string, AssetManager::Texture> s_TextureList;
+static AssetManager::Texture s_EmptyTexture = {AssetManager::TextureType::Invalid, "", "", {}};
 
-bool TextureManager::Initialize()
+bool AssetManager::Initialize()
 {
     if (!s_TextureList.empty())
     {
@@ -78,7 +78,7 @@ bool TextureManager::Initialize()
     return true;
 }
 
-const TextureManager::Texture& TextureManager::Load(const std::string& key)
+const AssetManager::Texture& AssetManager::LoadTexture(const std::string& key)
 {
     auto it = s_TextureList.find(key);
     if (it != s_TextureList.end())
@@ -93,7 +93,7 @@ const TextureManager::Texture& TextureManager::Load(const std::string& key)
     return s_EmptyTexture;
 }
 
-const Texture2D& TextureManager::Get(const std::string& key)
+const Texture2D& AssetManager::GetTexture(const std::string& key)
 {
     auto it = s_TextureList.find(key);
 
@@ -105,7 +105,7 @@ const Texture2D& TextureManager::Get(const std::string& key)
     return s_EmptyTexture.m_Texture;
 }
 
-void TextureManager::Clear()
+void AssetManager::Clear()
 {
     for (const auto& [key, texture] : s_TextureList)
     {
@@ -114,9 +114,9 @@ void TextureManager::Clear()
     s_TextureList.clear();
 }
 
-void TextureManager::Clear(TextureManager::TextureType textureType)
+void AssetManager::ClearTexture(AssetManager::TextureType textureType)
 {
-    std::unordered_map<std::string, TextureManager::Texture> newTextureList;
+    std::unordered_map<std::string, AssetManager::Texture> newTextureList;
 
     for (const auto& [key, texture] : s_TextureList)
     {

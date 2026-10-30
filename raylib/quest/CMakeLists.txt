@@ -11,6 +11,7 @@ find_package(raylib CONFIG REQUIRED)
 find_package(spdlog REQUIRED)
 find_package(nlohmann_json REQUIRED)
 find_package(gaia REQUIRED)
+find_package(tsl-robin-map REQUIRED)
 
 #enable_testing() # Required to run 'ctest'
 

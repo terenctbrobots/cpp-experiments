@@ -9,7 +9,7 @@ add_executable(quest
     src/Animation.cpp
     src/TileList.cpp
     src/TileMap.cpp
-    src/TextureManager.cpp
+    src/AssetManager.cpp
     src/Systems/AnimationSystem.cpp
     src/Systems/MovementSystem.cpp
     src/Systems/RenderSystem.cpp
@@ -24,6 +24,7 @@ target_link_libraries(quest PRIVATE
     spdlog::spdlog
     nlohmann_json::nlohmann_json
     gaia::gaia
+    tsl::robin_map
     )
 
 # Define the source and destination directories

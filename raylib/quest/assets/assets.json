@@ -1,0 +1,20 @@
+{
+  "player" :
+  {
+    "type": "sprite",
+    "path": "./assets/characters/player.png",
+    "data": "./assets/characters/player.json"
+  },
+  "slime" :
+  {
+      "type": "sprite",
+      "path": "./assets/characters/slime.png",
+      "data": "./assets/characters/slime.json"
+  },
+  "plains" :
+  {
+      "type": "tileset",
+      "path": "./assets/tilesets/plains.png",
+      "data": "./assets/tilesets/plains.json"
+  }
+}

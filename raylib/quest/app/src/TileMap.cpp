@@ -1,11 +1,11 @@
 #include "TileMap.h"
 
+#include "AssetManager.h"
 #include "Components/GridCellComponent.h"
 #include "Components/ImageComponent.h"
 #include "Components/LayerComponent.h"
 #include "Components/MapDataComponent.h"
 #include "Components/Transform2D.h"
-#include "TextureManager.h"
 #include "TileList.h"
 #include "spdlog/spdlog.h"
 
@@ -15,234 +15,234 @@
 #include <string>
 #include <sys/types.h>
 
-TileMap TileMap::Create(gaia::ecs::World& world, const TileMapConfig& config)
-{
-    gaia::ecs::Entity rootEntity = world.add();
+// TileMap TileMap::Create(gaia::ecs::World& world, const TileMapConfig& config)
+// {
+//     gaia::ecs::Entity rootEntity = world.add();
 
-    const int32_t total = config.m_Column * config.m_Row;
-    const TileList::Tile* defaultTile = TileList::Get(DEFAULT_TILE);
+//     const int32_t total = config.m_Column * config.m_Row;
+//     const TileList::Tile* defaultTile = TileList::Get(DEFAULT_TILE);
 
-    MapDataComponent mapData;
-    mapData.m_Column = config.m_Column;
-    mapData.m_Row = config.m_Row;
-    mapData.m_TileHeight = config.m_TileHeight;
-    mapData.m_TileWidth = config.m_TileWidth;
-    mapData.m_Tiles.resize((size_t)config.m_Column * config.m_Row);
+//     MapDataComponent mapData;
+//     mapData.m_Column = config.m_Column;
+//     mapData.m_Row = config.m_Row;
+//     mapData.m_TileHeight = config.m_TileHeight;
+//     mapData.m_TileWidth = config.m_TileWidth;
+//     mapData.m_Tiles.resize((size_t)config.m_Column * config.m_Row);
 
-    if (defaultTile == nullptr)
-    {
-        spdlog::error("Could not find a default tile to fill Tile Map with");
-        return TileMap{gaia::ecs::EntityBad};
-    }
+//     if (defaultTile == nullptr)
+//     {
+//         spdlog::error("Could not find a default tile to fill Tile Map with");
+//         return TileMap{gaia::ecs::EntityBad};
+//     }
 
-    for (int i = 0; i < total; i++)
-    {
-        const uint32_t col = i % config.m_Column;
-        const uint32_t row = i / config.m_Column;
+//     for (int i = 0; i < total; i++)
+//     {
+//         const uint32_t col = i % config.m_Column;
+//         const uint32_t row = i / config.m_Column;
 
-        gaia::ecs::Entity tileEntity = world.add();
+//         gaia::ecs::Entity tileEntity = world.add();
 
-        ImageComponent imageComponent;
-        imageComponent.m_Texture = defaultTile->m_Texture;
-        imageComponent.m_TextureKey = defaultTile->m_TextureKey;
-        imageComponent.m_SrcRect = defaultTile->m_SrcRect;
+//         ImageComponent imageComponent;
+//         imageComponent.m_Texture = defaultTile->m_Texture;
+//         imageComponent.m_TextureKey = defaultTile->m_TextureKey;
+//         imageComponent.m_SrcRect = defaultTile->m_SrcRect;
 
-        world.add<ImageComponent>(tileEntity, std::move(imageComponent));
-        world.add<GridCellComponent>(tileEntity, {col, row});
+//         world.add<ImageComponent>(tileEntity, std::move(imageComponent));
+//         world.add<GridCellComponent>(tileEntity, {col, row});
 
-        world.add<Transform2D>(tileEntity, {col * defaultTile->m_SrcRect.width, row * defaultTile->m_SrcRect.height});
-        world.add<LayerOneComponent>(tileEntity);
+//         world.add<Transform2D>(tileEntity, {col * defaultTile->m_SrcRect.width, row *
+//         defaultTile->m_SrcRect.height}); world.add<LayerOneComponent>(tileEntity);
 
-        mapData.m_Tiles[(size_t)i].push_back(tileEntity);
-    }
+//         mapData.m_Tiles[(size_t)i].push_back(tileEntity);
+//     }
 
-    world.add<MapDataComponent>(rootEntity, std::move(mapData));
+//     world.add<MapDataComponent>(rootEntity, std::move(mapData));
 
-    return TileMap{rootEntity};
-}
+//     return TileMap{rootEntity};
+// }
 
-bool TileMap::IsValid()
-{
-    return (m_Root != gaia::ecs::EntityBad);
-}
+// bool TileMap::IsValid()
+// {
+//     return (m_Root != gaia::ecs::EntityBad);
+// }
 
-bool TileMap::Save(gaia::ecs::World& world, const std::string& fileName)
-{
-    if (!world.has<MapDataComponent>(m_Root))
-    {
-        spdlog::error("No root MapDataComponent");
-        return false;
-    }
+// bool TileMap::Save(gaia::ecs::World& world, const std::string& fileName)
+// {
+//     if (!world.has<MapDataComponent>(m_Root))
+//     {
+//         spdlog::error("No root MapDataComponent");
+//         return false;
+//     }
 
-    auto& mapDataComponent = world.get<MapDataComponent>(m_Root);
+//     auto& mapDataComponent = world.get<MapDataComponent>(m_Root);
 
-    nlohmann::json toJson;
+//     nlohmann::json toJson;
 
-    toJson["column"] = mapDataComponent.m_Column;
-    toJson["row"] = mapDataComponent.m_Row;
+//     toJson["column"] = mapDataComponent.m_Column;
+//     toJson["row"] = mapDataComponent.m_Row;
 
-    toJson["tiles"] = nlohmann::json::array();
+//     toJson["tiles"] = nlohmann::json::array();
 
-    for (std::vector<gaia::ecs::Entity> tileEntityList : mapDataComponent.m_Tiles)
-    {
-        nlohmann::json tileArray = nlohmann::json::array();
-        for (gaia::ecs::Entity tileEntity : tileEntityList)
-        {
-            nlohmann::json tile;
-            auto& imageComponent = world.get<ImageComponent>(tileEntity);
+//     for (std::vector<gaia::ecs::Entity> tileEntityList : mapDataComponent.m_Tiles)
+//     {
+//         nlohmann::json tileArray = nlohmann::json::array();
+//         for (gaia::ecs::Entity tileEntity : tileEntityList)
+//         {
+//             nlohmann::json tile;
+//             auto& imageComponent = world.get<ImageComponent>(tileEntity);
 
-            tile["texture_key"] = imageComponent.m_TextureKey;
-            tile["src_x"] = imageComponent.m_SrcRect.x;
-            tile["src_y"] = imageComponent.m_SrcRect.y;
-            tile["src_width"] = imageComponent.m_SrcRect.width;
-            tile["src_height"] = imageComponent.m_SrcRect.height;
+//             tile["texture_key"] = imageComponent.m_TextureKey;
+//             tile["src_x"] = imageComponent.m_SrcRect.x;
+//             tile["src_y"] = imageComponent.m_SrcRect.y;
+//             tile["src_width"] = imageComponent.m_SrcRect.width;
+//             tile["src_height"] = imageComponent.m_SrcRect.height;
 
-            auto& transform2D = world.get<Transform2D>(tileEntity);
+//             auto& transform2D = world.get<Transform2D>(tileEntity);
 
-            tile["x"] = transform2D.m_Pos.x;
-            tile["y"] = transform2D.m_Pos.y;
+//             tile["x"] = transform2D.m_Pos.x;
+//             tile["y"] = transform2D.m_Pos.y;
 
-            if (world.has<LayerOneComponent>(tileEntity))
-            {
-                tile["layer"] = 1;
-            }
+//             if (world.has<LayerOneComponent>(tileEntity))
+//             {
+//                 tile["layer"] = 1;
+//             }
 
-            tileArray.push_back(tile);
-        }
-        toJson["tiles"].push_back(tileArray);
-    }
+//             tileArray.push_back(tile);
+//         }
+//         toJson["tiles"].push_back(tileArray);
+//     }
 
-    std::ofstream file(fileName);
-    if (!file)
-    {
-        spdlog::error("Cannot open {} file to write", fileName);
-        return false;
-    }
+//     std::ofstream file(fileName);
+//     if (!file)
+//     {
+//         spdlog::error("Cannot open {} file to write", fileName);
+//         return false;
+//     }
 
-    file << toJson.dump(4); // Indent by 4
-    return true;
-}
+//     file << toJson.dump(4); // Indent by 4
+//     return true;
+// }
 
-bool TileMap::Load(gaia::ecs::World& world, const std::string& fileName)
-{
-    if (m_Root != gaia::ecs::EntityBad)
-    {
-        spdlog::error("Use and empty Tilemap or call Destroy before Loading");
-        return false;
-    }
+// bool TileMap::Load(gaia::ecs::World& world, const std::string& fileName)
+// {
+//     if (m_Root != gaia::ecs::EntityBad)
+//     {
+//         spdlog::error("Use and empty Tilemap or call Destroy before Loading");
+//         return false;
+//     }
 
-    std::ifstream file(fileName);
+//     std::ifstream file(fileName);
 
-    if (!file)
-    {
-        spdlog::error("Cannot read {} file", fileName);
-        return false;
-    }
+//     if (!file)
+//     {
+//         spdlog::error("Cannot read {} file", fileName);
+//         return false;
+//     }
 
-    nlohmann::json fromJson;
-    file >> fromJson;
+//     nlohmann::json fromJson;
+//     file >> fromJson;
 
-    m_Root = world.add();
-    MapDataComponent mapDataComponent;
+//     m_Root = world.add();
+//     MapDataComponent mapDataComponent;
 
-    mapDataComponent.m_Column = fromJson.value("column", 0);
+//     mapDataComponent.m_Column = fromJson.value("column", 0);
 
-    if (mapDataComponent.m_Column == 0)
-    {
-        spdlog::error("Mandatory column field not found or invalid");
-        return false;
-    }
+//     if (mapDataComponent.m_Column == 0)
+//     {
+//         spdlog::error("Mandatory column field not found or invalid");
+//         return false;
+//     }
 
-    mapDataComponent.m_Row = fromJson.value("row", 0);
+//     mapDataComponent.m_Row = fromJson.value("row", 0);
 
-    if (mapDataComponent.m_Row == 0)
-    {
-        spdlog::error("Mandatory row field not found or invalid");
-        return false;
-    }
+//     if (mapDataComponent.m_Row == 0)
+//     {
+//         spdlog::error("Mandatory row field not found or invalid");
+//         return false;
+//     }
 
-    mapDataComponent.m_Tiles.resize((size_t)mapDataComponent.m_Column * mapDataComponent.m_Row);
+//     mapDataComponent.m_Tiles.resize((size_t)mapDataComponent.m_Column * mapDataComponent.m_Row);
 
-    const auto& tileList = fromJson.value("tiles", nlohmann::json::array());
+//     const auto& tileList = fromJson.value("tiles", nlohmann::json::array());
 
-    if (tileList.size() == 0)
-    {
-        spdlog::error("Tile list size of 0");
-        return false;
-    }
+//     if (tileList.size() == 0)
+//     {
+//         spdlog::error("Tile list size of 0");
+//         return false;
+//     }
 
-    int i = 0;
+//     int i = 0;
 
-    for (const auto& tiles : tileList)
-    {
-        const uint32_t col = i % mapDataComponent.m_Column;
-        const uint32_t row = i / mapDataComponent.m_Column;
+//     for (const auto& tiles : tileList)
+//     {
+//         const uint32_t col = i % mapDataComponent.m_Column;
+//         const uint32_t row = i / mapDataComponent.m_Column;
 
-        for (const auto& tile : tiles)
-        {
-            gaia::ecs::Entity entity = world.add();
+//         for (const auto& tile : tiles)
+//         {
+//             gaia::ecs::Entity entity = world.add();
 
-            std::string textureKey = tile.value("texture_key", "");
+//             std::string textureKey = tile.value("texture_key", "");
 
-            if (textureKey.empty())
-            {
-                spdlog::error("Could not find texture key");
-                return false;
-            }
+//             if (textureKey.empty())
+//             {
+//                 spdlog::error("Could not find texture key");
+//                 return false;
+//             }
 
-            ImageComponent imageComponent;
-            imageComponent.m_TextureKey = textureKey;
-            imageComponent.m_Texture = TextureManager::Get(textureKey);
+//             ImageComponent imageComponent;
+//             imageComponent.m_TextureKey = textureKey;
+//             imageComponent.m_Texture = TextureManager::Get(textureKey);
 
-            if (!IsTextureValid(imageComponent.m_Texture))
-            {
-                spdlog::error("Invalid texture");
-                return false;
-            }
+//             if (!IsTextureValid(imageComponent.m_Texture))
+//             {
+//                 spdlog::error("Invalid texture");
+//                 return false;
+//             }
 
-            imageComponent.m_SrcRect = {tile.value("src_x", 0.0f), tile.value("src_y", 0.0f),
-                                        tile.value("src_width", 0.0f), tile.value("src_height", 0.0f)};
+//             imageComponent.m_SrcRect = {tile.value("src_x", 0.0f), tile.value("src_y", 0.0f),
+//                                         tile.value("src_width", 0.0f), tile.value("src_height", 0.0f)};
 
-            world.add<ImageComponent>(entity, std::move(imageComponent));
-            world.add<GridCellComponent>(entity, {col, row});
+//             world.add<ImageComponent>(entity, std::move(imageComponent));
+//             world.add<GridCellComponent>(entity, {col, row});
 
-            Transform2D transform2D;
-            transform2D.m_Pos = {tile.value("x", 0.0f), tile.value("y", 0.0f)};
-            world.add<Transform2D>(entity, std::move(transform2D));
+//             Transform2D transform2D;
+//             transform2D.m_Pos = {tile.value("x", 0.0f), tile.value("y", 0.0f)};
+//             world.add<Transform2D>(entity, std::move(transform2D));
 
-            int layer = tile.value("layer", 1);
+//             int layer = tile.value("layer", 1);
 
-            switch (layer)
-            {
-            case 1:
-                world.add<LayerOneComponent>(entity);
-                break;
-            default:
-                spdlog::warn("Unknown layer detected, defaulting to Layer 1");
-                world.add<LayerOneComponent>(entity);
-                break;
-            }
+//             switch (layer)
+//             {
+//             case 1:
+//                 world.add<LayerOneComponent>(entity);
+//                 break;
+//             default:
+//                 spdlog::warn("Unknown layer detected, defaulting to Layer 1");
+//                 world.add<LayerOneComponent>(entity);
+//                 break;
+//             }
 
-            mapDataComponent.m_Tiles[(size_t)i].push_back(entity);
-        }
+//             mapDataComponent.m_Tiles[(size_t)i].push_back(entity);
+//         }
 
-        i++;
-    }
+//         i++;
+//     }
 
-    world.add<MapDataComponent>(m_Root, std::move(mapDataComponent));
+//     world.add<MapDataComponent>(m_Root, std::move(mapDataComponent));
 
-    return true;
-}
+//     return true;
+// }
 
-// Does not clear textures, so you have to manually do it
-void TileMap::Destroy(gaia::ecs::World& world)
-{
-    if (m_Root == gaia::ecs::EntityBad)
-    {
-        spdlog::error("Nothing to destroy, root entity is already invalid");
-        return;
-    }
+// // Does not clear textures, so you have to manually do it
+// void TileMap::Destroy(gaia::ecs::World& world)
+// {
+//     if (m_Root == gaia::ecs::EntityBad)
+//     {
+//         spdlog::error("Nothing to destroy, root entity is already invalid");
+//         return;
+//     }
 
-    world.del(m_Root);
-    m_Root = gaia::ecs::EntityBad;
-}
+//     world.del(m_Root);
+//     m_Root = gaia::ecs::EntityBad;
+// }

@@ -9,7 +9,7 @@ namespace TileList
     struct Tile;
 }
 
-namespace TextureManager
+namespace AssetManager
 {
     enum class TextureType
     {
@@ -27,8 +27,8 @@ namespace TextureManager
     };
 
     bool Initialize();
-    const Texture& Load(const std::string& key);
-    const Texture2D& Get(const std::string& key);
+    const Texture& LoadTexture(const std::string& key);
+    const Texture2D& GetTexture(const std::string& key);
     void Clear();
-    void Clear(TextureType textureType);
-} // namespace TextureManager
+    void ClearTexture(TextureType textureType);
+} // namespace AssetManager
