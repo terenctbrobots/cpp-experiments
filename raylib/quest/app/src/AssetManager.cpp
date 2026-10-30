@@ -17,119 +17,129 @@ bool AssetManager::Initialize()
         Clear();
     }
 
-    std::ifstream file("./assets/textures.json");
+    std::ifstream file("./assets/assets.json");
 
     if (!file.is_open())
     {
-        spdlog::error("Could not open textures json");
+        spdlog::error("Could not open assets json");
         return false;
     }
 
     nlohmann::json jsonData = nlohmann::json::parse(file);
 
-    const auto& textureList = jsonData.value("textures", nlohmann::json::array());
-
-    for (const auto texture : textureList)
+    for (auto& [key, entry] : jsonData.items())
     {
-        std::string key = texture.value("key", "");
-        if (key.empty())
+        std::string assetType = entry.value("type", "");
+
+        if (assetType.empty())
         {
-            spdlog::warn("Mandatory key field in textures not found");
+            spdlog::warn("Mandatory type field in assets not found");
             continue;
         }
-
-        Texture newTexture;
-
-        std::string textureType = texture.value("type", "");
-
-        if (textureType.empty())
-        {
-            spdlog::warn("Mandatory type field in textures not found");
-            continue;
-        }
-
-        if (textureType == "sprite")
-        {
-            newTexture.m_TextureType = TextureType::Sprite;
-        }
-        else if (textureType == "tileset")
-        {
-            newTexture.m_TextureType = TextureType::TileSet;
-        }
-        else
-        {
-            spdlog::warn("Unknown texture type detected");
-            continue;
-        }
-
-        newTexture.m_Path = texture.value("path", "");
-        newTexture.m_DataPath = texture.value("data", "");
-        newTexture.m_Texture.id = 0;
-
-        if (newTexture.m_Path.empty() || newTexture.m_DataPath.empty())
-        {
-            spdlog::warn("Empty graphic or data path");
-            continue;
-        }
-
-        s_TextureList.emplace(key, std::move(newTexture));
     }
+    // const auto& textureList = jsonData.value("textures", nlohmann::json::array());
+
+    // for (const auto texture : textureList)
+    // {
+    //     std::string key = texture.value("key", "");
+    //     if (key.empty())
+    //     {
+    //         spdlog::warn("Mandatory key field in textures not found");
+    //         continue;
+    //     }
+
+    //     Texture newTexture;
+
+    //     std::string textureType = texture.value("type", "");
+
+    //     if (textureType.empty())
+    //     {
+    //         spdlog::warn("Mandatory type field in textures not found");
+    //         continue;
+    //     }
+
+    //     if (textureType == "sprite")
+    //     {
+    //         newTexture.m_TextureType = TextureType::Sprite;
+    //     }
+    //     else if (textureType == "tileset")
+    //     {
+    //         newTexture.m_TextureType = TextureType::TileSet;
+    //     }
+    //     else
+    //     {
+    //         spdlog::warn("Unknown texture type detected");
+    //         continue;
+    //     }
+
+    //     newTexture.m_Path = texture.value("path", "");
+    //     newTexture.m_DataPath = texture.value("data", "");
+    //     newTexture.m_Texture.id = 0;
+
+    //     if (newTexture.m_Path.empty() || newTexture.m_DataPath.empty())
+    //     {
+    //         spdlog::warn("Empty graphic or data path");
+    //         continue;
+    //     }
+
+    //     s_TextureList.emplace(key, std::move(newTexture));
+    // }
 
     return true;
 }
 
 const AssetManager::Texture& AssetManager::LoadTexture(const std::string& key)
 {
-    auto it = s_TextureList.find(key);
-    if (it != s_TextureList.end())
-    {
-        if (!IsTextureValid(it->second.m_Texture))
-        {
-            it->second.m_Texture = LoadTexture(it->second.m_Path.c_str());
-        }
-        return it->second;
-    }
+    // auto it = s_TextureList.find(key);
+    // if (it != s_TextureList.end())
+    // {
+    //     if (!IsTextureValid(it->second.m_Texture))
+    //     {
+    //         it->second.m_Texture = LoadTexture(it->second.m_Path.c_str());
+    //     }
+    //     return it->second;
+    // }
 
     return s_EmptyTexture;
 }
 
 const Texture2D& AssetManager::GetTexture(const std::string& key)
 {
-    auto it = s_TextureList.find(key);
+    // auto it = s_TextureList.find(key);
 
-    if (it != s_TextureList.end())
-    {
-        return it->second.m_Texture;
-    }
+    // if (it != s_TextureList.end())
+    // {
+    //     return it->second.m_Texture;
+    // }
 
     return s_EmptyTexture.m_Texture;
 }
 
 void AssetManager::Clear()
 {
-    for (const auto& [key, texture] : s_TextureList)
-    {
-        UnloadTexture(texture.m_Texture);
-    }
-    s_TextureList.clear();
+    // for (const auto& [key, texture] : s_TextureList)
+    // {
+    //     UnloadTexture(texture.m_Texture);
+    // }
+    // s_TextureList.clear();
 }
 
 void AssetManager::ClearTexture(AssetManager::TextureType textureType)
 {
-    std::unordered_map<std::string, AssetManager::Texture> newTextureList;
+    // std::unordered_map<std::string, AssetManager::Texture> newTextureList;
 
-    for (const auto& [key, texture] : s_TextureList)
-    {
-        if (texture.m_TextureType == textureType)
-        {
-            UnloadTexture(texture.m_Texture);
-        }
-        else
-        {
-            newTextureList.emplace(key, texture);
-        }
-    }
+    // for (const auto& [key, texture] : s_TextureList)
+    // {
+    //     if (texture.m_TextureType == textureType)
+    //     {
+    //         UnloadTexture(texture.m_Texture);
+    //     }
+    //     else
+    //     {
+    //         newTextureList.emplace(key, texture);
+    //     }
+    // }
 
-    s_TextureList.clear();
-    s_TextureList = std::move(newTextureList);
+    // s_TextureList.clear();
+    // s_TextureList = std::move(newTextureList);
 }

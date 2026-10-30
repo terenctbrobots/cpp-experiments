@@ -22,7 +22,8 @@ class TileMap
     public:
     TileMap() : m_Root(gaia::ecs::EntityBad)
     {
-    }
+    } // std::ifstream file(fileName);
+
     explicit TileMap(gaia::ecs::Entity root) : m_Root(root)
     {
     }

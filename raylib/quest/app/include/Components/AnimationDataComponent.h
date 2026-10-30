@@ -1,6 +1,5 @@
 #pragma once
 
-#include "parallel_hashmap/phmap.h"
 #include "raylib.h"
 
 #include <cstdint>
@@ -21,6 +20,4 @@ struct AnimationDataComponent
     Vector2 m_Offset = Vector2{0, 0};
 
     uint32_t m_DefaultAnimation;
-
-    phmap::flat_hash_map<uint32_t, AnimationFrame> m_AnimationList;
 };
