@@ -26,6 +26,21 @@ namespace AssetManager
         Texture2D m_Texture;
     };
 
+    enum class AssetType
+    {
+        Invalid,
+        Sprite,
+        TileSet
+    };
+
+    struct Asset
+    {
+        AssetType m_AssetType;
+        std::string m_Path;
+        std::string m_DataPath;
+        Texture2D m_Texture;
+    };
+
     bool Initialize();
     const Texture& LoadTexture(const std::string& key);
     const Texture2D& GetTexture(const std::string& key);
