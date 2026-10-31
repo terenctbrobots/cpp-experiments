@@ -1,5 +1,6 @@
 #pragma once
 #include "raylib.h"
+#include "tsl/robin_map.h"
 
 #include <string>
 #include <sys/types.h>
@@ -11,19 +12,23 @@ namespace TileList
 
 namespace AssetManager
 {
-    enum class TextureType
+    struct AnimationFrame
     {
-        Invalid,
-        Sprite,
-        TileSet
+        std::vector<Rectangle> m_FrameList;
+        float m_FrameDuration;
+        u_int m_Frames;
+        bool m_Flip;
     };
 
-    struct Texture
+    struct Animation
     {
-        TextureType m_TextureType;
-        std::string m_Path;
-        std::string m_DataPath;
-        Texture2D m_Texture;
+        float m_Width;
+        float m_Height;
+
+        Vector2 m_Offset = Vector2{0, 0};
+
+        uint32_t m_DefaultAnimation;
+        tsl::robin_map<std::string, AssetManager::AnimationFrame> m_AnimationFrames;
     };
 
     enum class AssetType
@@ -39,11 +44,10 @@ namespace AssetManager
         std::string m_Path;
         std::string m_DataPath;
         Texture2D m_Texture;
+        tsl::robin_map<std::string, AssetManager::Animation> m_Animation;
     };
 
     bool Initialize();
-    const Texture& LoadTexture(const std::string& key);
-    const Texture2D& GetTexture(const std::string& key);
+    Texture2D GetTexture(const std::string& key);
     void Clear();
-    void ClearTexture(TextureType textureType);
-} // namespace AssetManager
+}; // namespace AssetManager

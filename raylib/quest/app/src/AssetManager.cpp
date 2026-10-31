@@ -1,15 +1,12 @@
 #include "AssetManager.h"
 
 #include "spdlog/spdlog.h"
-#include "tsl/robin_map.h"
 
 #include <fstream>
 #include <nlohmann/json.hpp>
-#include <raylib.h>
 
 static tsl::robin_map<std::string, AssetManager::Asset> s_AssetList;
-static AssetManager::Texture s_EmptyTexture = {AssetManager::TextureType::Invalid, "", "", {}};
-static AssetManager::Asset s_EmptyAsset = {AssetManager::AssetType::Invalid, "", "", {}};
+static AssetManager::Asset s_EmptyAsset = {AssetManager::AssetType::Invalid, "", "", {0}};
 
 bool AssetManager::Initialize()
 {
@@ -19,27 +16,29 @@ bool AssetManager::Initialize()
     }
 
     std::ifstream file("./assets/assets.json");
-
     if (!file.is_open())
     {
         spdlog::error("Could not open assets json");
         return false;
     }
 
-    nlohmann::json jsonData = nlohmann::json::parse(file);
+    nlohmann::json jsonData = nlohmann::json::parse(file, nullptr, false);
+    if (jsonData.is_discarded())
+    {
+        spdlog::error("Failed to parse assets.json");
+        return false;
+    }
 
     for (auto& [key, entry] : jsonData.items())
     {
         std::string assetType = entry.value("type", "");
-
         if (assetType.empty())
         {
-            spdlog::warn("Mandatory 'type' field in assets.json not found");
+            spdlog::warn("Mandatory 'type' field in assets.json missing for key: {}", key);
             continue;
         }
 
         Asset newAsset;
-
         if (assetType == "sprite")
         {
             newAsset.m_AssetType = AssetType::Sprite;
@@ -50,17 +49,17 @@ bool AssetManager::Initialize()
         }
         else
         {
-            spdlog::warn("Unknown asset type in assets.json");
+            spdlog::warn("Unknown asset type '{}' for key: {}", assetType, key);
             continue;
         }
 
         newAsset.m_Path = entry.value("path", "");
         newAsset.m_DataPath = entry.value("data", "");
-        newAsset.m_Texture.id = 0;
+        newAsset.m_Texture.id = 0; // Raylib Null Object Pattern ID
 
         if (newAsset.m_Path.empty() || newAsset.m_DataPath.empty())
         {
-            spdlog::warn("Empty graphic or data path");
+            spdlog::warn("Empty path or data path for key: {}", key);
             continue;
         }
 
@@ -70,58 +69,37 @@ bool AssetManager::Initialize()
     return true;
 }
 
-const AssetManager::Texture& AssetManager::LoadTexture(const std::string& key)
+Texture2D AssetManager::GetTexture(const std::string& key)
 {
-    // auto it = s_TextureList.find(key);
-    // if (it != s_TextureList.end())
-    // {
-    //     if (!IsTextureValid(it->second.m_Texture))
-    //     {
-    //         it->second.m_Texture = LoadTexture(it->second.m_Path.c_str());
-    //     }
-    //     return it->second;
-    // }
+    auto it = s_AssetList.find(key);
+    if (it != s_AssetList.end())
+    {
+        // Lazy loading: Load into VRAM on demand
+        if (!IsTextureValid(it->second.m_Texture))
+        {
+            Asset updateAsset = it->second;
 
-    return s_EmptyTexture;
-}
+            Texture2D newTexture = LoadTexture(it->second.m_Path.c_str());
+            updateAsset.m_Texture = newTexture;
 
-const Texture2D& AssetManager::GetTexture(const std::string& key)
-{
-    // auto it = s_TextureList.find(key);
+            s_AssetList.emplace(key, std::move(updateAsset));
+            return newTexture;
+        }
+        return it->second.m_Texture;
+    }
 
-    // if (it != s_TextureList.end())
-    // {
-    //     return it->second.m_Texture;
-    // }
-
-    return s_EmptyTexture.m_Texture;
+    spdlog::warn("Asset key '{}' not found, returning empty fallback texture", key);
+    return s_EmptyAsset.m_Texture;
 }
 
 void AssetManager::Clear()
 {
-    // for (const auto& [key, texture] : s_TextureList)
-    // {
-    //     UnloadTexture(texture.m_Texture);
-    // }
-    // s_TextureList.clear();
-}
-
-void AssetManager::ClearTexture(AssetManager::TextureType textureType)
-{
-    // std::unordered_map<std::string, AssetManager::Texture> newTextureList;
-
-    // for (const auto& [key, texture] : s_TextureList)
-    // {
-    //     if (texture.m_TextureType == textureType)
-    //     {
-    //         UnloadTexture(texture.m_Texture);
-    //     }
-    //     else
-    //     {
-    //         newTextureList.emplace(key, texture);
-    //     }
-    // }
-
-    // s_TextureList.clear();
-    // s_TextureList = std::move(newTextureList);
+    for (auto& [key, asset] : s_AssetList)
+    {
+        if (IsTextureValid(asset.m_Texture))
+        {
+            UnloadTexture(asset.m_Texture);
+        }
+    }
+    s_AssetList.clear();
 }
