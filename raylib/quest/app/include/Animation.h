@@ -1,16 +1,36 @@
 #pragma once
 
-#include "gaia.h"
-#include <string>
 #include "Hash.h"
+#include "gaia.h"
+#include "raylib.h"
+#include "tsl/robin_map.h"
 
-// Forward Declare
-struct AnimationDataComponent;
+#include <string>
 
 namespace Animation
 {
-    bool Load(const std::string& fileName, AnimationDataComponent& animationData);
-    void SetAnimation(gaia::ecs::World& world, gaia::ecs::Entity entity, const uint32_t animationName);
+    struct AnimationFrame
+    {
+        std::vector<Rectangle> m_FrameList;
+        float m_FrameDuration;
+        u_int m_Frames;
+        bool m_Flip;
+    };
+
+    struct AnimationData
+    {
+        float m_Width;
+        float m_Height;
+
+        Vector2 m_Offset = Vector2{0, 0};
+
+        uint32_t m_DefaultAnimation;
+        tsl::robin_map<uint32_t, Animation::AnimationFrame> m_AnimationList;
+    };
+
+    // bool Load(const std::string& fileName, AnimationDataComponent& animationData);
+    void SetAnimation(gaia::ecs::World& world, gaia::ecs::Entity entity, const std::string& assetName,
+                      const uint32_t animationName = 0);
 
     const uint32_t MOVE_LEFT = HS("move_left");
     const uint32_t MOVE_RIGHT = HS("move_right");
@@ -26,4 +46,4 @@ namespace Animation
     const uint32_t ATTACK_RIGHT = HS("attack_right");
     const uint32_t ATTACK_UP = HS("attack_up");
     const uint32_t ATTACK_DOWN = HS("attack_down");
-}
+} // namespace Animation

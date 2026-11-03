@@ -4,7 +4,7 @@
 #include "Animation.h"
 #include "AssetManager.h"
 #include "Components/AnimationComponent.h"
-#include "Components/AnimationDataComponent.h"
+#include "Components/AnimationFrameComponent.h"
 #include "Components/BoundingBoxComponent.h"
 #include "Components/ImageComponent.h"
 #include "Components/LayerComponent.h"
@@ -16,7 +16,6 @@
 #include <raylib.h>
 
 constexpr float s_Speed = 100.0f;
-const std::string s_PlayerTexture = "player";
 
 gaia::ecs::Entity Player::Create(gaia::ecs::World& world)
 {
@@ -26,55 +25,43 @@ gaia::ecs::Entity Player::Create(gaia::ecs::World& world)
     world.add<VelocityComponent>(entity, {s_Speed, {0.0f, 0.0f}});
     world.add<LayerTwoComponent>(entity);
     world.add<Transform2D>(entity, {0.0f, 0.0f});
-    /*
-        auto& texture = TextureManager::Load(s_PlayerTexture);
 
-        if (!IsTextureValid(texture.m_Texture))
-        {
-            spdlog::error("Could not load Player Texture");
-            return gaia::ecs::EntityBad;
-        }
+    Texture2D playerTexture = AssetManager::GetTexture(AssetManager::s_PlayerAsset);
+    if (!IsTextureValid(playerTexture))
+    {
+        spdlog::error("Could not load Player Texture");
+        return gaia::ecs::EntityBad;
+    }
 
-        ImageComponent imageComponent;
-        imageComponent.m_Texture = texture.m_Texture;
-        imageComponent.m_SrcRect = {0, 0, 64, 64};
-        imageComponent.m_TextureKey = s_PlayerTexture;
+    ImageComponent imageComponent;
+    imageComponent.m_Texture = playerTexture;
+    imageComponent.m_SrcRect = {0, 0, 64, 64};
 
-        world.add<ImageComponent>(entity, std::move(imageComponent));
+    world.add<ImageComponent>(entity, std::move(imageComponent));
 
-        AnimationDataComponent animationData;
+    world.add<AnimationFrameComponent>(entity);
 
-        if (!Animation::Load(texture.m_DataPath, animationData))
-        {
-            return gaia::ecs::EntityBad;
-        }
+    BoundingBoxComponent boundingBoxComponent;
+    boundingBoxComponent.m_Collision = {0, 0, 17, 21};
 
-        uint32_t defaultAnimation = animationData.m_DefaultAnimation;
+    world.add<BoundingBoxComponent>(entity, std::move(boundingBoxComponent));
 
-        world.add<AnimationComponent>(entity);
-        world.add<AnimationDataComponent>(entity, std::move(animationData));
+    Animation::SetAnimation(world, entity, AssetManager::s_PlayerAsset);
 
-        Animation::SetAnimation(world, entity, defaultAnimation);
-
-        BoundingBoxComponent boundingBoxComponent;
-        boundingBoxComponent.m_Collision = {0, 0, 17, 21};
-
-        world.add<BoundingBoxComponent>(entity, std::move(boundingBoxComponent));
-    */
     return entity;
 }
 
 void Player::Movement(gaia::ecs::World& world, gaia::ecs::Entity& player, Vector2 direction, uint32_t animationName)
 {
-    // auto& velocity = world.set<VelocityComponent>(player);
-    // velocity.m_Direction = direction;
+    auto velocity = world.get<VelocityComponent>(player);
+    velocity.m_Direction = direction;
 
-    // auto& animation = world.get<AnimationComponent>(player);
+    auto& animation = world.get<AnimationComponent>(player);
 
-    // if (animation.m_CurrentAnimation != animationName)
-    // {
-    //     Animation::SetAnimation(world, player, animationName);
-    // }
+    if (animation.m_CurrentAnimation != animationName)
+    {
+        Animation::SetAnimation(world, player, AssetManager::s_PlayerAsset, animationName);
+    }
 }
 
 void Player::Idle(gaia::ecs::World& world, gaia::ecs::Entity& player)
