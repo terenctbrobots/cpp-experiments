@@ -3,6 +3,7 @@
 #include "Animation.h"
 #include "AssetManager.h"
 #include "Components/AnimationComponent.h"
+#include "Components/AnimationFrameComponent.h"
 #include "Components/BoundingBoxComponent.h"
 #include "Components/EnemyComponent.h"
 #include "Components/ImageComponent.h"
@@ -22,44 +23,30 @@ gaia::ecs::Entity Enemy::Create(gaia::ecs::World& world, const Vector2& startPos
     world.add<VelocityComponent>(entity, {s_Speed, {0.0f, 0.0f}});
     world.add<LayerTwoComponent>(entity);
     world.add<Transform2D>(entity, {startPosition.x, startPosition.y});
-    /*
 
-    auto& texture = TextureManager::Load(s_EnemyTexture);
+    Texture2D enemyTexture = AssetManager::GetTexture(AssetManager::s_EnemyAsset);
 
-    if (!IsTextureValid(texture.m_Texture))
+    if (!IsTextureValid(enemyTexture))
     {
         spdlog::error("Could not load Enemy Texture");
         return gaia::ecs::EntityBad;
     }
 
     ImageComponent imageComponent;
-    imageComponent.m_Texture = texture.m_Texture;
+    imageComponent.m_Texture = enemyTexture;
     imageComponent.m_SrcRect = {0, 0, 32, 32};
-    imageComponent.m_TextureKey = s_EnemyTexture;
 
     world.add<ImageComponent>(entity, std::move(imageComponent));
 
-    AnimationDataComponent animationData;
-
-    // if (!Animation::Load(texture.m_DataPath, animationData))
-    // {
-    //     return gaia::ecs::EntityBad;
-    // }
-
-    // uint32_t defaultAnimation = animationData.m_DefaultAnimation;
-
+    world.add<AnimationFrameComponent>(entity);
     world.add<AnimationComponent>(entity);
-    world.add<AnimationDataComponent>(entity, std::move(animationData));
-
-
-
 
     BoundingBoxComponent boundingBoxComponent;
     boundingBoxComponent.m_Collision = {startPosition.x - 8, startPosition.y - 8, 16, 16};
 
     world.add<BoundingBoxComponent>(entity, std::move(boundingBoxComponent));
 
-    Animation::SetAnimation(world, entity, defaultAnimation);
-*/
+    Animation::SetAnimation(world, entity, AssetManager::s_EnemyAsset);
+
     return entity;
 }

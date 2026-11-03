@@ -2,7 +2,6 @@
 #include "Animation.h"
 #include "raylib.h"
 
-#include <cstdint>
 #include <string>
 #include <sys/types.h>
 
@@ -14,6 +13,7 @@ namespace TileList
 namespace AssetManager
 {
     const std::string s_PlayerAsset = "player";
+    const std::string s_EnemyAsset = "enemy";
 
     enum class AssetType
     {

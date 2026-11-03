@@ -66,59 +66,56 @@ void Player::Movement(gaia::ecs::World& world, gaia::ecs::Entity& player, Vector
 
 void Player::Idle(gaia::ecs::World& world, gaia::ecs::Entity& player)
 {
-    // auto& velocity = world.set<VelocityComponent>(player);
-    // velocity.m_Direction = {0.0f, 0.0f};
+    auto velocity = world.set<VelocityComponent>(player);
+    velocity.m_Direction = {0.0f, 0.0f};
 
-    // auto& animation = world.get<AnimationComponent>(player);
+    auto& animation = world.get<AnimationComponent>(player);
 
-    // if (animation.m_CurrentAnimation == Animation::MOVE_LEFT || animation.m_CurrentAnimation ==
-    // Animation::ATTACK_LEFT)
-    // {
-    //     Animation::SetAnimation(world, player, Animation::IDLE_LEFT);
-    // }
+    if (animation.m_CurrentAnimation == Animation::MOVE_LEFT || animation.m_CurrentAnimation == Animation::ATTACK_LEFT)
+    {
+        Animation::SetAnimation(world, player, AssetManager::s_PlayerAsset, Animation::IDLE_LEFT);
+    }
 
-    // if (animation.m_CurrentAnimation == Animation::MOVE_RIGHT ||
-    //     animation.m_CurrentAnimation == Animation::ATTACK_RIGHT)
-    // {
-    //     Animation::SetAnimation(world, player, Animation::IDLE_RIGHT);
-    // }
+    if (animation.m_CurrentAnimation == Animation::MOVE_RIGHT ||
+        animation.m_CurrentAnimation == Animation::ATTACK_RIGHT)
+    {
+        Animation::SetAnimation(world, player, AssetManager::s_PlayerAsset, Animation::IDLE_RIGHT);
+    }
 
-    // if (animation.m_CurrentAnimation == Animation::MOVE_DOWN || animation.m_CurrentAnimation ==
-    // Animation::ATTACK_DOWN)
-    // {
-    //     Animation::SetAnimation(world, player, Animation::IDLE_DOWN);
-    // }
+    if (animation.m_CurrentAnimation == Animation::MOVE_DOWN || animation.m_CurrentAnimation == Animation::ATTACK_DOWN)
+    {
+        Animation::SetAnimation(world, player, AssetManager::s_PlayerAsset, Animation::IDLE_DOWN);
+    }
 
-    // if (animation.m_CurrentAnimation == Animation::MOVE_UP || animation.m_CurrentAnimation == Animation::ATTACK_UP)
-    // {
-    //     Animation::SetAnimation(world, player, Animation::IDLE_UP);
-    // }
+    if (animation.m_CurrentAnimation == Animation::MOVE_UP || animation.m_CurrentAnimation == Animation::ATTACK_UP)
+    {
+        Animation::SetAnimation(world, player, AssetManager::s_PlayerAsset, Animation::IDLE_UP);
+    }
 }
 
 void Player::Attack(gaia::ecs::World& world, gaia::ecs::Entity& player)
 {
-    // auto& animation = world.get<AnimationComponent>(player);
+    auto& animation = world.get<AnimationComponent>(player);
 
-    // if (animation.m_CurrentAnimation == Animation::IDLE_LEFT || animation.m_CurrentAnimation == Animation::MOVE_LEFT)
-    // {
-    //     Animation::SetAnimation(world, player, Animation::ATTACK_LEFT);
-    // }
+    if (animation.m_CurrentAnimation == Animation::IDLE_LEFT || animation.m_CurrentAnimation == Animation::MOVE_LEFT)
+    {
+        Animation::SetAnimation(world, player, AssetManager::s_PlayerAsset, Animation::ATTACK_LEFT);
+    }
 
-    // if (animation.m_CurrentAnimation == Animation::IDLE_RIGHT || animation.m_CurrentAnimation ==
-    // Animation::MOVE_RIGHT)
-    // {
-    //     Animation::SetAnimation(world, player, Animation::ATTACK_RIGHT);
-    // }
+    if (animation.m_CurrentAnimation == Animation::IDLE_RIGHT || animation.m_CurrentAnimation == Animation::MOVE_RIGHT)
+    {
+        Animation::SetAnimation(world, player, AssetManager::s_PlayerAsset, Animation::ATTACK_RIGHT);
+    }
 
-    // if (animation.m_CurrentAnimation == Animation::IDLE_DOWN || animation.m_CurrentAnimation == Animation::MOVE_DOWN)
-    // {
-    //     Animation::SetAnimation(world, player, Animation::ATTACK_DOWN);
-    // }
+    if (animation.m_CurrentAnimation == Animation::IDLE_DOWN || animation.m_CurrentAnimation == Animation::MOVE_DOWN)
+    {
+        Animation::SetAnimation(world, player, AssetManager::s_PlayerAsset, Animation::ATTACK_DOWN);
+    }
 
-    // if (animation.m_CurrentAnimation == Animation::IDLE_UP || animation.m_CurrentAnimation == Animation::MOVE_UP)
-    // {
-    //     Animation::SetAnimation(world, player, Animation::ATTACK_UP);
-    // }
+    if (animation.m_CurrentAnimation == Animation::IDLE_UP || animation.m_CurrentAnimation == Animation::MOVE_UP)
+    {
+        Animation::SetAnimation(world, player, AssetManager::s_PlayerAsset, Animation::ATTACK_UP);
+    }
 }
 
 Vector2 Player::GetPosition(gaia::ecs::World& world, gaia::ecs::Entity& player)
@@ -128,10 +125,10 @@ Vector2 Player::GetPosition(gaia::ecs::World& world, gaia::ecs::Entity& player)
 
 void Player::SetPosition(gaia::ecs::World& world, gaia::ecs::Entity& player, const Vector2& position)
 {
-    // auto& transform = world.set<Transform2D>(player);
-    // transform.m_Pos = position;
+    auto transform = world.set<Transform2D>(player);
+    transform.m_Pos = position;
 
-    // auto& bounds = world.set<BoundingBoxComponent>(player);
-    // bounds.m_Collision.x = position.x - 8;
-    // bounds.m_Collision.y = position.y - 1;
+    auto bounds = world.set<BoundingBoxComponent>(player);
+    bounds.m_Collision.x = position.x - 8;
+    bounds.m_Collision.y = position.y - 1;
 }
