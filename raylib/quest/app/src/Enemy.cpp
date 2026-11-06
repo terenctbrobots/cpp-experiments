@@ -38,7 +38,7 @@ gaia::ecs::Entity Enemy::Create(gaia::ecs::World& world, const Vector2& startPos
 
     world.add<ImageComponent>(entity, std::move(imageComponent));
 
-    world.add<AnimationFrameComponent>(entity);
+    world.add<Animation::AnimationFrameComponent>(entity);
     world.add<Animation::AnimationComponent>(entity);
 
     BoundingBoxComponent boundingBoxComponent;

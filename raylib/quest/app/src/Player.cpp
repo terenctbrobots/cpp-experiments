@@ -39,7 +39,8 @@ gaia::ecs::Entity Player::Create(gaia::ecs::World& world)
 
     world.add<ImageComponent>(entity, std::move(imageComponent));
 
-    world.add<AnimationFrameComponent>(entity);
+    world.add<Animation::AnimationFrameComponent>(entity);
+    world.add<Animation::AnimationComponent>(entity);
 
     BoundingBoxComponent boundingBoxComponent;
     boundingBoxComponent.m_Collision = {0, 0, 17, 21};

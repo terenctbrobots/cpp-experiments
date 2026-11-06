@@ -13,7 +13,7 @@ namespace TileList
 namespace AssetManager
 {
     const std::string s_PlayerAsset = "player";
-    const std::string s_EnemyAsset = "enemy";
+    const std::string s_EnemyAsset = "slime";
 
     enum class AssetType
     {
