@@ -28,7 +28,7 @@ void Animation::SetAnimation(gaia::ecs::World& world, gaia::ecs::Entity entity, 
         sprite.m_SrcRect = animationFrame.m_FrameList[0];
         sprite.m_Offset = animationData->m_Offset;
 
-        auto animation = world.get<AnimationComponent>(entity);
+        auto animation = world.get<Animation::AnimationComponent>(entity);
         animation.m_CurrentAnimation = animationName;
         animation.m_CurrentFrame = 0;
         animation.m_Timer = animationFrame.m_FrameDuration;

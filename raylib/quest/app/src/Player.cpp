@@ -56,7 +56,7 @@ void Player::Movement(gaia::ecs::World& world, gaia::ecs::Entity& player, Vector
     auto velocity = world.get<VelocityComponent>(player);
     velocity.m_Direction = direction;
 
-    auto& animation = world.get<AnimationComponent>(player);
+    auto& animation = world.get<Animation::AnimationComponent>(player);
 
     if (animation.m_CurrentAnimation != animationName)
     {
@@ -69,7 +69,7 @@ void Player::Idle(gaia::ecs::World& world, gaia::ecs::Entity& player)
     auto velocity = world.set<VelocityComponent>(player);
     velocity.m_Direction = {0.0f, 0.0f};
 
-    auto& animation = world.get<AnimationComponent>(player);
+    auto& animation = world.get<Animation::AnimationComponent>(player);
 
     if (animation.m_CurrentAnimation == Animation::MOVE_LEFT || animation.m_CurrentAnimation == Animation::ATTACK_LEFT)
     {
@@ -95,7 +95,7 @@ void Player::Idle(gaia::ecs::World& world, gaia::ecs::Entity& player)
 
 void Player::Attack(gaia::ecs::World& world, gaia::ecs::Entity& player)
 {
-    auto& animation = world.get<AnimationComponent>(player);
+    auto& animation = world.get<Animation::AnimationComponent>(player);
 
     if (animation.m_CurrentAnimation == Animation::IDLE_LEFT || animation.m_CurrentAnimation == Animation::MOVE_LEFT)
     {

@@ -39,7 +39,7 @@ gaia::ecs::Entity Enemy::Create(gaia::ecs::World& world, const Vector2& startPos
     world.add<ImageComponent>(entity, std::move(imageComponent));
 
     world.add<AnimationFrameComponent>(entity);
-    world.add<AnimationComponent>(entity);
+    world.add<Animation::AnimationComponent>(entity);
 
     BoundingBoxComponent boundingBoxComponent;
     boundingBoxComponent.m_Collision = {startPosition.x - 8, startPosition.y - 8, 16, 16};
