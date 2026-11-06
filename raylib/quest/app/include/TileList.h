@@ -6,7 +6,7 @@
 
 namespace AssetManager
 {
-    struct Texture;
+    struct Asset;
 };
 
 namespace TileList
@@ -20,7 +20,7 @@ namespace TileList
     };
 
     bool LoadTileList();
-    bool LoadTileSet(const std::string& textureKey, const AssetManager::Texture& texture);
+    bool LoadTileSet(const std::string& assetKey, const AssetManager::Asset& asset);
 
     const Tile* Get(const u_int32_t tileId);
 } // namespace TileList

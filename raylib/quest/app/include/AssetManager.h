@@ -32,6 +32,7 @@ namespace AssetManager
     };
 
     bool Initialize();
+    const AssetManager::Asset& GetAsset(const std::string& key);
     Texture2D GetTexture(const std::string& key);
     const Animation::AnimationData* GetAnimation(const std::string& key);
     void Clear();

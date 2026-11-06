@@ -180,6 +180,17 @@ bool AssetManager::Initialize()
     return true;
 }
 
+const AssetManager::Asset& AssetManager::GetAsset(const std::string& key)
+{
+    auto it = s_AssetList.find(key);
+    if (it != s_AssetList.end())
+    {
+        return it->second;
+    }
+
+    return s_EmptyAsset;
+}
+
 Texture2D AssetManager::GetTexture(const std::string& key)
 {
     auto it = s_AssetList.find(key);
