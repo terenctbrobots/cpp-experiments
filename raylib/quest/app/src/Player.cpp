@@ -21,7 +21,7 @@ gaia::ecs::Entity Player::Create(gaia::ecs::World& world)
 {
     gaia::ecs::Entity entity = world.add();
 
-    world.add<PlayerComponent>(entity);
+    world.add<Game::PlayerComponent>(entity);
     world.add<VelocityComponent>(entity, {s_Speed, {0.0f, 0.0f}});
     world.add<LayerTwoComponent>(entity);
     world.add<Transform2D>(entity, {0.0f, 0.0f});
@@ -33,11 +33,11 @@ gaia::ecs::Entity Player::Create(gaia::ecs::World& world)
         return gaia::ecs::EntityBad;
     }
 
-    ImageComponent imageComponent;
+    Animation::ImageComponent imageComponent;
     imageComponent.m_Texture = playerTexture;
     imageComponent.m_SrcRect = {0, 0, 64, 64};
 
-    world.add<ImageComponent>(entity, std::move(imageComponent));
+    world.add<Animation::ImageComponent>(entity, std::move(imageComponent));
 
     world.add<Animation::AnimationFrameComponent>(entity);
     world.add<Animation::AnimationComponent>(entity);

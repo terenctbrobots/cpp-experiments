@@ -19,7 +19,7 @@ gaia::ecs::Entity Enemy::Create(gaia::ecs::World& world, const Vector2& startPos
 {
     gaia::ecs::Entity entity = world.add();
 
-    world.add<EnemyComponent>(entity);
+    world.add<Game::EnemyComponent>(entity);
     world.add<VelocityComponent>(entity, {s_Speed, {0.0f, 0.0f}});
     world.add<LayerTwoComponent>(entity);
     world.add<Transform2D>(entity, {startPosition.x, startPosition.y});
@@ -32,11 +32,11 @@ gaia::ecs::Entity Enemy::Create(gaia::ecs::World& world, const Vector2& startPos
         return gaia::ecs::EntityBad;
     }
 
-    ImageComponent imageComponent;
+    Animation::ImageComponent imageComponent;
     imageComponent.m_Texture = enemyTexture;
     imageComponent.m_SrcRect = {0, 0, 32, 32};
 
-    world.add<ImageComponent>(entity, std::move(imageComponent));
+    world.add<Animation::ImageComponent>(entity, std::move(imageComponent));
 
     world.add<Animation::AnimationFrameComponent>(entity);
     world.add<Animation::AnimationComponent>(entity);

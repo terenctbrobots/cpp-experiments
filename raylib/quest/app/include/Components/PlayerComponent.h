@@ -1,5 +1,8 @@
 #pragma once
 
-struct PlayerComponent
+namespace Game
 {
-};
+    struct PlayerComponent
+    {
+    };
+} // namespace Game

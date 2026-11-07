@@ -24,7 +24,7 @@ void Animation::SetAnimation(gaia::ecs::World& world, gaia::ecs::Entity entity, 
         Animation::AnimationFrame animationFrame = animationData->m_AnimationList.at(selectedAnimation);
         world.set<AnimationFrameComponent>(entity) = Animation::ToAnimationFrameComponent(animationFrame);
 
-        auto sprite = world.get<ImageComponent>(entity);
+        auto sprite = world.get<Animation::ImageComponent>(entity);
         sprite.m_SrcRect = animationFrame.m_FrameList[0];
         sprite.m_Offset = animationData->m_Offset;
 

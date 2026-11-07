@@ -42,12 +42,12 @@ TileMap TileMap::Create(gaia::ecs::World& world, const TileMapConfig& config)
 
         gaia::ecs::Entity tileEntity = world.add();
 
-        ImageComponent imageComponent;
+        Animation::ImageComponent imageComponent;
         imageComponent.m_Texture = defaultTile->m_Texture;
         //        imageComponent.m_TextureKey = defaultTile->m_TextureKey;
         imageComponent.m_SrcRect = defaultTile->m_SrcRect;
 
-        world.add<ImageComponent>(tileEntity, std::move(imageComponent));
+        world.add<Animation::ImageComponent>(tileEntity, std::move(imageComponent));
         world.add<GridCellComponent>(tileEntity, {col, row});
 
         world.add<Transform2D>(tileEntity, {col * defaultTile->m_SrcRect.width, row * defaultTile->m_SrcRect.height});
@@ -89,7 +89,7 @@ bool TileMap::Save(gaia::ecs::World& world, const std::string& fileName)
         for (gaia::ecs::Entity tileEntity : tileEntityList)
         {
             nlohmann::json tile;
-            auto& imageComponent = world.get<ImageComponent>(tileEntity);
+            auto& imageComponent = world.get<Animation::ImageComponent>(tileEntity);
 
             // tile["texture_key"] = imageComponent.m_TextureKey;
             tile["src_x"] = imageComponent.m_SrcRect.x;
@@ -190,7 +190,7 @@ bool TileMap::Load(gaia::ecs::World& world, const std::string& fileName)
                 return false;
             }
 
-            ImageComponent imageComponent;
+            Animation::ImageComponent imageComponent;
             //            imageComponent.m_TextureKey = textureKey;
             imageComponent.m_Texture = AssetManager::GetTexture(textureKey);
 
@@ -203,7 +203,7 @@ bool TileMap::Load(gaia::ecs::World& world, const std::string& fileName)
             imageComponent.m_SrcRect = {tile.value("src_x", 0.0f), tile.value("src_y", 0.0f),
                                         tile.value("src_width", 0.0f), tile.value("src_height", 0.0f)};
 
-            world.add<ImageComponent>(entity, std::move(imageComponent));
+            world.add<Animation::ImageComponent>(entity, std::move(imageComponent));
             world.add<GridCellComponent>(entity, {col, row});
 
             Transform2D transform2D;
