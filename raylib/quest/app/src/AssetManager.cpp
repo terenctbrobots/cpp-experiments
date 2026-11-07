@@ -209,7 +209,7 @@ Texture2D AssetManager::GetTexture(const std::string& key)
                 LoadAnimation(updateAsset.m_DataPath, updateAsset.m_Animation);
             }
 
-            s_AssetList.emplace(key, std::move(updateAsset));
+            s_AssetList[key] = updateAsset;
             return newTexture;
         }
         return it->second.m_Texture;
@@ -227,6 +227,7 @@ const Animation::AnimationData* AssetManager::GetAnimation(const std::string& ke
     {
         if (!IsTextureValid(it->second.m_Texture))
         {
+            spdlog::warn("Animation'{}' has an invalid texture", key);
             return nullptr;
         }
 

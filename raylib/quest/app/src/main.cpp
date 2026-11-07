@@ -40,7 +40,7 @@ int main()
     camera.rotation = 0.0f;
     camera.zoom = 4.0f;
 
-    gaia::ecs::Entity enemy = Enemy::Create(world, {camera.offset.x - 100, camera.offset.y});
+    // gaia::ecs::Entity enemy = Enemy::Create(world, {camera.offset.x - 100, camera.offset.y});
 
     Player::SetPosition(world, player, camera.offset);
     while (!WindowShouldClose() && !shouldExit)
