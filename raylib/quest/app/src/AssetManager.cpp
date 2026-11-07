@@ -209,7 +209,7 @@ Texture2D AssetManager::GetTexture(const std::string& key)
                 LoadAnimation(updateAsset.m_DataPath, updateAsset.m_Animation);
             }
 
-            s_AssetList[key] = updateAsset;
+            s_AssetList.insert_or_assign(key, std::move(updateAsset));
             return newTexture;
         }
         return it->second.m_Texture;
