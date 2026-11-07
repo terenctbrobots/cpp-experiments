@@ -6,7 +6,7 @@ class QuestRecipe(ConanFile):
     generators = "CMakeToolchain", "CMakeDeps"
 
     def requirements(self):
-        self.requires("raylib/5.5")
+        self.requires("raylib/6.0")
         self.requires("spdlog/1.16.0")
         self.requires("nlohmann_json/3.12.0")
         self.requires("gaia-ecs/1.0.0")
