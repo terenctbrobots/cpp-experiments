@@ -2,9 +2,8 @@
 #include "Enemy.h"
 #include "Game.h"
 #include "Player.h"
+#include "gaia.h"
 #include "raylib.h"
-
-#include <gaia.h>
 
 constexpr int s_ScreenWidth = 1280;
 constexpr int s_ScreenHeight = 960;

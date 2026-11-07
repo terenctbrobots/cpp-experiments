@@ -6,7 +6,6 @@
 #include "Components/ImageComponent.h"
 
 #include <cstdint>
-#include <nlohmann/json.hpp>
 
 void Animation::SetAnimation(gaia::ecs::World& world, gaia::ecs::Entity entity, const std::string& assetName,
                              const uint32_t animationName)

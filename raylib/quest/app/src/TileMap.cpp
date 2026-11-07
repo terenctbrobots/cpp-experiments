@@ -7,11 +7,11 @@
 #include "Components/MapDataComponent.h"
 #include "Components/Transform2D.h"
 #include "TileList.h"
+#include "raylib.h"
 #include "spdlog/spdlog.h"
 
 #include <fstream>
 #include <nlohmann/json.hpp>
-#include <raylib.h>
 #include <string>
 #include <sys/types.h>
 

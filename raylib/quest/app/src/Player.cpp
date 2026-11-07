@@ -11,9 +11,8 @@
 #include "Components/PlayerComponent.h"
 #include "Components/Transform2D.h"
 #include "Components/VelocityComponent.h"
+#include "raylib.h"
 #include "spdlog/spdlog.h"
-
-#include <raylib.h>
 
 constexpr float s_Speed = 100.0f;
 
