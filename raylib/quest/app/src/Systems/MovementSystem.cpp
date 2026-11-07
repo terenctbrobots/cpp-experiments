@@ -6,7 +6,7 @@
 
 void MovementSystem::Init(gaia::ecs::World& world)
 {
-    m_Query = world.query().all<Transform2D&>().all<BoundingBoxComponent&>().all<VelocityComponent>();
+    m_Query = world.query().all<Transform2D&>().all<BoundingBoxComponent&>().all<const VelocityComponent>();
 }
 
 void MovementSystem::Update(float& dt)
