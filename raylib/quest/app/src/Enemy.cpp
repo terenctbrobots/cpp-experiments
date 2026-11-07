@@ -21,7 +21,7 @@ gaia::ecs::Entity Enemy::Create(gaia::ecs::World& world, const Vector2& startPos
 
     world.add<Game::EnemyComponent>(entity);
     world.add<VelocityComponent>(entity, {s_Speed, {0.0f, 0.0f}});
-    world.add<LayerTwoComponent>(entity);
+    world.add<Render::LayerTwoComponent>(entity);
     world.add<Transform2D>(entity, {startPosition.x, startPosition.y});
 
     Texture2D enemyTexture = AssetManager::GetTexture(AssetManager::s_EnemyAsset);

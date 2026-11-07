@@ -23,7 +23,7 @@ gaia::ecs::Entity Player::Create(gaia::ecs::World& world)
 
     world.add<Game::PlayerComponent>(entity);
     world.add<VelocityComponent>(entity, {s_Speed, {0.0f, 0.0f}});
-    world.add<LayerTwoComponent>(entity);
+    world.add<Render::LayerTwoComponent>(entity);
     world.add<Transform2D>(entity, {0.0f, 0.0f});
 
     Texture2D playerTexture = AssetManager::GetTexture(AssetManager::s_PlayerAsset);

@@ -15,24 +15,26 @@ void RenderSystem::Init(gaia::ecs::World& world)
                               .all<Transform2D>()
                               .all<Animation::ImageComponent>()
                               .all<BoundingBoxComponent>()
-                              .all<LayerOneComponent>();
+                              .all<Render::LayerOneComponent>();
         m_QueryLayerTwo = world.query()
                               .all<Transform2D>()
                               .all<Animation::ImageComponent>()
                               .all<BoundingBoxComponent>()
-                              .all<LayerTwoComponent>();
+                              .all<Render::LayerTwoComponent>();
         m_QueryLayerThree = world.query()
                                 .all<Transform2D>()
                                 .all<Animation::ImageComponent>()
                                 .all<BoundingBoxComponent>()
-                                .all<LayerThreeComponent>();
+                                .all<Render::LayerThreeComponent>();
     }
     else
     {
-        m_QueryLayerOne = world.query().all<Transform2D>().all<Animation::ImageComponent>().all<LayerOneComponent>();
-        m_QueryLayerTwo = world.query().all<Transform2D>().all<Animation::ImageComponent>().all<LayerTwoComponent>();
+        m_QueryLayerOne =
+            world.query().all<Transform2D>().all<Animation::ImageComponent>().all<Render::LayerOneComponent>();
+        m_QueryLayerTwo =
+            world.query().all<Transform2D>().all<Animation::ImageComponent>().all<Render::LayerTwoComponent>();
         m_QueryLayerThree =
-            world.query().all<Transform2D>().all<Animation::ImageComponent>().all<LayerThreeComponent>();
+            world.query().all<Transform2D>().all<Animation::ImageComponent>().all<Render::LayerThreeComponent>();
     }
 }
 

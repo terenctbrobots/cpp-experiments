@@ -51,7 +51,7 @@ TileMap TileMap::Create(gaia::ecs::World& world, const TileMapConfig& config)
         world.add<GridCellComponent>(tileEntity, {col, row});
 
         world.add<Transform2D>(tileEntity, {col * defaultTile->m_SrcRect.width, row * defaultTile->m_SrcRect.height});
-        world.add<LayerOneComponent>(tileEntity);
+        world.add<Render::LayerOneComponent>(tileEntity);
 
         mapData.m_Tiles[(size_t)i].push_back(tileEntity);
     }
@@ -102,7 +102,7 @@ bool TileMap::Save(gaia::ecs::World& world, const std::string& fileName)
             tile["x"] = transform2D.m_Pos.x;
             tile["y"] = transform2D.m_Pos.y;
 
-            if (world.has<LayerOneComponent>(tileEntity))
+            if (world.has<Render::LayerOneComponent>(tileEntity))
             {
                 tile["layer"] = 1;
             }
@@ -215,11 +215,11 @@ bool TileMap::Load(gaia::ecs::World& world, const std::string& fileName)
             switch (layer)
             {
             case 1:
-                world.add<LayerOneComponent>(entity);
+                world.add<Render::LayerOneComponent>(entity);
                 break;
             default:
                 spdlog::warn("Unknown layer detected, defaulting to Layer 1");
-                world.add<LayerOneComponent>(entity);
+                world.add<Render::LayerOneComponent>(entity);
                 break;
             }
 

@@ -15,9 +15,9 @@ class Game
     }
 
     bool Initialize();
-    void RegisterSystems(float& dt);
+    void RegisterSystems();
 
-    void Update(float& dt);
+    void Update(float dt);
     void Render();
 
     // Temporary function to test loading tilemaps

@@ -21,7 +21,7 @@ bool Game::Initialize()
     return true;
 }
 
-void Game::RegisterSystems(float& dt)
+void Game::RegisterSystems()
 {
     m_AnimationSystem.Init(m_World);
     m_MovementSystem.Init(m_World);
@@ -29,7 +29,7 @@ void Game::RegisterSystems(float& dt)
     m_RenderSystem.Init(m_World);
 }
 
-void Game::Update(float& dt)
+void Game::Update(float dt)
 {
     m_AnimationSystem.Update(dt);
     m_MovementSystem.Update(dt);

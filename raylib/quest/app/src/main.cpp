@@ -6,8 +6,8 @@
 
 #include <gaia.h>
 
-const int screenWidth = 1280;
-const int screenHeight = 960;
+constexpr int s_ScreenWidth = 1280;
+constexpr int s_ScreenHeight = 960;
 
 int main()
 {
@@ -15,7 +15,7 @@ int main()
     Game game(world);
     float dt = 0.0f;
 
-    InitWindow(screenWidth, screenHeight, "Quest");
+    InitWindow(s_ScreenWidth, s_ScreenHeight, "Quest");
     SetTargetFPS(60);
 
     if (!game.Initialize())
@@ -31,12 +31,12 @@ int main()
         return 0;
     }
 
-    game.RegisterSystems(dt);
+    game.RegisterSystems();
 
     bool shouldExit = false;
 
     Camera2D camera = {0};
-    camera.offset = (Vector2){(float)screenWidth / 2.0f, (float)screenHeight / 2.0f}; // Pivot
+    camera.offset = (Vector2){(float)s_ScreenWidth / 2.0f, (float)s_ScreenHeight / 2.0f}; // Pivot
     camera.rotation = 0.0f;
     camera.zoom = 4.0f;
 

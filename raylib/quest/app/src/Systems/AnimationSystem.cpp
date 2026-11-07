@@ -12,11 +12,11 @@ void AnimationSystem::Init(gaia::ecs::World& world)
                   .all<const Animation::AnimationFrameComponent>();
 }
 
-void AnimationSystem::Update(float& dt)
+void AnimationSystem::Update(float dt)
 {
     m_Query.each(
-        [&dt](Animation::ImageComponent& sprite, Animation::AnimationComponent& animation,
-              const Animation::AnimationFrameComponent& animationFrame)
+        [dt](Animation::ImageComponent& sprite, Animation::AnimationComponent& animation,
+             const Animation::AnimationFrameComponent& animationFrame)
         {
             animation.m_Timer += dt;
 
