@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Systems/AnimationSystem.h"
+#include "Systems/CollisionSystem.h"
 #include "Systems/MovementSystem.h"
 #include "Systems/RenderSystem.h"
 #include "TileMap.h"
@@ -33,4 +34,5 @@ class Game
     RenderSystem m_RenderSystem;
     MovementSystem m_MovementSystem;
     AnimationSystem m_AnimationSystem;
+    CollisionSystem m_CollisionSystem;
 };

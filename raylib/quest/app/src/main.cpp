@@ -37,7 +37,7 @@ int main()
     Camera2D camera = {0};
     camera.offset = (Vector2){(float)s_ScreenWidth / 2.0f, (float)s_ScreenHeight / 2.0f}; // Pivot
     camera.rotation = 0.0f;
-    camera.zoom = 4.0f;
+    camera.zoom = 3.0f;
 
     gaia::ecs::Entity enemy = Enemy::Create(world, {camera.offset.x - 100, camera.offset.y});
 

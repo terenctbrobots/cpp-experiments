@@ -11,6 +11,7 @@ add_executable(quest
     src/TileMap.cpp
     src/AssetManager.cpp
     src/Systems/AnimationSystem.cpp
+    src/Systems/CollisionSystem.cpp
     src/Systems/MovementSystem.cpp
     src/Systems/RenderSystem.cpp
     )

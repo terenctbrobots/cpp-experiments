@@ -1,7 +1,7 @@
 {
   "width": 48,
   "height": 48,
-  "origin": "center",
+  "origin": [-24,-36],
   "defaultAnimation": "idle_down",
   "animation": {
     "idle_down": {

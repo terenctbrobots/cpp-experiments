@@ -41,10 +41,12 @@ gaia::ecs::Entity Enemy::Create(gaia::ecs::World& world, const Vector2& startPos
     world.add<Animation::AnimationFrameComponent>(entity);
     world.add<Animation::AnimationComponent>(entity);
 
-    BoundingBoxComponent boundingBoxComponent;
-    boundingBoxComponent.m_Collision = {startPosition.x - 8, startPosition.y - 8, 16, 16};
+    Game::BoundingBoxComponent boundingBoxComponent;
+    boundingBoxComponent.m_Offset = {-7, -3};
+    boundingBoxComponent.m_Width = 14;
+    boundingBoxComponent.m_Height = 12;
 
-    world.add<BoundingBoxComponent>(entity, std::move(boundingBoxComponent));
+    world.add<Game::BoundingBoxComponent>(entity, std::move(boundingBoxComponent));
 
     Animation::SetAnimation(world, entity, AssetManager::s_EnemyAsset);
 

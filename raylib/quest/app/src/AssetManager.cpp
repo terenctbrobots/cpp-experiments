@@ -37,12 +37,29 @@ namespace
 
         if (jsonData.contains("origin"))
         {
-            std::string origin = jsonData.value("origin", "center");
+            const auto& value = jsonData["origin"];
 
-            // If origin center draw sprite half the width left and half the height up
-            if (origin == "center")
+            if (value.is_array())
             {
-                animation.m_Offset = {-(animation.m_Width / 2), -(animation.m_Height / 2)};
+                const std::vector<int> offsets = jsonData["origin"].get<std::vector<int>>();
+                if (offsets.size() != 2)
+                {
+                    spdlog::warn("Trying to get the origin offsets but didn't get 2 values");
+                }
+                else
+                {
+                    animation.m_Offset = {static_cast<float>(offsets[0]), static_cast<float>(offsets[1])};
+                }
+            }
+            else
+            {
+                std::string origin = jsonData.value("origin", "center");
+
+                // If origin center draw sprite half the width left and half the height up
+                if (origin == "center")
+                {
+                    animation.m_Offset = {-(animation.m_Width / 2), -(animation.m_Height / 2)};
+                }
             }
         }
 

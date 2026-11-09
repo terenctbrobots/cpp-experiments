@@ -24,6 +24,7 @@ bool Game::Initialize()
 void Game::RegisterSystems()
 {
     m_AnimationSystem.Init(m_World);
+    m_CollisionSystem.Init(m_World);
     m_MovementSystem.Init(m_World);
 
     m_RenderSystem.Init(m_World);
@@ -32,6 +33,7 @@ void Game::RegisterSystems()
 void Game::Update(float dt)
 {
     m_AnimationSystem.Update(dt);
+    m_CollisionSystem.Update(dt); // Collision runs before Movement, so it can cancel velocity if needed
     m_MovementSystem.Update(dt);
 }
 

@@ -41,10 +41,12 @@ gaia::ecs::Entity Player::Create(gaia::ecs::World& world)
     world.add<Animation::AnimationFrameComponent>(entity);
     world.add<Animation::AnimationComponent>(entity);
 
-    BoundingBoxComponent boundingBoxComponent;
-    boundingBoxComponent.m_Collision = {0, 0, 17, 21};
+    Game::BoundingBoxComponent boundingBoxComponent;
+    boundingBoxComponent.m_Offset = {-5, -13};
+    boundingBoxComponent.m_Width = 12;
+    boundingBoxComponent.m_Height = 18;
 
-    world.add<BoundingBoxComponent>(entity, std::move(boundingBoxComponent));
+    world.add<Game::BoundingBoxComponent>(entity, std::move(boundingBoxComponent));
 
     Animation::SetAnimation(world, entity, AssetManager::s_PlayerAsset);
 
@@ -125,10 +127,5 @@ Vector2 Player::GetPosition(gaia::ecs::World& world, gaia::ecs::Entity& player)
 
 void Player::SetPosition(gaia::ecs::World& world, gaia::ecs::Entity& player, const Vector2& position)
 {
-    auto transform = world.set<Transform2D>(player);
-    transform.m_Pos = position;
-
-    auto bounds = world.set<BoundingBoxComponent>(player);
-    bounds.m_Collision.x = position.x - 8;
-    bounds.m_Collision.y = position.y - 1;
+    world.set<Transform2D>(player).m_Pos = position;
 }

@@ -14,17 +14,17 @@ void RenderSystem::Init(gaia::ecs::World& world)
         m_QueryLayerOne = world.query()
                               .all<Transform2D>()
                               .all<Animation::ImageComponent>()
-                              .all<BoundingBoxComponent>()
+                              .all<Game::BoundingBoxComponent>()
                               .all<Render::LayerOneComponent>();
         m_QueryLayerTwo = world.query()
                               .all<Transform2D>()
                               .all<Animation::ImageComponent>()
-                              .all<BoundingBoxComponent>()
+                              .all<Game::BoundingBoxComponent>()
                               .all<Render::LayerTwoComponent>();
         m_QueryLayerThree = world.query()
                                 .all<Transform2D>()
                                 .all<Animation::ImageComponent>()
-                                .all<BoundingBoxComponent>()
+                                .all<Game::BoundingBoxComponent>()
                                 .all<Render::LayerThreeComponent>();
     }
     else
@@ -45,50 +45,53 @@ void RenderSystem::Update()
     if (m_Debug)
     {
         m_QueryLayerOne.each(
-            [](const Transform2D& pos, const Animation::ImageComponent& sprite, const BoundingBoxComponent& boundBox)
+            [](const Transform2D& pos, const Animation::ImageComponent& sprite,
+               const Game::BoundingBoxComponent& boundBox)
             {
                 Rectangle drawRect = sprite.m_SrcRect;
                 if (sprite.m_Flip)
                     drawRect.width *= -1.0f;
 
-                Vector2 drawPos = Vector2Add(pos.m_Pos, sprite.m_Offset);
+                const Vector2 drawPos = Vector2Add(pos.m_Pos, sprite.m_Offset);
                 DrawTextureRec(sprite.m_Texture, drawRect, drawPos, WHITE);
 
                 if (boundBox.m_Show)
                 {
-                    DrawRectangleLinesEx(boundBox.m_Collision, 1.0f, RED);
+                    DrawRectangleLinesEx(boundBox.m_Collision, 0.5f, RED);
                 }
             });
 
         m_QueryLayerTwo.each(
-            [](const Transform2D& pos, const Animation::ImageComponent& sprite, const BoundingBoxComponent& boundBox)
+            [](const Transform2D& pos, const Animation::ImageComponent& sprite,
+               const Game::BoundingBoxComponent& boundBox)
             {
                 Rectangle drawRect = sprite.m_SrcRect;
                 if (sprite.m_Flip)
                     drawRect.width *= -1.0f;
 
-                Vector2 drawPos = Vector2Add(pos.m_Pos, sprite.m_Offset);
+                const Vector2 drawPos = Vector2Add(pos.m_Pos, sprite.m_Offset);
                 DrawTextureRec(sprite.m_Texture, drawRect, drawPos, WHITE);
 
                 if (boundBox.m_Show)
                 {
-                    DrawRectangleLinesEx(boundBox.m_Collision, 1.0f, RED);
+                    DrawRectangleLinesEx(boundBox.m_Collision, 0.5f, RED);
                 }
             });
 
         m_QueryLayerThree.each(
-            [](const Transform2D& pos, const Animation::ImageComponent& sprite, const BoundingBoxComponent& boundBox)
+            [](const Transform2D& pos, const Animation::ImageComponent& sprite,
+               const Game::BoundingBoxComponent& boundBox)
             {
                 Rectangle drawRect = sprite.m_SrcRect;
                 if (sprite.m_Flip)
                     drawRect.width *= -1.0f;
 
-                Vector2 drawPos = Vector2Add(pos.m_Pos, sprite.m_Offset);
+                const Vector2 drawPos = Vector2Add(pos.m_Pos, sprite.m_Offset);
                 DrawTextureRec(sprite.m_Texture, drawRect, drawPos, WHITE);
 
                 if (boundBox.m_Show)
                 {
-                    DrawRectangleLinesEx(boundBox.m_Collision, 1.0f, RED);
+                    DrawRectangleLinesEx(boundBox.m_Collision, 0.5f, RED);
                 }
             });
 
@@ -102,7 +105,7 @@ void RenderSystem::Update()
             if (sprite.m_Flip)
                 drawRect.width *= -1.0f;
 
-            Vector2 drawPos = Vector2Add(pos.m_Pos, sprite.m_Offset);
+            const Vector2 drawPos = Vector2Add(pos.m_Pos, sprite.m_Offset);
             DrawTextureRec(sprite.m_Texture, drawRect, drawPos, WHITE);
         });
 
@@ -113,7 +116,7 @@ void RenderSystem::Update()
             if (sprite.m_Flip)
                 drawRect.width *= -1.0f;
 
-            Vector2 drawPos = Vector2Add(pos.m_Pos, sprite.m_Offset);
+            const Vector2 drawPos = Vector2Add(pos.m_Pos, sprite.m_Offset);
             DrawTextureRec(sprite.m_Texture, drawRect, drawPos, WHITE);
         });
 
@@ -124,7 +127,7 @@ void RenderSystem::Update()
             if (sprite.m_Flip)
                 drawRect.width *= -1.0f;
 
-            Vector2 drawPos = Vector2Add(pos.m_Pos, sprite.m_Offset);
+            const Vector2 drawPos = Vector2Add(pos.m_Pos, sprite.m_Offset);
             DrawTextureRec(sprite.m_Texture, drawRect, drawPos, WHITE);
         });
 }
