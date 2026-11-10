@@ -22,10 +22,8 @@ void CollisionSystem::Update(float dt)
         [&](gaia::ecs::Entity entity1, const Transform2D& position1, Gameplay::BoundingBoxComponent& box1,
             Gameplay::VelocityComponent& velocity1)
         {
-            const float position1X =
-                position1.m_Pos.x + velocity1.m_Direction.x * velocity1.m_Speed * dt + box1.m_Offset.x;
-            const float position1Y =
-                position1.m_Pos.y + velocity1.m_Direction.x * velocity1.m_Speed * dt + box1.m_Offset.y;
+            float position1X = position1.m_Pos.x + velocity1.m_Direction.x * velocity1.m_Speed * dt + box1.m_Offset.x;
+            float position1Y = position1.m_Pos.y + velocity1.m_Direction.x * velocity1.m_Speed * dt + box1.m_Offset.y;
             const Rectangle Rect1 = {position1X, position1Y, box1.m_Width, box1.m_Height};
 
             m_Query.each(
@@ -37,9 +35,9 @@ void CollisionSystem::Update(float dt)
                         return;
                     }
 
-                    const float position2X =
+                    float position2X =
                         position2.m_Pos.x + velocity2.m_Direction.x * velocity2.m_Speed * dt + box2.m_Offset.x;
-                    const float position2Y =
+                    float position2Y =
                         position2.m_Pos.y + velocity2.m_Direction.x * velocity2.m_Speed * dt + box2.m_Offset.y;
                     const Rectangle Rect2 = {position2X, position2Y, box2.m_Width, box2.m_Height};
 
@@ -51,6 +49,7 @@ void CollisionSystem::Update(float dt)
 
                         Vector2 normal = {0, 0};
                         float penetration = 0.0f;
+                        const float totalInvMass = box1.m_InvMass + box2.m_InvMass;
 
                         if (overlap.width < overlap.height)
                         {
@@ -63,15 +62,15 @@ void CollisionSystem::Update(float dt)
                             normal.y = (Rect1.y < Rect2.y) ? -1.0f : 1.0f;
                         }
 
-                        //     // 4. Position Resolution (Push out proportional to inverse mass)
-                        //     float ratioA = a.invMass / totalInvMass;
-                        //     float ratioB = b.invMass / totalInvMass;
+                        // Position Resolution (Push out proportional to inverse mass)
+                        const float ratio1 = box1.m_InvMass / totalInvMass;
+                        float ratio2 = box2.m_InvMass / totalInvMass;
 
-                        //     a.pos.x += normal.x * penetration * ratioA;
-                        //     a.pos.y += normal.y * penetration * ratioA;
+                        position1X += normal.x * penetration * ratio1;
+                        position1Y += normal.y + penetration * ratio1;
 
-                        //     b.pos.x -= normal.x * penetration * ratioB;
-                        //     b.pos.y -= normal.y * penetration * ratioB;
+                        position2X -= normal.x * penetration * ratio2;
+                        position2Y -= normal.y * penetration * ratio2;
 
                         //     // 5. Velocity Resolution (Inelastic / Momentum transfer)
                         //     Vector2 relVel = { a.vel.x - b.vel.x, a.vel.y - b.vel.y };

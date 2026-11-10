@@ -45,6 +45,7 @@ gaia::ecs::Entity Player::Create(gaia::ecs::World& world)
     boundingBoxComponent.m_Offset = {-5, -13};
     boundingBoxComponent.m_Width = 12;
     boundingBoxComponent.m_Height = 18;
+    boundingBoxComponent.m_InvMass = 0.5f;
 
     world.add<Gameplay::BoundingBoxComponent>(entity, std::move(boundingBoxComponent));
 

@@ -45,6 +45,7 @@ gaia::ecs::Entity Enemy::Create(gaia::ecs::World& world, const Vector2& startPos
     boundingBoxComponent.m_Offset = {-7, -3};
     boundingBoxComponent.m_Width = 14;
     boundingBoxComponent.m_Height = 12;
+    boundingBoxComponent.m_InvMass = 0.2f;
 
     world.add<Gameplay::BoundingBoxComponent>(entity, std::move(boundingBoxComponent));
 
