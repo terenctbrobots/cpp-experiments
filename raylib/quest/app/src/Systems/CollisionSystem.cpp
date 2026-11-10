@@ -22,8 +22,10 @@ void CollisionSystem::Update(float dt)
         [&](gaia::ecs::Entity entity1, const Transform2D& position1, Gameplay::BoundingBoxComponent& box1,
             Gameplay::VelocityComponent& velocity1)
         {
-            float position1X = position1.m_Pos.x + velocity1.m_Direction.x * velocity1.m_Speed * dt + box1.m_Offset.x;
-            float position1Y = position1.m_Pos.y + velocity1.m_Direction.x * velocity1.m_Speed * dt + box1.m_Offset.y;
+            const float velocity1X = velocity1.m_Direction.x * velocity1.m_Speed * dt;
+            float position1X = position1.m_Pos.x + box1.m_Offset.x + velocity1X;
+            const float velocity1Y = velocity1.m_Direction.y * velocity1.m_Speed * dt;
+            float position1Y = position1.m_Pos.y + box1.m_Offset.y + velocity1Y;
             const Rectangle Rect1 = {position1X, position1Y, box1.m_Width, box1.m_Height};
 
             m_Query.each(
@@ -35,46 +37,46 @@ void CollisionSystem::Update(float dt)
                         return;
                     }
 
-                    float position2X =
-                        position2.m_Pos.x + velocity2.m_Direction.x * velocity2.m_Speed * dt + box2.m_Offset.x;
-                    float position2Y =
-                        position2.m_Pos.y + velocity2.m_Direction.x * velocity2.m_Speed * dt + box2.m_Offset.y;
+                    const float velocity2X = velocity2.m_Direction.x * velocity2.m_Speed * dt;
+                    float position2X = position2.m_Pos.x + box2.m_Offset.x + velocity2X;
+                    const float velocity2Y = velocity2.m_Direction.y * velocity2.m_Speed * dt;
+                    float position2Y = position2.m_Pos.y + box2.m_Offset.y + velocity2Y;
                     const Rectangle Rect2 = {position2X, position2Y, box2.m_Width, box2.m_Height};
 
                     if (CheckCollisionRecs(Rect1, Rect2))
                     {
                         spdlog::warn("Collision!");
 
-                        Rectangle overlap = GetCollisionRec(Rect1, Rect2);
+                        // Rectangle overlap = GetCollisionRec(Rect1, Rect2);
 
-                        Vector2 normal = {0, 0};
-                        float penetration = 0.0f;
-                        const float totalInvMass = box1.m_InvMass + box2.m_InvMass;
+                        // Vector2 normal = {0, 0};
+                        // float penetration = 0.0f;
+                        // const float totalInvMass = box1.m_InvMass + box2.m_InvMass;
 
-                        if (overlap.width < overlap.height)
-                        {
-                            penetration = overlap.width;
-                            normal.x = (Rect1.x < Rect2.x) ? -1.0f : 1.0f;
-                        }
-                        else
-                        {
-                            penetration = overlap.height;
-                            normal.y = (Rect1.y < Rect2.y) ? -1.0f : 1.0f;
-                        }
+                        // if (overlap.width < overlap.height)
+                        // {
+                        //     penetration = overlap.width;
+                        //     normal.x = (Rect1.x < Rect2.x) ? -1.0f : 1.0f;
+                        // }
+                        // else
+                        // {
+                        //     penetration = overlap.height;
+                        //     normal.y = (Rect1.y < Rect2.y) ? -1.0f : 1.0f;
+                        // }
 
-                        // Position Resolution (Push out proportional to inverse mass)
-                        const float ratio1 = box1.m_InvMass / totalInvMass;
-                        float ratio2 = box2.m_InvMass / totalInvMass;
+                        // // Position Resolution (Push out proportional to inverse mass)
+                        // const float ratio1 = box1.m_InvMass / totalInvMass;
+                        // float ratio2 = box2.m_InvMass / totalInvMass;
 
-                        position1X += normal.x * penetration * ratio1;
-                        position1Y += normal.y + penetration * ratio1;
+                        // position1X += normal.x * penetration * ratio1;
+                        // position1Y += normal.y + penetration * ratio1;
 
-                        position2X -= normal.x * penetration * ratio2;
-                        position2Y -= normal.y * penetration * ratio2;
+                        // position2X -= normal.x * penetration * ratio2;
+                        // position2Y -= normal.y * penetration * ratio2;
 
-                        //     // 5. Velocity Resolution (Inelastic / Momentum transfer)
-                        //     Vector2 relVel = { a.vel.x - b.vel.x, a.vel.y - b.vel.y };
-                        //     float velAlongNormal = relVel.x * normal.x + relVel.y * normal.y;
+                        // Velocity Resolution (Inelastic / Momentum transfer)
+                        // Vector2 relVel = { a.vel.x - b.vel.x, a.vel.y - b.vel.y };
+                        //  float velAlongNormal = relVel.x * normal.x + relVel.y * normal.y;
 
                         //     // Do not resolve if objects are moving apart
                         //     if (velAlongNormal > 0.0f) return;
@@ -95,7 +97,8 @@ void CollisionSystem::Update(float dt)
                         //     b.vel.x -= impulse.x * b.invMass;
                         //     b.vel.y -= impulse.y * b.invMass;
 
-                        // Zeroing the velocity isn't enough as we need to move the entities outside of collision boxes
+                        // Zeroing the velocity may not be enough as we need to move the entities outside of collision
+                        // boxes
                         velocity1.m_Direction = {0, 0};
                         velocity2.m_Direction = {0, 0};
                     }
