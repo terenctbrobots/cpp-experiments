@@ -20,7 +20,7 @@ gaia::ecs::Entity Player::Create(gaia::ecs::World& world)
 {
     gaia::ecs::Entity entity = world.add();
 
-    world.add<Game::PlayerComponent>(entity);
+    world.add<Gameplay::PlayerComponent>(entity);
     world.add<VelocityComponent>(entity, {s_Speed, {0.0f, 0.0f}});
     world.add<Render::LayerTwoComponent>(entity);
     world.add<Transform2D>(entity, {0.0f, 0.0f});
@@ -41,12 +41,12 @@ gaia::ecs::Entity Player::Create(gaia::ecs::World& world)
     world.add<Animation::AnimationFrameComponent>(entity);
     world.add<Animation::AnimationComponent>(entity);
 
-    Game::BoundingBoxComponent boundingBoxComponent;
+    Gameplay::BoundingBoxComponent boundingBoxComponent;
     boundingBoxComponent.m_Offset = {-5, -13};
     boundingBoxComponent.m_Width = 12;
     boundingBoxComponent.m_Height = 18;
 
-    world.add<Game::BoundingBoxComponent>(entity, std::move(boundingBoxComponent));
+    world.add<Gameplay::BoundingBoxComponent>(entity, std::move(boundingBoxComponent));
 
     Animation::SetAnimation(world, entity, AssetManager::s_PlayerAsset);
 

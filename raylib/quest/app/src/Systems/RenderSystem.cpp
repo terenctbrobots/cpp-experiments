@@ -14,17 +14,17 @@ void RenderSystem::Init(gaia::ecs::World& world)
         m_QueryLayerOne = world.query()
                               .all<Transform2D>()
                               .all<Animation::ImageComponent>()
-                              .all<Game::BoundingBoxComponent>()
+                              .all<Gameplay::BoundingBoxComponent>()
                               .all<Render::LayerOneComponent>();
         m_QueryLayerTwo = world.query()
                               .all<Transform2D>()
                               .all<Animation::ImageComponent>()
-                              .all<Game::BoundingBoxComponent>()
+                              .all<Gameplay::BoundingBoxComponent>()
                               .all<Render::LayerTwoComponent>();
         m_QueryLayerThree = world.query()
                                 .all<Transform2D>()
                                 .all<Animation::ImageComponent>()
-                                .all<Game::BoundingBoxComponent>()
+                                .all<Gameplay::BoundingBoxComponent>()
                                 .all<Render::LayerThreeComponent>();
     }
     else
@@ -46,7 +46,7 @@ void RenderSystem::Update()
     {
         m_QueryLayerOne.each(
             [](const Transform2D& pos, const Animation::ImageComponent& sprite,
-               const Game::BoundingBoxComponent& boundBox)
+               const Gameplay::BoundingBoxComponent& boundBox)
             {
                 Rectangle drawRect = sprite.m_SrcRect;
                 if (sprite.m_Flip)
@@ -63,7 +63,7 @@ void RenderSystem::Update()
 
         m_QueryLayerTwo.each(
             [](const Transform2D& pos, const Animation::ImageComponent& sprite,
-               const Game::BoundingBoxComponent& boundBox)
+               const Gameplay::BoundingBoxComponent& boundBox)
             {
                 Rectangle drawRect = sprite.m_SrcRect;
                 if (sprite.m_Flip)
@@ -80,7 +80,7 @@ void RenderSystem::Update()
 
         m_QueryLayerThree.each(
             [](const Transform2D& pos, const Animation::ImageComponent& sprite,
-               const Game::BoundingBoxComponent& boundBox)
+               const Gameplay::BoundingBoxComponent& boundBox)
             {
                 Rectangle drawRect = sprite.m_SrcRect;
                 if (sprite.m_Flip)

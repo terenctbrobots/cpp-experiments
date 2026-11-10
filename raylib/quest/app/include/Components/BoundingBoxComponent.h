@@ -2,7 +2,7 @@
 
 #include "raylib.h"
 
-namespace Game
+namespace Gameplay
 {
     struct BoundingBoxComponent
     {
@@ -13,4 +13,4 @@ namespace Game
         bool m_Static = false;
         bool m_Show = true;
     };
-} // namespace Game
+} // namespace Gameplay

@@ -21,6 +21,8 @@ class Game
     void Update(float dt);
     void Render();
 
+    // Debug
+    static bool IsDebug();
     // Temporary function to test loading tilemaps
     void LoadTileMap();
 

@@ -3,19 +3,20 @@
 #include "Components/BoundingBoxComponent.h"
 #include "Components/Transform2D.h"
 #include "Components/VelocityComponent.h"
+#include "Game.h"
 
 #include <raylib.h>
 #include <raymath.h>
 
 void CollisionSystem::Init(gaia::ecs::World& world)
 {
-    m_Query = world.query().all<const Transform2D>().all<Game::BoundingBoxComponent&>().all<VelocityComponent&>();
+    m_Query = world.query().all<const Transform2D>().all<Gameplay::BoundingBoxComponent&>().all<VelocityComponent&>();
 }
 
 void CollisionSystem::Update(float dt)
 {
     m_Query.each(
-        [&](gaia::ecs::Entity entity1, const Transform2D& position1, Game::BoundingBoxComponent& box1,
+        [&](gaia::ecs::Entity entity1, const Transform2D& position1, Gameplay::BoundingBoxComponent& box1,
             VelocityComponent& velocity1)
         {
             const float position1X =
@@ -25,7 +26,7 @@ void CollisionSystem::Update(float dt)
             const Rectangle Rect1 = {position1X, position1Y, box1.m_Width, box1.m_Height};
 
             m_Query.each(
-                [&](gaia::ecs::Entity entity2, const Transform2D& position2, Game::BoundingBoxComponent& box2,
+                [&](gaia::ecs::Entity entity2, const Transform2D& position2, Gameplay::BoundingBoxComponent& box2,
                     VelocityComponent& velocity2)
                 {
                     if (entity1 == entity2)
@@ -46,10 +47,18 @@ void CollisionSystem::Update(float dt)
                         velocity2.m_Direction = {0, 0};
                     }
                 });
-            // const Vector2 newPosition = Vector2Add(position.m_Pos, box.m_Offset);
-            // box.m_Collision.x = newPosition.x;
-            // box.m_Collision.y = newPosition.y;
-            // box.m_Collision.width = box.m_Width;
-            // box.m_Collision.height = box.m_Height;
         });
+
+    if (Game::IsDebug())
+    {
+        m_Query.each(
+            [&](const Transform2D& position, Gameplay::BoundingBoxComponent& box, VelocityComponent& velocity)
+            {
+                const Vector2 newPosition = Vector2Add(position.m_Pos, box.m_Offset);
+                box.m_Collision.x = newPosition.x;
+                box.m_Collision.y = newPosition.y;
+                box.m_Collision.width = box.m_Width;
+                box.m_Collision.height = box.m_Height;
+            });
+    }
 }

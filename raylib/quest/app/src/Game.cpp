@@ -5,6 +5,8 @@
 #include "TileMap.h"
 #include "spdlog/spdlog.h"
 
+static bool s_Debug = true;
+
 bool Game::Initialize()
 {
     if (!AssetManager::Initialize())
@@ -40,6 +42,11 @@ void Game::Update(float dt)
 void Game::Render()
 {
     m_RenderSystem.Update();
+}
+
+bool Game::IsDebug()
+{
+    return s_Debug;
 }
 
 void Game::LoadTileMap()
