@@ -21,7 +21,7 @@ gaia::ecs::Entity Player::Create(gaia::ecs::World& world)
     gaia::ecs::Entity entity = world.add();
 
     world.add<Gameplay::PlayerComponent>(entity);
-    world.add<VelocityComponent>(entity, {s_Speed, {0.0f, 0.0f}});
+    world.add<Gameplay::VelocityComponent>(entity, {s_Speed, {0.0f, 0.0f}});
     world.add<Render::LayerTwoComponent>(entity);
     world.add<Transform2D>(entity, {0.0f, 0.0f});
 
@@ -55,7 +55,7 @@ gaia::ecs::Entity Player::Create(gaia::ecs::World& world)
 
 void Player::Movement(gaia::ecs::World& world, gaia::ecs::Entity& player, Vector2 direction, uint32_t animationName)
 {
-    auto velocity = world.set<VelocityComponent>(player);
+    auto velocity = world.set<Gameplay::VelocityComponent>(player);
     velocity.m_Direction = direction;
 
     auto& animation = world.get<Animation::AnimationComponent>(player);
@@ -68,7 +68,7 @@ void Player::Movement(gaia::ecs::World& world, gaia::ecs::Entity& player, Vector
 
 void Player::Idle(gaia::ecs::World& world, gaia::ecs::Entity& player)
 {
-    auto velocity = world.set<VelocityComponent>(player);
+    auto velocity = world.set<Gameplay::VelocityComponent>(player);
     velocity.m_Direction = {0.0f, 0.0f};
 
     auto& animation = world.get<Animation::AnimationComponent>(player);

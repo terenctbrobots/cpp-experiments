@@ -5,7 +5,7 @@
 #include "TileMap.h"
 #include "spdlog/spdlog.h"
 
-static bool s_Debug = true;
+static bool s_Debug = false;
 
 bool Game::Initialize()
 {

@@ -4,12 +4,13 @@
 #include "Components/ImageComponent.h"
 #include "Components/LayerComponent.h"
 #include "Components/Transform2D.h"
+#include "Game.h"
 
 #include <raylib.h>
 
 void RenderSystem::Init(gaia::ecs::World& world)
 {
-    if (m_Debug)
+    if (Game::IsDebug())
     {
         m_QueryLayerOne = world.query()
                               .all<Transform2D>()
@@ -42,7 +43,7 @@ void RenderSystem::Update()
 {
     ClearBackground(BLACK);
 
-    if (m_Debug)
+    if (Game::IsDebug())
     {
         m_QueryLayerOne.each(
             [](const Transform2D& pos, const Animation::ImageComponent& sprite,
@@ -130,10 +131,4 @@ void RenderSystem::Update()
             const Vector2 drawPos = Vector2Add(pos.m_Pos, sprite.m_Offset);
             DrawTextureRec(sprite.m_Texture, drawRect, drawPos, WHITE);
         });
-}
-
-void RenderSystem::ToggleDebug(gaia::ecs::World& world)
-{
-    m_Debug = !m_Debug;
-    Init(world);
 }

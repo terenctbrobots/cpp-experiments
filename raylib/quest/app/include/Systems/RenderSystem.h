@@ -8,9 +8,6 @@ struct RenderSystem
     gaia::ecs::Query m_QueryLayerTwo;
     gaia::ecs::Query m_QueryLayerThree;
 
-    bool m_Debug = true;
-
     void Init(gaia::ecs::World& world);
     void Update();
-    void ToggleDebug(gaia::ecs::World& world);
 };

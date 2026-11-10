@@ -20,7 +20,7 @@ gaia::ecs::Entity Enemy::Create(gaia::ecs::World& world, const Vector2& startPos
     gaia::ecs::Entity entity = world.add();
 
     world.add<Gameplay::EnemyComponent>(entity);
-    world.add<VelocityComponent>(entity, {s_Speed, {0.0f, 0.0f}});
+    world.add<Gameplay::VelocityComponent>(entity, {s_Speed, {0.0f, 0.0f}});
     world.add<Render::LayerTwoComponent>(entity);
     world.add<Transform2D>(entity, {startPosition.x, startPosition.y});
 

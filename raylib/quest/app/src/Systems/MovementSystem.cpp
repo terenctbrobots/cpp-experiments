@@ -5,13 +5,13 @@
 
 void MovementSystem::Init(gaia::ecs::World& world)
 {
-    m_Query = world.query().all<Transform2D&>().all<const VelocityComponent>();
+    m_Query = world.query().all<Transform2D&>().all<const Gameplay::VelocityComponent>();
 }
 
 void MovementSystem::Update(float dt)
 {
     m_Query.each(
-        [dt](Transform2D& pos, const VelocityComponent& velocity)
+        [dt](Transform2D& pos, const Gameplay::VelocityComponent& velocity)
         {
             const float velocityX = velocity.m_Direction.x * velocity.m_Speed * dt;
             pos.m_Pos.x += velocityX;
