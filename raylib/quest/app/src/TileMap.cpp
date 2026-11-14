@@ -50,7 +50,8 @@ TileMap TileMap::Create(gaia::ecs::World& world, const TileMapConfig& config)
         world.add<Animation::ImageComponent>(tileEntity, std::move(imageComponent));
         world.add<GridCellComponent>(tileEntity, {col, row});
 
-        world.add<Transform2D>(tileEntity, {col * defaultTile->m_SrcRect.width, row * defaultTile->m_SrcRect.height});
+        world.add<Gameplay::Transform2D>(tileEntity,
+                                         {col * defaultTile->m_SrcRect.width, row * defaultTile->m_SrcRect.height});
         world.add<Render::LayerOneComponent>(tileEntity);
 
         mapData.m_Tiles[(size_t)i].push_back(tileEntity);
@@ -97,7 +98,7 @@ bool TileMap::Save(gaia::ecs::World& world, const std::string& fileName)
             tile["src_width"] = imageComponent.m_SrcRect.width;
             tile["src_height"] = imageComponent.m_SrcRect.height;
 
-            auto& transform2D = world.get<Transform2D>(tileEntity);
+            auto& transform2D = world.get<Gameplay::Transform2D>(tileEntity);
 
             tile["x"] = transform2D.m_Pos.x;
             tile["y"] = transform2D.m_Pos.y;
@@ -206,9 +207,9 @@ bool TileMap::Load(gaia::ecs::World& world, const std::string& fileName)
             world.add<Animation::ImageComponent>(entity, std::move(imageComponent));
             world.add<GridCellComponent>(entity, {col, row});
 
-            Transform2D transform2D;
+            Gameplay::Transform2D transform2D;
             transform2D.m_Pos = {tile.value("x", 0.0f), tile.value("y", 0.0f)};
-            world.add<Transform2D>(entity, std::move(transform2D));
+            world.add<Gameplay::Transform2D>(entity, std::move(transform2D));
 
             int layer = tile.value("layer", 1);
 

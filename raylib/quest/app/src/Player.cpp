@@ -23,7 +23,7 @@ gaia::ecs::Entity Player::Create(gaia::ecs::World& world)
     world.add<Gameplay::PlayerComponent>(entity);
     world.add<Gameplay::VelocityComponent>(entity, {s_Speed, {0.0f, 0.0f}});
     world.add<Render::LayerTwoComponent>(entity);
-    world.add<Transform2D>(entity, {0.0f, 0.0f});
+    world.add<Gameplay::Transform2D>(entity, {0.0f, 0.0f});
 
     Texture2D playerTexture = AssetManager::GetTexture(AssetManager::s_PlayerAsset);
     if (!IsTextureValid(playerTexture))
@@ -123,10 +123,10 @@ void Player::Attack(gaia::ecs::World& world, gaia::ecs::Entity& player)
 
 Vector2 Player::GetPosition(gaia::ecs::World& world, gaia::ecs::Entity& player)
 {
-    return world.get<Transform2D>(player).m_Pos;
+    return world.get<Gameplay::Transform2D>(player).m_Pos;
 }
 
 void Player::SetPosition(gaia::ecs::World& world, gaia::ecs::Entity& player, const Vector2& position)
 {
-    world.set<Transform2D>(player).m_Pos = position;
+    world.set<Gameplay::Transform2D>(player).m_Pos = position;
 }

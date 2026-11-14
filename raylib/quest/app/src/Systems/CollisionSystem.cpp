@@ -11,7 +11,7 @@
 void CollisionSystem::Init(gaia::ecs::World& world)
 {
     m_Query = world.query()
-                  .all<const Transform2D>()
+                  .all<const Gameplay::Transform2D>()
                   .all<Gameplay::BoundingBoxComponent&>()
                   .all<Gameplay::VelocityComponent&>();
 }
@@ -19,7 +19,7 @@ void CollisionSystem::Init(gaia::ecs::World& world)
 void CollisionSystem::Update(float dt)
 {
     m_Query.each(
-        [&](gaia::ecs::Entity entity1, const Transform2D& position1, Gameplay::BoundingBoxComponent& box1,
+        [&](gaia::ecs::Entity entity1, const Gameplay::Transform2D& position1, Gameplay::BoundingBoxComponent& box1,
             Gameplay::VelocityComponent& velocity1)
         {
             const float velocity1X = velocity1.m_Direction.x * velocity1.m_Speed * dt;
@@ -29,8 +29,8 @@ void CollisionSystem::Update(float dt)
             const Rectangle Rect1 = {position1X, position1Y, box1.m_Width, box1.m_Height};
 
             m_Query.each(
-                [&](gaia::ecs::Entity entity2, const Transform2D& position2, Gameplay::BoundingBoxComponent& box2,
-                    Gameplay::VelocityComponent& velocity2)
+                [&](gaia::ecs::Entity entity2, const Gameplay::Transform2D& position2,
+                    Gameplay::BoundingBoxComponent& box2, Gameplay::VelocityComponent& velocity2)
                 {
                     if (entity1 == entity2)
                     {
@@ -99,8 +99,15 @@ void CollisionSystem::Update(float dt)
 
                         // Zeroing the velocity may not be enough as we need to move the entities outside of collision
                         // boxes
-                        velocity1.m_Direction = {0, 0};
-                        velocity2.m_Direction = {0, 0};
+                        if (velocity1X != 0 || velocity1Y != 0)
+                        {
+                            velocity1.m_Direction = {0, 0};
+                        }
+
+                        if (velocity2X != 0 || velocity2Y != 0)
+                        {
+                            velocity2.m_Direction = {0, 0};
+                        }
                     }
                 });
         });
@@ -108,7 +115,8 @@ void CollisionSystem::Update(float dt)
     if (Game::IsDebug())
     {
         m_Query.each(
-            [&](const Transform2D& position, Gameplay::BoundingBoxComponent& box, Gameplay::VelocityComponent& velocity)
+            [&](const Gameplay::Transform2D& position, Gameplay::BoundingBoxComponent& box,
+                Gameplay::VelocityComponent& velocity)
             {
                 const Vector2 newPosition = Vector2Add(position.m_Pos, box.m_Offset);
                 box.m_Collision.x = newPosition.x;

@@ -13,29 +13,35 @@ void RenderSystem::Init(gaia::ecs::World& world)
     if (Game::IsDebug())
     {
         m_QueryLayerOne = world.query()
-                              .all<Transform2D>()
+                              .all<Gameplay::Transform2D>()
                               .all<Animation::ImageComponent>()
                               .all<Gameplay::BoundingBoxComponent>()
                               .all<Render::LayerOneComponent>();
         m_QueryLayerTwo = world.query()
-                              .all<Transform2D>()
+                              .all<Gameplay::Transform2D>()
                               .all<Animation::ImageComponent>()
                               .all<Gameplay::BoundingBoxComponent>()
                               .all<Render::LayerTwoComponent>();
         m_QueryLayerThree = world.query()
-                                .all<Transform2D>()
+                                .all<Gameplay::Transform2D>()
                                 .all<Animation::ImageComponent>()
                                 .all<Gameplay::BoundingBoxComponent>()
                                 .all<Render::LayerThreeComponent>();
     }
     else
     {
-        m_QueryLayerOne =
-            world.query().all<Transform2D>().all<Animation::ImageComponent>().all<Render::LayerOneComponent>();
-        m_QueryLayerTwo =
-            world.query().all<Transform2D>().all<Animation::ImageComponent>().all<Render::LayerTwoComponent>();
-        m_QueryLayerThree =
-            world.query().all<Transform2D>().all<Animation::ImageComponent>().all<Render::LayerThreeComponent>();
+        m_QueryLayerOne = world.query()
+                              .all<Gameplay::Transform2D>()
+                              .all<Animation::ImageComponent>()
+                              .all<Render::LayerOneComponent>();
+        m_QueryLayerTwo = world.query()
+                              .all<Gameplay::Transform2D>()
+                              .all<Animation::ImageComponent>()
+                              .all<Render::LayerTwoComponent>();
+        m_QueryLayerThree = world.query()
+                                .all<Gameplay::Transform2D>()
+                                .all<Animation::ImageComponent>()
+                                .all<Render::LayerThreeComponent>();
     }
 }
 
@@ -46,7 +52,7 @@ void RenderSystem::Update()
     if (Game::IsDebug())
     {
         m_QueryLayerOne.each(
-            [](const Transform2D& pos, const Animation::ImageComponent& sprite,
+            [](const Gameplay::Transform2D& pos, const Animation::ImageComponent& sprite,
                const Gameplay::BoundingBoxComponent& boundBox)
             {
                 Rectangle drawRect = sprite.m_SrcRect;
@@ -63,7 +69,7 @@ void RenderSystem::Update()
             });
 
         m_QueryLayerTwo.each(
-            [](const Transform2D& pos, const Animation::ImageComponent& sprite,
+            [](const Gameplay::Transform2D& pos, const Animation::ImageComponent& sprite,
                const Gameplay::BoundingBoxComponent& boundBox)
             {
                 Rectangle drawRect = sprite.m_SrcRect;
@@ -80,7 +86,7 @@ void RenderSystem::Update()
             });
 
         m_QueryLayerThree.each(
-            [](const Transform2D& pos, const Animation::ImageComponent& sprite,
+            [](const Gameplay::Transform2D& pos, const Animation::ImageComponent& sprite,
                const Gameplay::BoundingBoxComponent& boundBox)
             {
                 Rectangle drawRect = sprite.m_SrcRect;
@@ -100,7 +106,7 @@ void RenderSystem::Update()
     }
 
     m_QueryLayerOne.each(
-        [](const Transform2D& pos, const Animation::ImageComponent& sprite)
+        [](const Gameplay::Transform2D& pos, const Animation::ImageComponent& sprite)
         {
             Rectangle drawRect = sprite.m_SrcRect;
             if (sprite.m_Flip)
@@ -111,7 +117,7 @@ void RenderSystem::Update()
         });
 
     m_QueryLayerTwo.each(
-        [](const Transform2D& pos, const Animation::ImageComponent& sprite)
+        [](const Gameplay::Transform2D& pos, const Animation::ImageComponent& sprite)
         {
             Rectangle drawRect = sprite.m_SrcRect;
             if (sprite.m_Flip)
@@ -122,7 +128,7 @@ void RenderSystem::Update()
         });
 
     m_QueryLayerThree.each(
-        [](const Transform2D& pos, const Animation::ImageComponent& sprite)
+        [](const Gameplay::Transform2D& pos, const Animation::ImageComponent& sprite)
         {
             Rectangle drawRect = sprite.m_SrcRect;
             if (sprite.m_Flip)

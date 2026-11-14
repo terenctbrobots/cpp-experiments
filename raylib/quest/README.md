@@ -2,9 +2,7 @@
 Top down test demo to see how gaia would be used in a game.
 
 ## Next Steps 
-* Finish upgrade to gaia 1.0 and raylib 6.0 (Tiles are not rendering yet, movement isn't tested)
-* Adding some collision between enemy and player
-* Adding some combat 
+* Give HP to enemy. Attack should decrease it. Do we have a hit animation?( Flash for now?) 
 * Moving the enemy around randomly
 
 ## Installation
