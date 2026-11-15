@@ -12,6 +12,7 @@ add_executable(quest
     src/AssetManager.cpp
     src/Systems/AnimationSystem.cpp
     src/Systems/CollisionSystem.cpp
+    src/Systems/EnemySystem.cpp
     src/Systems/MovementSystem.cpp
     src/Systems/RenderSystem.cpp
     )
