@@ -37,3 +37,5 @@ AllowShortNamespacesOnASingleLine: false
 
 # Forces enum declarations onto multiple lines
 AllowShortEnumsOnASingleLine: false
+
+IndentCaseLabels: true

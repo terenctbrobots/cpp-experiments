@@ -1,10 +1,12 @@
 #pragma once
 
-#include <cstdint>
+#include "raylib.h"
+
 namespace Gameplay
 {
-    enum EnemyState : uint8_t
+    enum EEnemyState : int
     {
+        Start_Up,
         Idle,
         Moving_Left,
         Moving_Right,
@@ -15,6 +17,8 @@ namespace Gameplay
 
     struct EnemyComponent
     {
-        EnemyState m_State = EnemyState::Idle;
+        EEnemyState m_State = EEnemyState::Start_Up;
+        Vector2 m_SpawnPosition = {0, 0};
+        Vector2 m_Destination = {0, 0};
     };
 } // namespace Gameplay

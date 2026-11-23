@@ -12,8 +12,11 @@
 #include "Components/VelocityComponent.h"
 #include "spdlog/spdlog.h"
 
-constexpr float s_Speed = 100.0f;
-const std::string s_EnemyTexture = "slime";
+namespace
+{
+    constexpr float s_Speed = 100.0f;
+    const std::string s_EnemyTexture = "slime";
+} // namespace
 
 gaia::ecs::Entity Enemy::Create(gaia::ecs::World& world, const Vector2& startPosition)
 {
