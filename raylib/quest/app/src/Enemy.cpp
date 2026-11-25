@@ -14,7 +14,7 @@
 
 namespace
 {
-    constexpr float s_Speed = 100.0f;
+    constexpr float s_Speed = 50.0f;
     const std::string s_EnemyTexture = "slime";
 } // namespace
 

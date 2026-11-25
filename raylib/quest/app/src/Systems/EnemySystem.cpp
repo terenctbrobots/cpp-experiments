@@ -18,7 +18,8 @@ namespace
 
 namespace
 {
-    void ChooseMoveDestination(Gameplay::EnemyComponent& enemy, Gameplay::VelocityComponent& velocity)
+    void ChooseMoveDestination(Gameplay::EnemyComponent& enemy, Gameplay::VelocityComponent& velocity,
+                               const Gameplay::Transform2D& pos)
     {
         // Pick a random direction
         int randomDirection = GetRandomValue(0, 3);
@@ -26,33 +27,38 @@ namespace
         {
             case Gameplay::EEnemyState::Moving_Left:
             {
-                enemy.m_Destination.x = -1.0f * GetRandomValue(s_MinMoveDistance, s_MaxMoveDistance);
+                enemy.m_Destination.x = pos.m_Pos.x + -1.0f * GetRandomValue(s_MinMoveDistance, s_MaxMoveDistance);
+                enemy.m_Destination.y = pos.m_Pos.y;
                 velocity.m_Direction = {-1, 0};
                 enemy.m_State = Gameplay::EEnemyState::Moving_Left;
                 break;
             }
             case Gameplay::EEnemyState::Moving_Right:
             {
-                enemy.m_Destination.x = GetRandomValue(s_MinMoveDistance, s_MaxMoveDistance);
+                enemy.m_Destination.x = pos.m_Pos.x + GetRandomValue(s_MinMoveDistance, s_MaxMoveDistance);
+                enemy.m_Destination.y = pos.m_Pos.y;
                 velocity.m_Direction = {1, 0};
                 enemy.m_State = Gameplay::EEnemyState::Moving_Right;
                 break;
             }
             case Gameplay::EEnemyState::Moving_Down:
             {
-                enemy.m_Destination.x = 1.0f * GetRandomValue(s_MinMoveDistance, s_MaxMoveDistance);
+                enemy.m_Destination.x = pos.m_Pos.x;
+                enemy.m_Destination.y = pos.m_Pos.y + GetRandomValue(s_MinMoveDistance, s_MaxMoveDistance);
                 velocity.m_Direction = {0, 1};
                 enemy.m_State = Gameplay::EEnemyState::Moving_Down;
                 break;
             }
             case Gameplay::EEnemyState::Moving_Up:
             {
-                enemy.m_Destination.x = -1.0f * GetRandomValue(s_MinMoveDistance, s_MaxMoveDistance);
+                enemy.m_Destination.x = pos.m_Pos.x;
+                enemy.m_Destination.y = pos.m_Pos.y + -1.0f * GetRandomValue(s_MinMoveDistance, s_MaxMoveDistance);
                 velocity.m_Direction = {0, -1};
                 enemy.m_State = Gameplay::EEnemyState::Moving_Up;
                 break;
             }
         }
+        spdlog::info("Chose destination {:.0f} {:.0f}", enemy.m_Destination.x, enemy.m_Destination.y);
     }
 } // namespace
 
@@ -82,7 +88,7 @@ void EnemySystem::Update(float dt)
                 {
                     if (enemy.m_Destination.x == 0 && enemy.m_Destination.y == 0)
                     {
-                        ChooseMoveDestination(enemy, velocity);
+                        ChooseMoveDestination(enemy, velocity, pos);
                     }
                     break;
                 }
