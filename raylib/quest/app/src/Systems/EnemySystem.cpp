@@ -1,5 +1,6 @@
 #include "Systems/EnemySystem.h"
 
+#include "Components/AnimationComponent.h"
 #include "Components/EnemyComponent.h"
 #include "Components/Transform2D.h"
 #include "Components/VelocityComponent.h"
@@ -19,7 +20,7 @@ namespace
 namespace
 {
     void ChooseMoveDestination(Gameplay::EnemyComponent& enemy, Gameplay::VelocityComponent& velocity,
-                               const Gameplay::Transform2D& pos)
+                               Animation::AnimationComponent& animation, const Gameplay::Transform2D& pos)
     {
         // Pick a random direction
         int randomDirection = GetRandomValue(0, 3);
@@ -67,6 +68,7 @@ void EnemySystem::Init(gaia::ecs::World& world)
     m_Query = world.query()
                   .all<Gameplay::EnemyComponent&>()
                   .all<Gameplay::VelocityComponent&>()
+                  .all<Animation::AnimationComponent&>()
                   .all<const Gameplay::Transform2D>();
 }
 
@@ -74,7 +76,7 @@ void EnemySystem::Update(float dt)
 {
     m_Query.each(
         [&](gaia::ecs::Entity entity1, Gameplay::EnemyComponent& enemy, Gameplay::VelocityComponent& velocity,
-            const Gameplay::Transform2D& pos)
+            Animation::AnimationComponent& animation, const Gameplay::Transform2D& pos)
         {
             switch (enemy.m_State)
             {
@@ -88,7 +90,7 @@ void EnemySystem::Update(float dt)
                 {
                     if (enemy.m_Destination.x == 0 && enemy.m_Destination.y == 0)
                     {
-                        ChooseMoveDestination(enemy, velocity, pos);
+                        ChooseMoveDestination(enemy, velocity, animation, pos);
                     }
                     break;
                 }

@@ -5,7 +5,15 @@
 #include "raylib.h"
 #include "tsl/robin_map.h"
 
+#include <cstdint>
 #include <string>
+
+namespace Animation
+{
+    struct AnimationComponent;
+    struct AnimationFrameComponent;
+    struct ImageComponent;
+} // namespace Animation
 
 namespace Animation
 {
@@ -31,6 +39,10 @@ namespace Animation
     // bool Load(const std::string& fileName, AnimationDataComponent& animationData);
     void SetAnimation(gaia::ecs::World& world, gaia::ecs::Entity entity, const std::string& assetName,
                       const uint32_t animationName = 0);
+
+    void UpdateAnimation(Animation::AnimationFrameComponent& animationFrame, Animation::ImageComponent& sprite,
+                         Animation::AnimationComponent& animation, const std::string& assetName,
+                         const uint32_t animationName);
 
     const uint32_t MOVE_LEFT = HS("move_left");
     const uint32_t MOVE_RIGHT = HS("move_right");
