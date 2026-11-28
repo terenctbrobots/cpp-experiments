@@ -6,12 +6,12 @@ namespace Gameplay
 {
     enum EEnemyState : int
     {
-        Start_Up,
-        Idle,
+        Moving_Up, // Movement at top because can then just pick a random direction easier
+        Moving_Down,
         Moving_Left,
         Moving_Right,
-        Moving_Down,
-        Moving_Up,
+        Start_Up,
+        Idle,
         Attacking
     };
 
